@@ -1,4 +1,5 @@
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   View,
   Image,
@@ -8,7 +9,17 @@ import {
   Text,
 } from 'react-native';
 
-const LoginScreen = () => {
+
+
+
+
+
+
+
+
+const Stack = createStackNavigator();
+
+const LoginScreen  = ({ navigation }) =>  {
   return (
     <View style={styles.container}>
       <Image
