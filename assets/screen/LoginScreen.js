@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import Dashboard from '../components/Dashboard'
 import {
   View,
   Image,
@@ -15,11 +15,7 @@ import {
 
 
 
-
-
-const Stack = createStackNavigator();
-
-const LoginScreen  = ({ navigation }) =>  {
+const LoginScreen  = (props) =>  {
   return (
     <View style={styles.container}>
       <Image
@@ -36,7 +32,7 @@ const LoginScreen  = ({ navigation }) =>  {
       <View style={styles.card}>
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Registration"
           placeholderTextColor="#999"
         />
         <TextInput
@@ -45,8 +41,8 @@ const LoginScreen  = ({ navigation }) =>  {
           placeholderTextColor="#999"
           secureTextEntry
         />
-        <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>Login</Text>
+        <TouchableOpacity   style={styles.loginButton} >
+          <Text style={styles.loginButtonText} onPress={  ()=> props.navigation.navigate ("Dashboard")} >Login</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.forgotPasswordButton}>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
@@ -81,7 +77,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   card: {
-    marginTop: 700,
+    marginTop: 50,
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,

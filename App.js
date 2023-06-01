@@ -1,25 +1,22 @@
-import React from 'react';
-import { View } from 'react-native';
-import Header from './assets/components/Header';
-import Card from './assets/components/Card';
-import Field from './assets/components/Field';
-import InfoIcon from './assets/components/InfoIcon';
-import Celender from './assets/components/Celender';
-import LoginScreen from './assets/screen/LoginScreen';
+// In App.js in a new project
 
-const App = () => {
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './assets/screen/LoginScreen';
+import Dashboard from './assets/components/Dashboard';
+
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
-    <View>
-      <LoginScreen />
-      {/* <Header />
-      <Card />
-      <View style={{ marginTop: 35 }}>
-        <Field />
-        <InfoIcon />
-        <Celender />
-      </View> */}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}} />
+        <Stack.Screen name="Dashboard" component={Dashboard} options={{headerShown:false}} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
+}
 
 export default App;
