@@ -7,6 +7,7 @@ import InfoIcon from './InfoIcon';
 import Celender from './Celender';
 
 
+
 const Header = () => {
     return (
        <View>
@@ -23,6 +24,9 @@ const Header = () => {
                <View style={{marginTop:30}}>
                 <Field/>
                </View>
+                         
+                               
+
 
                <View>
                 <InfoIcon/>

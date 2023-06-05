@@ -1,14 +1,17 @@
 import React from 'react';
-import {View,  StyleSheet, Image} from 'react-native';
+import {View,  StyleSheet, Image,TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const Header = () => {
     return (
         <View style={styles.header}>
-            <Icon name="bars" size={30} color="#ffffff" />
-           <Image source={require('../image/DU-logo.jpg')} style={{width:30,height:40}}/>
-            <Icon name="bell" size={30} color="#ffffff" />
+
+           
+           <Image source={require('../image.png/bers.png')} style={{width:20,height:20}}/>
+          
+           <Image source={require('../image/DU-logo.jpg')} style={{width:70,height:70}}/>
+            <Icon name="bell" size={90} color="#ffffff" />
         </View>
     );
 };

@@ -14,6 +14,7 @@ function App() {
       <Stack.Navigator>
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}} />
         <Stack.Screen name="Dashboard" component={Dashboard} options={{headerShown:false}} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

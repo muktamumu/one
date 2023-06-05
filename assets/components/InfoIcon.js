@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TextInput, View} from "react-native";
+import {Text, TextInput, View,Image} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const InfoIcon = () => {
@@ -14,7 +14,10 @@ const InfoIcon = () => {
                     height:50,
                     paddingHorizontal:10
                 }}>
-                    <Icon name="id-card-o" size={25} color="#000"  />
+            
+            
+                <Image source={require('../image/image2.jpg')} style ={{width:10,height:10}} />
+            
                 </TextInput>
                 <Text >প্রোফাইল</Text>
             </View>
