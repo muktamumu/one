@@ -1,11 +1,14 @@
 import React from 'react';
-import {View,  StyleSheet, Image} from 'react-native';
+import { View, StyleSheet, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Card from './Card';
+import Header from '../components/Header';
 import Field from './Field';
 import InfoIcon from './InfoIcon';
 import Celender from './Celender';
+import NoticeBar from './NoticeBar';
 
+<<<<<<< HEAD
 
 
 const Header = () => {
@@ -39,23 +42,36 @@ const Header = () => {
 
        </View>
     );
+=======
+const Dashboard = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View>
+        <View>
+          <Card />
+        </View>
+        <View>
+          <NoticeBar />
+        </View>
+        <View>
+          <InfoIcon />
+        </View>
+        <View>
+          <Celender />
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+>>>>>>> a8c0b21903eeb235e76f1be8c22b4da410312e88
 };
 
- 
-
 const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#333333',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginTop:2
-    },
-    title: {
-        color: '#ffffff',
-        fontSize: 20,
-    },
+  container: {},
+  header: {
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
-export default Header;
+
+export default Dashboard;
