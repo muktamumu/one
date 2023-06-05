@@ -24,6 +24,9 @@ const NoticeBar = () => {
   return (
     <>
       <View style={styles.container}>
+        <View style={styles.notceBox}>
+          <Text style={styles.boxText}>Notice: </Text>
+        </View>
         <Animated.View
           style={[
             styles.noticeContainer,
