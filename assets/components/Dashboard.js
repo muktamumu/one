@@ -1,57 +1,41 @@
 import React from 'react';
-import {View,  StyleSheet, Image} from 'react-native';
+import { View, StyleSheet, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Card from './Card';
+import Header from '../components/Header';
 import Field from './Field';
 import InfoIcon from './InfoIcon';
 import Celender from './Celender';
+import NoticeBar from './NoticeBar';
 
-
-const Header = () => {
-    return (
-       <View>
-         <View style={styles.header}>
-            <Icon name="bars" size={30} color="#ffffff" />
-           <Image source={require('../image/DU-logo.jpg')} style={{width:30,height:40}}/>
-            <Icon name="bell" size={30} color="#ffffff" />
+const Dashboard = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View>
+        <View>
+          <Card />
         </View>
-               
-               <View>
-                <Card/>
-               </View>
-                   
-               <View style={{marginTop:30}}>
-                <Field/>
-               </View>
-
-               <View>
-                <InfoIcon/>
-               </View>
-
-               <View>
-                <Celender/>
-               </View>
-               
-
-       </View>
-    );
+        <View>
+          <NoticeBar />
+        </View>
+        <View>
+          <InfoIcon />
+        </View>
+        <View>
+          <Celender />
+        </View>
+      </View>
+    </SafeAreaView>
+  );
 };
 
- 
-
 const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#333333',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginTop:2
-    },
-    title: {
-        color: '#ffffff',
-        fontSize: 20,
-    },
+  container: {},
+  header: {
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
-export default Header;
+
+export default Dashboard;

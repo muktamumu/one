@@ -1,5 +1,5 @@
 import React from 'react';
-import Dashboard from '../components/Dashboard'
+import Dashboard from '../components/Dashboard';
 import {
   View,
   Image,
@@ -9,29 +9,24 @@ import {
   Text,
 } from 'react-native';
 
-
-
-
-
-
-
-const LoginScreen  = (props) =>  {
+const LoginScreen = (props) => {
   return (
     <View style={styles.container}>
       <Image
         source={require('../image/LoginBG.jpg')}
         style={styles.backgroundImage}
       />
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../image/DU_APP_Logo.png')}
-          style={styles.logoImage}
-        />
-        <Text style={styles.logoText}>Your App Name</Text>
-      </View>
+
       <View style={styles.card}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../image/DU_APP_LogoBlue.png')}
+            style={styles.logoImage}
+          />
+        </View>
         <TextInput
           style={styles.input}
+          keyboardType="numeric"
           placeholder="Registration"
           placeholderTextColor="#999"
         />
@@ -41,11 +36,11 @@ const LoginScreen  = (props) =>  {
           placeholderTextColor="#999"
           secureTextEntry
         />
-        <TouchableOpacity   style={styles.loginButton} >
-          <Text style={styles.loginButtonText} onPress={  ()=> props.navigation.navigate ("Dashboard")} >Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.forgotPasswordButton}>
-          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => props.navigation.navigate('Dashboard')}
+        >
+          <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -64,7 +59,6 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 30,
   },
   logoImage: {
     width: 100,
@@ -74,14 +68,12 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 10,
   },
   card: {
-    marginTop: 50,
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
-    height: 250,
+    height: 330,
     width: 250,
     shadowColor: '#000',
     shadowOffset: {
