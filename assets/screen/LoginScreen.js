@@ -1,5 +1,5 @@
 import React from 'react';
-import Dashboard from '../components/Dashboard';
+import Dashboard from '../screen/Dashboard';
 import {
   View,
   Image,
@@ -8,6 +8,13 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
+import { Device } from 'expo';
+import Constants from 'expo-constants';
+
+const osVersion =
+  Constants.platform?.android?.versionCode ||
+  Constants.platform?.ios?.systemVersion;
+console.log('OS Version:', Constants);
 
 const LoginScreen = (props) => {
   return (

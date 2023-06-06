@@ -1,91 +1,59 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Animated, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, ScrollView, Animated } from 'react-native';
 
 const NoticeBar = () => {
-  const notices = ['Notice 5', 'Notice 2', 'Notice 3', 'Notice 4', 'Notice 5'];
+  const data = [
+    { id: 1, text: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' },
+    { id: 2, text: 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB' },
+    { id: 3, text: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC' },
+    // Add more notices here
+  ];
 
   const scrollX = useRef(new Animated.Value(0)).current;
-  const noticeWidth = 900; // Set the width of each notice item
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      Animated.timing(scrollX, {
-        toValue: scrollX._value + noticeWidth,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start(() => {
-        scrollX.setValue(0); // Reset scroll position to show the next notice
-      });
-    }, 3000);
+    const scrollLength = data.length * 200; // Adjust the scroll length based on your notice width
+    const animation = Animated.timing(scrollX, {
+      toValue: scrollLength,
+      duration: scrollLength * 30, // Adjust the duration for scrolling speed
+      useNativeDriver: true,
+    });
 
-    return () => clearInterval(interval);
+    const startAnimation = () => {
+      scrollX.setValue(0);
+      animation.start(() => {
+        startAnimation();
+      });
+    };
+
+    startAnimation();
   }, []);
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.notceBox}>
-          <Text style={styles.boxText}>Updates: </Text>
-        </View>
+    <View style={{ height: 20 }}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        scrollEnabled={false}
+      >
         <Animated.View
-          style={[
-            styles.noticeContainer,
-            {
-              transform: [
-                {
-                  translateY: Animated.modulo(
-                    scrollX,
-                    noticeWidth * notices.length
-                  ),
-                },
-              ],
-            },
-          ]}
+          style={{
+            flexDirection: 'row',
+            transform: [{ translateY: scrollX }],
+          }}
         >
-          {notices.map((notice, index) => (
-            <View key={index} style={styles.noticeItem}>
-              <Text style={styles.noticeText}>{notice}</Text>
+          {data.map((item) => (
+            <View
+              key={item.id}
+              style={{ width: 200, marginRight: 10 }} // Adjust the width and margin based on your notice styling
+            >
+              <Text style={{ fontSize: 16 }}>{item.text}</Text>
             </View>
           ))}
         </Animated.View>
-      </View>
-    </>
+      </ScrollView>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  notceBox: {
-    backgroundColor: 'black',
-    justifyContent: 'center',
-  },
-  boxText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-    paddingHorizontal: 10,
-  },
-  container: {
-    flexDirection: 'row',
-    height: 50,
-    backgroundColor: '#e5e5e5',
-    borderRadius: 10,
-    padding: 5,
-    overflow: 'hidden',
-  },
-  noticeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  noticeItem: {
-    width: 300, // Set the width of each notice item
-    justifyContent: 'center',
-  },
-  noticeText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    paddingHorizontal: 10,
-  },
-});
 
 export default NoticeBar;
