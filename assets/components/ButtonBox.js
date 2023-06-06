@@ -21,7 +21,7 @@ const ButtonBox = (props) => {
           onPress={() => props.navigation.navigate('Profile')}
         >
           <Image
-            source={require('./image.png/proBlue.png')}
+            source={require('../image/icon/proBlue.png')}
             style={styles.btnImg}
           />
           <Text style={styles.btnText}>Profile</Text>
@@ -32,7 +32,7 @@ const ButtonBox = (props) => {
           onPress={() => props.navigation.navigate('notice')}
         >
           <Image
-            source={require('./image.png/fromFill.png')}
+            source={require('../image/icon/fromFill.png')}
             style={styles.btnImg}
           />
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.btnText}>
@@ -46,7 +46,7 @@ const ButtonBox = (props) => {
           onPress={() => props.navigation.navigate('result')}
         >
           <Image
-            source={require('./image.png/result.png')}
+            source={require('../image/icon/result.png')}
             style={styles.btnImg}
           />
           <Text style={styles.btnText}>Result </Text>
@@ -57,7 +57,7 @@ const ButtonBox = (props) => {
           onPress={() => props.navigation.navigate('Hall')}
         >
           <Image
-            source={require('./image.png/hall3.png')}
+            source={require('../image/icon/hall3.png')}
             style={styles.btnImg}
           />
           <Text style={styles.btnText}>Hall Info</Text>
@@ -69,7 +69,7 @@ const ButtonBox = (props) => {
           onPress={() => props.navigation.navigate('result')}
         >
           <Image
-            source={require('./image.png/result.png')}
+            source={require('../image/icon/result.png')}
             style={styles.btnImg}
           />
           <Text style={styles.btnText}>Result </Text>
@@ -80,7 +80,7 @@ const ButtonBox = (props) => {
           onPress={() => props.navigation.navigate('Hall')}
         >
           <Image
-            source={require('./image.png/hall3.png')}
+            source={require('../image/icon/hall3.png')}
             style={styles.btnImg}
           />
           <Text style={styles.btnText}>Hall Info</Text>
@@ -92,7 +92,7 @@ const ButtonBox = (props) => {
           onPress={() => props.navigation.navigate('result')}
         >
           <Image
-            source={require('./image.png/result.png')}
+            source={require('../image/icon/result.png')}
             style={styles.btnImg}
           />
           <Text style={styles.btnText}>Result </Text>
@@ -103,7 +103,7 @@ const ButtonBox = (props) => {
           onPress={() => props.navigation.navigate('dept')}
         >
           <Image
-            source={require('./image.png/dept3.png')}
+            source={require('../image/icon/dept3.png')}
             style={styles.btnImg}
           />
           <Text style={styles.btnText}>Dept.Info </Text>

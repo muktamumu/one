@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Dashboard from '../screen/Dashboard';
 import {
   View,
@@ -8,22 +8,236 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import { Device } from 'expo';
 import Constants from 'expo-constants';
+import * as Localization from 'expo-localization';
+import NetInfo from '@react-native-community/netinfo';
+import NoInternet from '../components/NoInternet';
+import Toast from 'react-native-toast-message';
+import { bgColor, serverURL } from '../../Global';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const osVersion =
   Constants.platform?.android?.versionCode ||
   Constants.platform?.ios?.systemVersion;
-console.log('OS Version:', Constants);
+const deviceName = Constants.deviceName;
+const statusBarHeight = Constants.statusBarHeight;
+const sessionId = Constants.sessionId;
+const lang = Localization.locale;
 
 const LoginScreen = (props) => {
+  const [netStatus, setNetStatus] = useState(false);
+  const [netInfo, setnetInfo] = useState();
+  const [ipAddress, setipAddress] = useState();
+  const [isLoading, setLoading] = useState(0);
+
+  const checkNetworkConnectivity = async () => {
+    const netInfoState = await NetInfo.fetch();
+    setNetStatus(netInfoState.isConnected);
+    setnetInfo(JSON.stringify(netInfoState));
+    setipAddress(netInfoState.details.ipAddress);
+  };
+
+  const [reg, setReg] = useState('2018323100');
+  const [pass, setPass] = useState('0');
+  function login() {
+    if (netStatus) {
+      if (reg.length == 10 && pass.length > 6) {
+        checkForLogin(
+          reg,
+          pass,
+          netInfo,
+          deviceName,
+          osVersion,
+          lang,
+          statusBarHeight,
+          sessionId,
+          ipAddress
+        );
+      } else {
+        insertLoginFailed(
+          reg,
+          pass,
+          netInfo,
+          deviceName,
+          osVersion,
+          lang,
+          statusBarHeight,
+          sessionId,
+          ipAddress
+        );
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid Credentials.',
+          text2: 'Please Double Check Registration & Password.',
+          position: 'bottom',
+          backgroundColor: bgColor,
+        });
+      }
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'No Internet!',
+        text2: 'Please Double Check Your Network Status.',
+        position: 'bottom',
+        backgroundColor: bgColor,
+      });
+    }
+
+    // props.navigation.navigate('Dashboard');
+  }
+
+  const handleLogin = async (data) => {
+    try {
+      // Perform login logic
+      // Save login data
+      await AsyncStorage.setItem('token', JSON.stringify(data.token));
+      await AsyncStorage.setItem('data', JSON.stringify(data.data));
+      await AsyncStorage.setItem('result', JSON.stringify(data.result));
+      const name = await AsyncStorage.setItem(
+        'name',
+        JSON.stringify(data.name)
+      );
+      await AsyncStorage.setItem('hall', JSON.stringify(data.hall));
+      await AsyncStorage.setItem('session', JSON.stringify(data.session));
+
+      // Navigate to the next screen
+      props.navigation.navigate('Dashboard');
+
+      // ...
+    } catch (error) {
+      // Handle login error
+      console.error(error);
+    }
+  };
+
+  async function checkForLogin(
+    reg,
+    pass,
+    netInfo,
+    deviceName,
+    osVersion,
+    lang,
+    statusBarHeight,
+    sessionId,
+    ipAddress
+  ) {
+    try {
+      setLoading(1);
+      const data = {
+        reg: reg,
+        pass: pass,
+        netInfo: netInfo,
+        deviceName: deviceName,
+        osVersion: osVersion,
+        lang: lang,
+        statusBarHeight: statusBarHeight,
+        sessionId: sessionId,
+        ipAddress: ipAddress,
+      };
+      axios
+        .get(serverURL + 'checkForLogin', { params: data })
+        .then((response) => {
+          if (response.data.status === 300) {
+            setLoading(0);
+            Toast.show({
+              type: response.data.type,
+              text1: response.data.message,
+              text2: response.data.text,
+              position: 'bottom',
+              backgroundColor: bgColor,
+            });
+          } else if (response.data.status === 200) {
+            setLoading(0);
+            handleLogin(response.data);
+            console.log(response.data.name);
+          }
+        })
+        .catch((error) => {
+          console.log('error');
+          Toast.show({
+            type: 'error',
+            text1: 'Something Went Wrong',
+            text2: 'Please Try Again Latter.',
+            position: 'bottom',
+            backgroundColor: bgColor,
+          });
+        });
+    } catch (error) {
+      console.log('Catch The Error');
+      Toast.show({
+        type: 'error',
+        text1: 'Something Went Wrong',
+        text2: 'Please Try Again Latter.',
+        position: 'bottom',
+        backgroundColor: bgColor,
+      });
+    }
+  }
+
+  function insertLoginFailed(
+    reg,
+    pass,
+    netInfo,
+    deviceName,
+    osVersion,
+    lang,
+    statusBarHeight,
+    sessionId,
+    ipAddress
+  ) {
+    try {
+      setLoading(1);
+
+      const data = {
+        reg: reg,
+        pass: pass,
+        netInfo: netInfo,
+        deviceName: deviceName,
+        osVersion: osVersion,
+        lang: lang,
+        statusBarHeight: statusBarHeight,
+        sessionId: sessionId,
+        ipAddress: ipAddress,
+      };
+      axios
+        .get(serverURL + 'insertLoginFailed', { params: data })
+        .then((response) => {
+          setLoading(0);
+        })
+        .catch((error) => {
+          setLoading(0);
+        });
+    } catch (error) {
+      setLoading(0);
+    }
+  }
+
+  const checkLoginStatus = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+
+      if (token) {
+        props.navigation.navigate('Dashboard');
+      } else {
+        console.log('Logoput');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    checkNetworkConnectivity();
+    checkLoginStatus();
+  });
+
   return (
     <View style={styles.container}>
       <Image
         source={require('../image/LoginBG.jpg')}
         style={styles.backgroundImage}
       />
-
       <View style={styles.card}>
         <View style={styles.logoContainer}>
           <Image
@@ -31,25 +245,28 @@ const LoginScreen = (props) => {
             style={styles.logoImage}
           />
         </View>
+        {!netStatus && <NoInternet />}
         <TextInput
           style={styles.input}
           keyboardType="numeric"
-          placeholder="Registration"
           placeholderTextColor="#999"
+          onChangeText={setReg}
+          value={reg}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           placeholderTextColor="#999"
           secureTextEntry
+          onChangeText={setPass}
         />
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => props.navigation.navigate('Dashboard')}
-        >
-          <Text style={styles.loginButtonText}>Login</Text>
+        <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
+          <Text style={styles.loginButtonText}>
+            {isLoading ? 'Checking Now...' : 'Login'}
+          </Text>
         </TouchableOpacity>
       </View>
+      <Toast />
     </View>
   );
 };

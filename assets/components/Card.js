@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ImageBackground, Text, View, StyleSheet } from 'react-native';
-import Field from './Field';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Card = () => {
-  const studentName = 'মুক্তা দত্ত';
-  const session = '২০১৫-১৬';
-  const hallName = 'রোকেয়া হল';
+  const [studentName, setstudentName] = useState('মুক্তা দত্ত');
+  const [session, setsession] = useState('২০১৫-১৬');
+  const [hallName, sethallName] = useState('রোকেয়া হল');
+
+  const checkLoginStatus = async () => {
+    const name = JSON.parse(await AsyncStorage.getItem('name'));
+    setsession(JSON.parse(await AsyncStorage.getItem('session')));
+    sethallName(JSON.parse(await AsyncStorage.getItem('hall')));
+    setstudentName(name);
+  };
+
+  useEffect(() => {
+    checkLoginStatus();
+  });
+
   return (
     <View style={{ alignItems: 'center' }}>
       <ImageBackground
@@ -18,7 +30,7 @@ const Card = () => {
       <View style={styles.fullBox}>
         <View style={styles.textBox}>
           <Text style={styles.textstyle}>{studentName}</Text>
-          <Text style={styles.textstyle}>সেশন {session}</Text>
+          <Text style={styles.textstyle}>Session: {session}</Text>
           <Text style={styles.textstyle}>{hallName}</Text>
         </View>
         <Image source={require('../image/myimage.jpg')} style={styles.image} />
