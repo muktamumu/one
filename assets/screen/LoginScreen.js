@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Dashboard from '../screen/Dashboard';
 import {
   View,
   Image,
@@ -25,7 +24,7 @@ const statusBarHeight = Constants.statusBarHeight;
 const sessionId = Constants.sessionId;
 const lang = Localization.locale;
 
-const LoginScreen = (props) => {
+const LoginScreen = ({ navigation, setLoggedIn, props }) => {
   const [netStatus, setNetStatus] = useState(false);
   const [netInfo, setnetInfo] = useState();
   const [ipAddress, setipAddress] = useState();
@@ -89,8 +88,6 @@ const LoginScreen = (props) => {
 
   const handleLogin = async (data) => {
     try {
-      // Perform login logic
-      // Save login data
       await AsyncStorage.setItem('token', JSON.stringify(data.token));
       await AsyncStorage.setItem('data', JSON.stringify(data.data));
       await AsyncStorage.setItem('result', JSON.stringify(data.result));
@@ -102,8 +99,7 @@ const LoginScreen = (props) => {
       await AsyncStorage.setItem('hall', JSON.stringify(data.hall));
       await AsyncStorage.setItem('session', JSON.stringify(data.session));
 
-      // Navigate to the next screen
-      props.navigation.navigate('Dashboard');
+      setLoggedIn(true);
 
       // ...
     } catch (error) {
@@ -213,23 +209,8 @@ const LoginScreen = (props) => {
     }
   }
 
-  const checkLoginStatus = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-
-      if (token) {
-        props.navigation.navigate('Dashboard');
-      } else {
-        console.log('Logoput');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     checkNetworkConnectivity();
-    checkLoginStatus();
   });
 
   return (

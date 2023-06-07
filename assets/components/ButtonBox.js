@@ -9,16 +9,18 @@ import {
 } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { bgColor } from '../../Global';
+import Profile from './Profile';
 import Hall from './Hall';
+
 const Stack = createNativeStackNavigator();
 
-const ButtonBox = (props) => {
+const ButtonBox = (props, navigation) => {
   return (
     <View style={styles.buttonBoxFull}>
       <View style={styles.row}>
         <TouchableOpacity
           style={styles.eachButton}
-          onPress={() => props.navigation.navigate('Profile')}
+          onPress={() => navigation.navigate('Profile')}
         >
           <Image
             source={require('../image/icon/proBlue.png')}

@@ -1,33 +1,16 @@
 import React from 'react';
-<<<<<<< HEAD
-import {View,  StyleSheet, Image,TouchableOpacity} from 'react-native';
-=======
-import { View, StyleSheet, Image } from 'react-native';
->>>>>>> a8c0b21903eeb235e76f1be8c22b4da410312e88
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Header = () => {
-<<<<<<< HEAD
-    return (
-        <View style={styles.header}>
-
-           
-           <Image source={require('../image.png/bers.png')} style={{width:20,height:20}}/>
-          
-           <Image source={require('../image/DU-logo.jpg')} style={{width:70,height:70}}/>
-            <Icon name="bell" size={90} color="#ffffff" />
-        </View>
-    );
-=======
   return (
     <View style={styles.header}>
       <Image
         source={require('../image/DU_APP_LogoBlue.png')}
-        style={{ width: 30, height: 40 }}
+        style={styles.logo}
       />
     </View>
   );
->>>>>>> a8c0b21903eeb235e76f1be8c22b4da410312e88
 };
 
 const styles = StyleSheet.create({
@@ -36,11 +19,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    marginTop: 10,
+    paddingVertical: 10,
   },
-  title: {
-    color: '#ffffff',
-    fontSize: 20,
-  },
+  logo: { width: 90, height: 30 },
 });
 export default Header;

@@ -54,11 +54,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   fullBox: {
-    shadowColor: 'black',
-    shadowOffset: { width: 200, height: 200 },
-    shadowOpacity: 0.9,
-    shadowRadius: 0,
-    elevation: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.64)',
     position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'space-between',
