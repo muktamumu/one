@@ -12,7 +12,14 @@ import * as Localization from 'expo-localization';
 import NetInfo from '@react-native-community/netinfo';
 import NoInternet from '../components/NoInternet';
 import Toast from 'react-native-toast-message';
-import { bgColor, serverURL } from '../../Global';
+import {
+  bgColor,
+  colorFour,
+  colorOne,
+  colorThree,
+  colorTwo,
+  serverURL,
+} from '../../Global';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -226,6 +233,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
             style={styles.logoImage}
           />
         </View>
+
         {!netStatus && <NoInternet />}
         <TextInput
           style={styles.input}
@@ -243,7 +251,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         />
         <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
           <Text style={styles.loginButtonText}>
-            {isLoading ? 'Checking Now...' : 'Login'}
+            {isLoading ? 'Please Wait...' : 'Login'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -277,6 +285,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: colorOne,
     padding: 20,
     height: 330,
     width: 250,
@@ -291,14 +301,15 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: '#999',
+    borderColor: colorOne,
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
+    color: colorTwo,
   },
   loginButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: colorOne,
     borderRadius: 5,
     paddingVertical: 10,
     alignItems: 'center',

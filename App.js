@@ -6,6 +6,7 @@ import Dashboard from './assets/screen/Dashboard';
 import Profile from './assets/components/Profile';
 import Hall from './assets/components/Hall';
 import Exams from './assets/screen/Exams';
+import { colorOne, colorTwo } from './Global';
 
 const Stack = createNativeStackNavigator();
 

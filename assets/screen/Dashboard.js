@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Card from '../components/Card';
 import { bgColor } from '../../Global';
+import Header from '../components/Header';
 
 const Dashboard = ({ navigation, setLoggedIn, props }) => {
   return (
