@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Image, ImageBackground, Text, View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as FileSystem from 'expo-file-system';
+import { primaryColor } from '../../Global';
 
 const Card = () => {
   const [studentName, setstudentName] = useState('মুক্তা দত্ত');
   const [session, setsession] = useState('২০১৫-১৬');
   const [hallName, sethallName] = useState('রোকেয়া হল');
+  const [photo, setPhoto] = useState(
+    'https://v2.result.du.ac.bd/assets/student.png'
+  );
 
   const checkLoginStatus = async () => {
     const name = JSON.parse(await AsyncStorage.getItem('name'));
     setsession(JSON.parse(await AsyncStorage.getItem('session')));
     sethallName(JSON.parse(await AsyncStorage.getItem('hall')));
+    const ph = JSON.parse(await AsyncStorage.getItem('photo'));
     setstudentName(name);
+    setPhoto(ph);
   };
 
   useEffect(() => {
@@ -33,7 +40,7 @@ const Card = () => {
           <Text style={styles.textstyle}>Session: {session}</Text>
           <Text style={styles.textstyle}>{hallName}</Text>
         </View>
-        <Image source={require('../image/myimage.jpg')} style={styles.image} />
+        <Image source={{ uri: photo }} style={styles.image} />
       </View>
     </View>
   );
@@ -48,10 +55,10 @@ const styles = StyleSheet.create({
   },
   fullBox: {
     shadowColor: 'black',
-    shadowOffset: { width: 80, height: 2 },
-    shadowOpacity: 50.9,
-    shadowRadius: 9,
-    elevation: 99,
+    shadowOffset: { width: 200, height: 200 },
+    shadowOpacity: 0.9,
+    shadowRadius: 0,
+    elevation: 0,
     position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'space-between',

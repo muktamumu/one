@@ -6,3 +6,4 @@ export const dangerColor = '#FF9800';
 export const bgColor = '#F5F7FA';
 
 export const serverURL = 'https://v2.result.du.ac.bd/app/';
+export const photoUrl = 'https://eco.du.ac.bd/sub_339/Rokey.php';

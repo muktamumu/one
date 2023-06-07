@@ -38,7 +38,7 @@ const LoginScreen = (props) => {
     setipAddress(netInfoState.details.ipAddress);
   };
 
-  const [reg, setReg] = useState('2018323100');
+  const [reg, setReg] = useState('2019013365');
   const [pass, setPass] = useState('0');
   function login() {
     if (netStatus) {
@@ -94,6 +94,7 @@ const LoginScreen = (props) => {
       await AsyncStorage.setItem('token', JSON.stringify(data.token));
       await AsyncStorage.setItem('data', JSON.stringify(data.data));
       await AsyncStorage.setItem('result', JSON.stringify(data.result));
+      await AsyncStorage.setItem('photo', JSON.stringify(data.photo));
       const name = await AsyncStorage.setItem(
         'name',
         JSON.stringify(data.name)
@@ -150,11 +151,10 @@ const LoginScreen = (props) => {
           } else if (response.data.status === 200) {
             setLoading(0);
             handleLogin(response.data);
-            console.log(response.data.name);
           }
         })
         .catch((error) => {
-          console.log('error');
+          console.log('error ' + error);
           Toast.show({
             type: 'error',
             text1: 'Something Went Wrong',

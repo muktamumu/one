@@ -9,7 +9,6 @@ import {
   Button,
 } from 'react-native';
 import Card from '../components/Card';
-import LoginScreen from './LoginScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
