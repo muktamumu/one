@@ -4,7 +4,7 @@ import {
   Image,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
+  TouchableOpacity,KeyboardAvoidingView,
   Text,
 } from 'react-native';
 import Constants from 'expo-constants';
@@ -22,6 +22,9 @@ import {
 } from '../../Global';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { LinearProgress } from "@rneui/themed";
+
 
 const osVersion =
   Constants.platform?.android?.versionCode ||
@@ -46,6 +49,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
 
   const [reg, setReg] = useState('2019013365');
   const [pass, setPass] = useState('0');
+  const [sName, setsName] = useState()
   function login() {
     if (netStatus) {
       if (reg.length == 10 && pass.length > 6) {
@@ -107,6 +111,8 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
       await AsyncStorage.setItem('session', JSON.stringify(data.session));
 
       setLoggedIn(true);
+
+      setsName(name)
 
       // ...
     } catch (error) {
@@ -218,114 +224,124 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
 
   useEffect(() => {
     checkNetworkConnectivity();
+    if(sName){
+      alert('Welcome Back '+ sName)
+    }
   });
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require('../image/LoginBG.jpg')}
-        style={styles.backgroundImage}
-      />
-      <View style={styles.card}>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require('../image/DU_APP_LogoBlue.png')}
-            style={styles.logoImage}
-          />
-        </View>
+		<View style={styles.container}>
+			<Image
+				source={require("../image/LoginBG.jpg")}
+				style={styles.backgroundImage}
+			/>
+			<KeyboardAwareScrollView contentContainerStyle={styles.container}>
+				<View style={styles.card}>
+					<View style={styles.logoContainer}>
+						<Image
+							source={require("../image/DU_APP_LogoBlue.png")}
+							style={styles.logoImage}
+						/>
+					</View>
 
-        {!netStatus && <NoInternet />}
-        <TextInput
-          style={styles.input}
-          keyboardType="numeric"
-          placeholderTextColor="#999"
-          onChangeText={setReg}
-          value={reg}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#999"
-          secureTextEntry
-          onChangeText={setPass}
-        />
-        <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
-          <Text style={styles.loginButtonText}>
-            {isLoading ? 'Please Wait...' : 'Login'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <Toast />
-    </View>
-  );
+					{!netStatus && <NoInternet />}
+					<TextInput
+						style={styles.input}
+						keyboardType="numeric"
+						placeholderTextColor="#999"
+						onChangeText={setReg}
+						value={reg}
+					/>
+					<TextInput
+						style={styles.input}
+						placeholder="Password"
+						placeholderTextColor="#999"
+						secureTextEntry
+						onChangeText={setPass}
+					/>
+
+					<TouchableOpacity style={styles.loginButton} onPress={() => login()}>
+						<Text style={styles.loginButtonText}>
+							{isLoading ? "Please Wait..." : "Login"}
+						</Text>
+					</TouchableOpacity>
+					{isLoading ? <LinearProgress style={styles.loading} /> : ""}
+				</View>
+			</KeyboardAwareScrollView>
+			<Toast />
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backgroundImage: {
-    ...StyleSheet.absoluteFillObject,
-    opacity: 0.7, // adjust the opacity if needed
-  },
-  logoContainer: {
-    alignItems: 'center',
-  },
-  logoImage: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
-  },
-  logoText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  card: {
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: colorOne,
-    padding: 20,
-    height: 330,
-    width: 250,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  input: {
-    height: 40,
-    borderColor: colorOne,
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    color: colorTwo,
-  },
-  loginButton: {
-    backgroundColor: colorOne,
-    borderRadius: 5,
-    paddingVertical: 10,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  loginButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  forgotPasswordButton: {
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  forgotPasswordText: {
-    color: '#007bff',
-  },
+	container: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	backgroundImage: {
+		...StyleSheet.absoluteFillObject,
+		opacity: 0.7, // adjust the opacity if needed
+	},
+	logoContainer: {
+		alignItems: "center",
+	},
+	logoImage: {
+		width: 100,
+		height: 100,
+		resizeMode: "contain",
+	},
+	logoText: {
+		fontSize: 24,
+		fontWeight: "bold",
+	},
+	card: {
+		backgroundColor: "white",
+		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: colorOne,
+		padding: 20,
+		height: 330,
+		width: 250,
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 2,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+	},
+	input: {
+		height: 40,
+		borderColor: colorOne,
+		borderWidth: 1,
+		borderRadius: 5,
+		paddingHorizontal: 10,
+		marginBottom: 10,
+		color: colorTwo,
+	},
+	loading: {
+		borderRadius: 15,
+	},
+	loginButton: {
+		backgroundColor: colorOne,
+		borderRadius: 5,
+		paddingVertical: 10,
+		alignItems: "center",
+		marginTop: 10,
+	},
+	loginButtonText: {
+		color: "white",
+		fontWeight: "bold",
+	},
+	forgotPasswordButton: {
+		marginTop: 10,
+		alignItems: "center",
+	},
+	forgotPasswordText: {
+		color: "#007bff",
+	},
 });
 
 export default LoginScreen;
