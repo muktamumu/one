@@ -4,7 +4,7 @@ import {
   Image,
   StyleSheet,
   TextInput,
-  TouchableOpacity,KeyboardAvoidingView,
+  TouchableOpacity,
   Text,
 } from 'react-native';
 import Constants from 'expo-constants';
@@ -13,18 +13,22 @@ import NetInfo from '@react-native-community/netinfo';
 import NoInternet from '../components/NoInternet';
 import Toast from 'react-native-toast-message';
 import {
-  bgColor,
-  colorFour,
   colorOne,
-  colorThree,
   colorTwo,
   serverURL,
 } from '../../Global';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { LinearProgress } from "@rneui/themed";
-
+import LoadingSpinner from '../components/LoadingSpinner';
+import {
+	Alert,
+	Center,
+	HStack,
+	IconButton,
+	VStack,CloseIcon,
+	useToast,
+} from "native-base";
 
 const osVersion =
   Constants.platform?.android?.versionCode ||
@@ -32,9 +36,10 @@ const osVersion =
 const deviceName = Constants.deviceName;
 const statusBarHeight = Constants.statusBarHeight;
 const sessionId = Constants.sessionId;
-const lang = Localization.locale;
+const lang = Localization.locale; 
 
 const LoginScreen = ({ navigation, setLoggedIn, props }) => {
+
   const [netStatus, setNetStatus] = useState(false);
   const [netInfo, setnetInfo] = useState();
   const [ipAddress, setipAddress] = useState();
@@ -76,22 +81,10 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
           sessionId,
           ipAddress
         );
-        Toast.show({
-          type: 'error',
-          text1: 'Invalid Credentials.',
-          text2: 'Please Double Check Registration & Password.',
-          position: 'bottom',
-          backgroundColor: bgColor,
-        });
+        showLeftAlert("error", "Invalid Credentials.");
       }
     } else {
-      Toast.show({
-        type: 'error',
-        text1: 'No Internet!',
-        text2: 'Please Double Check Your Network Status.',
-        position: 'bottom',
-        backgroundColor: bgColor,
-      });
+     showLeftAlert("error", "No Internet!");
     }
 
     // props.navigation.navigate('Dashboard');
@@ -150,13 +143,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         .then((response) => {
           if (response.data.status === 300) {
             setLoading(0);
-            Toast.show({
-              type: response.data.type,
-              text1: response.data.message,
-              text2: response.data.text,
-              position: 'bottom',
-              backgroundColor: bgColor,
-            });
+            showLeftAlert(response.data.type, response.data.message);
           } else if (response.data.status === 200) {
             setLoading(0);
             handleLogin(response.data);
@@ -164,23 +151,11 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         })
         .catch((error) => {
           console.log('error ' + error);
-          Toast.show({
-            type: 'error',
-            text1: 'Something Went Wrong',
-            text2: 'Please Try Again Latter.',
-            position: 'bottom',
-            backgroundColor: bgColor,
-          });
+         showLeftAlert("error", "Request Error.");
         });
     } catch (error) {
       console.log('Catch The Error');
-      Toast.show({
-        type: 'error',
-        text1: 'Something Went Wrong',
-        text2: 'Please Try Again Latter.',
-        position: 'bottom',
-        backgroundColor: bgColor,
-      });
+      showLeftAlert("error", "Something Went Wrong! " + error);
     }
   }
 
@@ -229,6 +204,50 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     }
   });
 
+  const toast = useToast();
+  	const showLeftAlert = (status, text) => {
+			toast.show({
+				render: () => {
+					return (
+						<Center>
+							<Alert status={status} colorScheme={status} variant="left-accent">
+								<VStack space={2} flexShrink={1} w="100%">
+									<HStack
+										flexShrink={1}
+										space={2}
+										alignItems="center"
+										justifyContent="space-between"
+									>
+										<HStack flexShrink={1} space={2} alignItems="center">
+											<Alert.Icon />
+											<Text
+												fontSize="md"
+												fontWeight="medium"
+												color="coolGray.800"
+											>
+												{text}
+											</Text>
+										</HStack>
+										<IconButton
+											variant="unstyled"
+											_focus={{
+												borderWidth: 0,
+											}}
+											icon={<CloseIcon size="3" />}
+											_icon={{
+												color: "coolGray.600",
+											}}
+										/>
+									</HStack>
+								</VStack>
+							</Alert>
+						</Center>
+					);
+				},
+			});
+		};
+
+
   return (
 		<View style={styles.container}>
 			<Image
@@ -260,12 +279,14 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
 						onChangeText={setPass}
 					/>
 
-					<TouchableOpacity style={styles.loginButton} onPress={() => login()}>
+					<TouchableOpacity
+						style={styles.loginButton}
+						onPress={() => login()}
+					>
 						<Text style={styles.loginButtonText}>
-							{isLoading ? "Please Wait..." : "Login"}
+							{isLoading ? <LoadingSpinner/> : "Login"}
 						</Text>
 					</TouchableOpacity>
-					{isLoading ? <LinearProgress style={styles.loading} /> : ""}
 				</View>
 			</KeyboardAwareScrollView>
 			<Toast />

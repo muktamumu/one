@@ -6,8 +6,7 @@ import Dashboard from './assets/screen/Dashboard';
 import Profile from './assets/components/Profile';
 import Exams from './assets/screen/Exams';
 import { colorOne, colorTwo } from './Global';
-import { ThemeProvider } from "react-native-elements";
-import * as Font from "expo-font";
+import { NativeBaseProvider } from 'native-base';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +16,7 @@ function App() {
   const [isLoggedIn, setLoggedIn] = React.useState(false);
 
   return (
-		<ThemeProvider>
+		<NativeBaseProvider>
 			<NavigationContainer>
 				<Stack.Navigator>
 					{isLoggedIn ? (
@@ -63,7 +62,7 @@ function App() {
 					)}
 				</Stack.Navigator>
 			</NavigationContainer>
-		</ThemeProvider>
+		</NativeBaseProvider>
 	);
 }
 
