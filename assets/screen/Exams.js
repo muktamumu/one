@@ -15,7 +15,7 @@ import {
   colorTwo,
   headerBgColor,
 } from '../../Global';
-import Header from '../components/Header';
+import Header from '../components/AppHeader';
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="note" />;
 

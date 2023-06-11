@@ -9,125 +9,125 @@ import {
 } from 'react-native';
 import Card from '../components/ProfileCard';
 import { bgColor } from '../../Global';
-import Header from '../components/Header';
+import Header from '../components/AppHeader';
 
 const Dashboard = ({ navigation, setLoggedIn, props }) => {
   return (
+    <View>
       <View>
-        <View>
-          <Card />
-        </View>
-        <View>
-          <View style={styles.buttonBoxFull}>
-            <View style={styles.row}>
-              <TouchableOpacity
-                style={styles.eachButton}
-                onPress={() => navigation.navigate('Profile')}
-              >
-                <Image
-                  source={require('../image/icon/proBlue.png')}
-                  style={styles.btnImg}
-                />
-                <Text style={styles.btnText}>Profile</Text>
-              </TouchableOpacity>
+        <Card />
+      </View>
+      <View>
+        <View style={styles.buttonBoxFull}>
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => navigation.navigate('Profile')}
+            >
+              <Image
+                source={require('../image/icon/proBlue.png')}
+                style={styles.btnImg}
+              />
+              <Text style={styles.btnText}>Profile</Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.eachButton}
-                onPress={() => navigation.navigate('Exams')}
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => navigation.navigate('Exams')}
+            >
+              <Image
+                source={require('../image/icon/fromFill.png')}
+                style={styles.btnImg}
+              />
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.btnText}
               >
-                <Image
-                  source={require('../image/icon/fromFill.png')}
-                  style={styles.btnImg}
-                />
-                <Text
-                  numberOfLines={2}
-                  ellipsizeMode="tail"
-                  style={styles.btnText}
-                >
-                  Exam
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.row}>
-              <TouchableOpacity
-                style={styles.eachButton}
-                onPress={() => props.navigation.navigate('result')}
-              >
-                <Image
-                  source={require('../image/icon/result.png')}
-                  style={styles.btnImg}
-                />
-                <Text style={styles.btnText}>Result </Text>
-              </TouchableOpacity>
+                Exam
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => props.navigation.navigate('result')}
+            >
+              <Image
+                source={require('../image/icon/result.png')}
+                style={styles.btnImg}
+              />
+              <Text style={styles.btnText}>Result </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.eachButton}
-                onPress={() => props.navigation.navigate('Hall')}
-              >
-                <Image
-                  source={require('../image/icon/hall3.png')}
-                  style={styles.btnImg}
-                />
-                <Text style={styles.btnText}>Hall Info</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.row}>
-              <TouchableOpacity
-                style={styles.eachButton}
-                onPress={() => props.navigation.navigate('result')}
-              >
-                <Image
-                  source={require('../image/icon/result.png')}
-                  style={styles.btnImg}
-                />
-                <Text style={styles.btnText}>Result </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => props.navigation.navigate('Hall')}
+            >
+              <Image
+                source={require('../image/icon/hall3.png')}
+                style={styles.btnImg}
+              />
+              <Text style={styles.btnText}>Hall Info</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => props.navigation.navigate('result')}
+            >
+              <Image
+                source={require('../image/icon/result.png')}
+                style={styles.btnImg}
+              />
+              <Text style={styles.btnText}>Result </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.eachButton}
-                onPress={() => props.navigation.navigate('Hall')}
-              >
-                <Image
-                  source={require('../image/icon/hall3.png')}
-                  style={styles.btnImg}
-                />
-                <Text style={styles.btnText}>Hall Info</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.row}>
-              <TouchableOpacity
-                style={styles.eachButton}
-                onPress={() => props.navigation.navigate('result')}
-              >
-                <Image
-                  source={require('../image/icon/result.png')}
-                  style={styles.btnImg}
-                />
-                <Text style={styles.btnText}>Result </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => props.navigation.navigate('Hall')}
+            >
+              <Image
+                source={require('../image/icon/hall3.png')}
+                style={styles.btnImg}
+              />
+              <Text style={styles.btnText}>Hall Info</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => props.navigation.navigate('result')}
+            >
+              <Image
+                source={require('../image/icon/result.png')}
+                style={styles.btnImg}
+              />
+              <Text style={styles.btnText}>Result </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.eachButton}
-                onPress={() => props.navigation.navigate('dept')}
-              >
-                <Image
-                  source={require('../image/icon/dept3.png')}
-                  style={styles.btnImg}
-                />
-                <Text style={styles.btnText}>Dept.Info </Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => props.navigation.navigate('dept')}
+            >
+              <Image
+                source={require('../image/icon/dept3.png')}
+                style={styles.btnImg}
+              />
+              <Text style={styles.btnText}>Dept.Info </Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Button
-            title="Logout"
-            onPress={() => {
-              setLoggedIn(false);
-            }}
-          />
-        </View>
       </View>
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Button
+          title="Logout"
+          onPress={() => {
+            setLoggedIn(false);
+          }}
+        />
+      </View>
+    </View>
   );
 };
 

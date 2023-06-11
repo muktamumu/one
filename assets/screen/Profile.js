@@ -1,201 +1,407 @@
-import React, { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-	Box,
-	FlatList,
-	Heading,
-	Avatar,
-	HStack,
-	VStack,
-	Text,
-	Spacer,
-	Center,
-	NativeBaseProvider,View, Icon
-} from "native-base";
-import Header from "../components/Header";
-
+  FlatList,
+  Heading,
+  Avatar,
+  HStack,
+  VStack,
+  Spacer,
+  View,
+  Icon,
+} from 'native-base';
+import {
+  bgColor,
+  colorFour,
+  colorOne,
+  colorThree,
+  colorTwo,
+} from '../../Global';
+import AppHeader from '../components/AppHeader';
+import { Container, Header, Tab, Tabs, TabHeading } from 'native-base';
+import { ImageBackground, StyleSheet } from 'react-native';
+import {
+  Dimensions,
+  StatusBar,
+  TouchableOpacity,
+  Animated,
+  Pressable,
+} from 'react-native';
+import { TabView, SceneMap } from 'react-native-tab-view';
+import { NativeBaseProvider, Box, Text, Center, Image } from 'native-base';
 
 function Profile() {
-	const [studentName, setstudentName] = useState("মুক্তা দত্ত");
-	const [session, setsession] = useState("২০১৫-১৬");
-	const [hallName, sethallName] = useState("রোকেয়া হল");
-	const [photo, setPhoto] = useState(
-		"https://v2.result.du.ac.bd/assets/student.png"
-	);
+  const [studentName, setstudentName] = useState('মুক্তা দত্ত');
+  const [session, setsession] = useState('২০১৫-১৬');
+  const [hallName, sethallName] = useState('রোকেয়া হল');
+  const [photo, setPhoto] = useState(
+    'https://v2.result.du.ac.bd/assets/student.png'
+  );
 
-	const checkLoginStatus = async () => {
-		const name = JSON.parse(await AsyncStorage.getItem("name"));
-		setsession(JSON.parse(await AsyncStorage.getItem("session")));
-		sethallName(JSON.parse(await AsyncStorage.getItem("hall")));
-		const ph = await AsyncStorage.getItem("photo");
-		setstudentName(name);
-		setPhoto(ph);
-	};
+  const FirstRoute = () => (
+    <Center m="4">
+      <VStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Student's Name
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].ADMITTED_STUDENT_NAME}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Father's Name
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].ADMITTED_STUDENT_FATHERS_N}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Mother's Name
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].ADMITTED_STUDENT_MOTHERS_N}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Phone Number
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].ADMITTED_STUDENT_CONTACT_NO}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Email Address
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].ADMITTED_STUDENT_EMAIL}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Date of Birth
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].ADMITTED_STUDENT_DOB}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Blood Group
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].blood_group}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Religion
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].RELIGION}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Gender
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].ADMITTED_STUDENT_GENDER}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Parent's Income
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].parents_income}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Present Address
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].present_house_no +
+                ',' +
+                data[0].present_post_office +
+                ',' +
+                data[0].present_upa_zilla +
+                ',' +
+                data[0].present_district +
+                ',' +
+                data[0].present_post_code}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Permanent Address
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].house_no +
+                ',' +
+                data[0].post_office +
+                ',' +
+                data[0].upa_zilla +
+                ',' +
+                data[0].district +
+                ',' +
+                data[0].post_code}
+            </Text>
+          </VStack>
+        </HStack>
+      </VStack>
+    </Center>
+  );
 
-	useEffect(() => {
-		checkLoginStatus();
-	}, []);
+  const SecondRoute = () => (
+    <Center flex={1} my="4">
+      This is Tab 2
+    </Center>
+  );
 
-    const [activeTab, setActiveTab] = useState(0);
+  const ThirdRoute = () => (
+    <Center flex={1} my="4">
+      This is Tab 3
+    </Center>
+  );
 
-		const handleTabChange = (index) => {
-			setActiveTab(index);
-		};
+  const FourthRoute = () => (
+    <Center flex={1} my="4">
+      This is Tab 4
+    </Center>
+  );
 
-        const data = [
-					{
-						id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-						fullName: "Aafreen Khan",
-						timeStamp: "12:47 PM",
-						recentText: "Good Day!",
-						avatarUrl:
-							"https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-					},
-					{
-						id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-						fullName: "Sujitha Mathur",
-						timeStamp: "11:11 PM",
-						recentText: "Cheer up, there!",
-						avatarUrl:
-							"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU",
-					},
-					{
-						id: "58694a0f-3da1-471f-bd96-145571e29d72",
-						fullName: "Anci Barroco",
-						timeStamp: "6:22 PM",
-						recentText: "Good Day!",
-						avatarUrl:
-							"https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
-					},
-					{
-						id: "68694a0f-3da1-431f-bd56-142371e29d72",
-						fullName: "Aniket Kumar",
-						timeStamp: "8:56 PM",
-						recentText: "All the best",
-						avatarUrl:
-							"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU",
-					},
-					{
-						id: "28694a0f-3da1-471f-bd96-142456e29d72",
-						fullName: "Kiara",
-						timeStamp: "12:47 PM",
-						recentText: "I will call today.",
-						avatarUrl:
-							"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU",
-					},
-				];
+  const [index, setIndex] = useState(0);
+  function getTabData(i) {
+    setIndex(i);
+  }
 
-	return (
-		<>
-        <Header/>
-			<View
-				bg="white"
-				pt={55}
-				borderRadius="lg"
-				shadow={2}
-				padding={4}
-				width="100%"
-				alignItems="center"
-			>
-				<Avatar size="2xl" source={{ uri: photo }} mb={4} />
-				<Text color="darkBlue" fontSize="xl" fontWeight="bold" mb={2}>
-					{studentName}
-				</Text>
-				<View flexDirection="row" alignItems="center" mb={2}>
-					<Icon
-						name="school"
-						type="MaterialCommunityIcons"
-						color="darkBlue"
-						size={5}
-						mr={2}
-					/>
-					<Text color="darkBlue" fontSize="md">
-						XYZ University
-					</Text>
-				</View>
-				<View flexDirection="row" alignItems="center">
-					<Icon
-						name="email"
-						type="MaterialIcons"
-						color="darkBlue"
-						size={5}
-						mr={2}
-					/>
-					<Text color="darkBlue" fontSize="md">
-						john.doe@example.com
-					</Text>
-				</View>
-			</View>
+  const initialLayout = {
+    width: Dimensions.get('window').width,
+  };
 
-			<Box
-            bg={"yellow.100"}
-				borderRadius="lg"
-				shadow={2}
-				padding={4}
-				width="90%"
-				alignItems="center"
-			>
-				<Heading fontSize="xl" p="4" pb="3">
-					Inbox
-				</Heading>
-				<FlatList
-					data={data}
-					renderItem={({ item }) => (
-						<Box
-							borderBottomWidth="1"
-							_dark={{
-								borderColor: "muted.50",
-							}}
-							borderColor="muted.800"
-							pl={["0", "4"]}
-							pr={["0", "5"]}
-							py="2"
-						>
-							<HStack space={[2, 3]} justifyContent="space-between">
-								<Avatar
-									size="48px"
-									source={{
-										uri: item.avatarUrl,
-									}}
-								/>
-								<VStack>
-									<Text
-										_dark={{
-											color: "warmGray.50",
-										}}
-										color="coolGray.800"
-										bold
-									>
-										{item.fullName}
-									</Text>
-									<Text
-										color="coolGray.600"
-										_dark={{
-											color: "warmGray.200",
-										}}
-									>
-										{item.recentText}
-									</Text>
-								</VStack>
-								<Spacer />
-								<Text
-									fontSize="xs"
-									_dark={{
-										color: "warmGray.50",
-									}}
-									color="coolGray.800"
-									alignSelf="flex-start"
-								>
-									{item.timeStamp}
-								</Text>
-							</HStack>
-						</Box>
-					)}
-					keyExtractor={(item) => item.id}
-				/>
-			</Box>
-		</>
-	);
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+    third: ThirdRoute,
+    fourth: FourthRoute,
+  });
+
+  const [routes] = useState([
+    { key: 'first', title: 'Personal' },
+    { key: 'second', title: 'Academic' },
+    { key: 'third', title: 'Tab 3' },
+  ]);
+
+  const renderTabBar = (props) => {
+    const inputRange = props.navigationState.routes.map((x, i) => i);
+
+    return (
+      <Box flexDirection="row">
+        {props.navigationState.routes.map((route, i) => {
+          const opacity = props.position.interpolate({
+            inputRange,
+            outputRange: inputRange.map((inputIndex) =>
+              inputIndex === i ? 1 : 0.5
+            ),
+          });
+          const color = index === i ? '#fafaf9' : colorOne;
+          const bg = index === i ? colorTwo : '#e5e5e5';
+          return (
+            <Box
+              flex={1}
+              bg={bg}
+              alignItems="center"
+              p="3"
+              cursor="pointer"
+              key={`tab-${i}`}
+            >
+              <Pressable
+                onPress={() => {
+                  getTabData(i);
+                }}
+              >
+                <Heading size={'xs'} isTruncated style={{ color }}>
+                  {route.title}
+                </Heading>
+              </Pressable>
+            </Box>
+          );
+        })}
+      </Box>
+    );
+  };
+
+  const [data, setData] = useState();
+
+  const checkLoginStatus = async () => {
+    const name = JSON.parse(await AsyncStorage.getItem('name'));
+    setsession(JSON.parse(await AsyncStorage.getItem('session')));
+    setData(JSON.parse(await AsyncStorage.getItem('data')));
+    const ph = await AsyncStorage.getItem('photo');
+    setstudentName(name);
+    setPhoto(ph);
+    if (!name) {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    !checkLoginStatus() && console.log('error');
+  }, []);
+
+  return (
+    <>
+      <AppHeader />
+      {data ? (
+        <>
+          <ImageBackground source={require('../image/App-Card-Bg.png')}>
+            <View
+              borderRadius="lg"
+              shadow={2}
+              width="100%"
+              alignItems="center"
+              p={4}
+              bg="rgba(0, 0, 0, 0.5)"
+            >
+              <HStack>
+                <Image
+                  size="md"
+                  alt="Julkarnine Rokey"
+                  source={{ uri: photo }}
+                  my={2}
+                  rounded={5}
+                />
+                <VStack ml={5}>
+                  <Text
+                    color={'muted.50'}
+                    fontSize="xl"
+                    shadow={2}
+                    fontWeight="bold"
+                  >
+                    {data[0].STUDENT_BANGLA_NAME}
+                  </Text>
+                  <Text color={'muted.200'} fontSize="md" shadow={2}>
+                    {data[0].SUBJECTS_TITLE}
+                  </Text>
+                  <Text color={'muted.200'} fontSize="md" shadow={2}>
+                    {data[0].hall_title}
+                  </Text>
+                </VStack>
+              </HStack>
+            </View>
+          </ImageBackground>
+          <TabView
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            renderTabBar={renderTabBar}
+            onIndexChange={setIndex}
+            initialLayout={initialLayout}
+          />
+        </>
+      ) : (
+        <View>
+          <Center bg="primary.400" p="20">
+            <Text>Something Went Wrong</Text>
+          </Center>
+        </View>
+      )}
+    </>
+  );
 }
+
+const styles = StyleSheet.create({
+  title: {},
+  colon: {},
+  value: {},
+});
 
 export default Profile;
