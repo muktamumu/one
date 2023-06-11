@@ -3,10 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './assets/screen/LoginScreen';
 import Dashboard from './assets/screen/Dashboard';
-import Profile from './assets/components/Profile';
+import Profile from './assets/screen/Profile';
 import Exams from './assets/screen/Exams';
 import { colorOne, colorTwo } from './Global';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -15,13 +16,28 @@ const Stack = createNativeStackNavigator();
 function App() {
   const [isLoggedIn, setLoggedIn] = React.useState(false);
 
+  const theme = extendTheme({
+		colors: {
+			darkBlue: "#1E293B", // Define darkBlue color
+		},
+		components: {
+			Button: {
+				baseStyle: {
+					backgroundColor: "darkBlue", // Apply darkBlue as button background color
+					borderRadius: "md", // Customize button border radius
+				},
+			},
+		},
+	});
+
+
   return (
-		<NativeBaseProvider>
+		<NativeBaseProvider theme={theme}>
 			<NavigationContainer>
 				<Stack.Navigator>
 					{isLoggedIn ? (
 						<>
-							<Stack.Screen name="Dashboard" options={{ headerShown: false }}>
+							<Stack.Screen name="Dashboard" options={{ headerShown: false,  }}>
 								{(props) => (
 									<Dashboard
 										{...props}
@@ -52,7 +68,7 @@ function App() {
 					) : (
 						<Stack.Screen name="LoginScreen" options={{ headerShown: false }}>
 							{(props) => (
-								<LoginScreen
+								<Profile
 									{...props}
 									navigation={props.navigation}
 									setLoggedIn={setLoggedIn}

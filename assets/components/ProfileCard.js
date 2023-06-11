@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import { primaryColor } from '../../Global';
 
-const Card = () => {
+const ProfileCard = () => {
   const [studentName, setstudentName] = useState('মুক্তা দত্ত');
   const [session, setsession] = useState('২০১৫-১৬');
   const [hallName, sethallName] = useState('রোকেয়া হল');
@@ -16,7 +16,7 @@ const Card = () => {
     const name = JSON.parse(await AsyncStorage.getItem('name'));
     setsession(JSON.parse(await AsyncStorage.getItem('session')));
     sethallName(JSON.parse(await AsyncStorage.getItem('hall')));
-    const ph = JSON.parse(await AsyncStorage.getItem('photo'));
+    const ph = await AsyncStorage.getItem('photo');
     setstudentName(name);
     setPhoto(ph);
   };
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Card;
+export default ProfileCard;

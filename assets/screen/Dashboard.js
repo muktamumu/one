@@ -3,18 +3,16 @@ import {
   View,
   StyleSheet,
   Image,
-  SafeAreaView,
   TouchableOpacity,
   Text,
   Button,
 } from 'react-native';
-import Card from '../components/Card';
+import Card from '../components/ProfileCard';
 import { bgColor } from '../../Global';
 import Header from '../components/Header';
 
 const Dashboard = ({ navigation, setLoggedIn, props }) => {
   return (
-    <SafeAreaView style={styles.container}>
       <View>
         <View>
           <Card />
@@ -130,7 +128,6 @@ const Dashboard = ({ navigation, setLoggedIn, props }) => {
           />
         </View>
       </View>
-    </SafeAreaView>
   );
 };
 

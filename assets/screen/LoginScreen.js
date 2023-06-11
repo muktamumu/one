@@ -90,22 +90,20 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     // props.navigation.navigate('Dashboard');
   }
 
-  const handleLogin = async (data) => {
+  const handleLogin = async (res) => {
     try {
-      await AsyncStorage.setItem('token', JSON.stringify(data.token));
-      await AsyncStorage.setItem('data', JSON.stringify(data.data));
-      await AsyncStorage.setItem('result', JSON.stringify(data.result));
-      await AsyncStorage.setItem('photo', JSON.stringify(data.photo));
-      const name = await AsyncStorage.setItem(
+      await AsyncStorage.setItem('token', JSON.stringify(res.token));
+      await AsyncStorage.setItem('data', JSON.stringify(res.data));
+      await AsyncStorage.setItem('result', JSON.stringify(res.result));
+      await AsyncStorage.setItem('photo', res.photo);
+      await AsyncStorage.setItem(
         'name',
-        JSON.stringify(data.name)
+        JSON.stringify(res.name)
       );
-      await AsyncStorage.setItem('hall', JSON.stringify(data.hall));
-      await AsyncStorage.setItem('session', JSON.stringify(data.session));
+      await AsyncStorage.setItem('hall', JSON.stringify(res.hall));
+      await AsyncStorage.setItem('session', JSON.stringify(res.session));
 
-      setLoggedIn(true);
-
-      setsName(name)
+     setLoggedIn(true);
 
       // ...
     } catch (error) {
