@@ -88,6 +88,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
 
   const handleLogin = async (res) => {
     try {
+      await AsyncStorage.setItem('reg', reg);
       await AsyncStorage.setItem('token', JSON.stringify(res.token));
       await AsyncStorage.setItem('data', JSON.stringify(res.data));
       await AsyncStorage.setItem('result', JSON.stringify(res.result));
@@ -95,10 +96,11 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
       await AsyncStorage.setItem('name', JSON.stringify(res.name));
       await AsyncStorage.setItem('hall', JSON.stringify(res.hall));
       await AsyncStorage.setItem('session', JSON.stringify(res.session));
+      await AsyncStorage.setItem('final', JSON.stringify(res.final));
 
       setLoggedIn(true);
 
-      console.log(res.data);
+      // console.log(res.final);
 
       // ...
     } catch (error) {

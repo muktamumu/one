@@ -1,39 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  FlatList,
-  Heading,
-  Avatar,
-  HStack,
-  VStack,
-  Spacer,
-  View,
-  Icon,
-} from 'native-base';
-import {
-  bgColor,
-  colorFour,
-  colorOne,
-  colorThree,
-  colorTwo,
-} from '../../Global';
+import { Heading, HStack, VStack, View } from 'native-base';
+import { colorOne, colorTwo } from '../../Global';
 import AppHeader from '../components/AppHeader';
-import { Container, Header, Tab, Tabs, TabHeading } from 'native-base';
 import { ImageBackground, StyleSheet } from 'react-native';
-import {
-  Dimensions,
-  StatusBar,
-  TouchableOpacity,
-  Animated,
-  Pressable,
-} from 'react-native';
+import { Dimensions, Pressable } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import { NativeBaseProvider, Box, Text, Center, Image } from 'native-base';
+import { Box, Text, Center, Image, Skeleton } from 'native-base';
 
-function Profile() {
-  const [studentName, setstudentName] = useState('মুক্তা দত্ত');
-  const [session, setsession] = useState('২০১৫-১৬');
-  const [hallName, sethallName] = useState('রোকেয়া হল');
+function Profile(navigation, setLoggedIn, result) {
   const [photo, setPhoto] = useState(
     'https://v2.result.du.ac.bd/assets/student.png'
   );
@@ -242,20 +217,69 @@ function Profile() {
   );
 
   const SecondRoute = () => (
-    <Center flex={1} my="4">
-      This is Tab 2
-    </Center>
-  );
-
-  const ThirdRoute = () => (
-    <Center flex={1} my="4">
-      This is Tab 3
-    </Center>
-  );
-
-  const FourthRoute = () => (
-    <Center flex={1} my="4">
-      This is Tab 4
+    <Center m="4">
+      <VStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Registration
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].ADMITTED_STUDENT_REG_NO}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Session
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              20{data[0].SESSION_ID - 1 + '-' + data[0].SESSION_ID}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Department
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].SUBJECTS_TITLE_EN}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Hall
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].hall_title_en}
+            </Text>
+          </VStack>
+        </HStack>
+      </VStack>
     </Center>
   );
 
@@ -271,14 +295,11 @@ function Profile() {
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
-    third: ThirdRoute,
-    fourth: FourthRoute,
   });
 
   const [routes] = useState([
     { key: 'first', title: 'Personal' },
     { key: 'second', title: 'Academic' },
-    { key: 'third', title: 'Tab 3' },
   ]);
 
   const renderTabBar = (props) => {
@@ -321,22 +342,45 @@ function Profile() {
   };
 
   const [data, setData] = useState();
+  const [final, setFinal] = useState();
 
   const checkLoginStatus = async () => {
-    const name = JSON.parse(await AsyncStorage.getItem('name'));
-    setsession(JSON.parse(await AsyncStorage.getItem('session')));
     setData(JSON.parse(await AsyncStorage.getItem('data')));
     const ph = await AsyncStorage.getItem('photo');
-    setstudentName(name);
     setPhoto(ph);
-    if (!name) {
+    if (!ph) {
       return false;
     }
   };
 
   useEffect(() => {
-    !checkLoginStatus() && console.log('error');
+    checkLoginStatus();
   }, []);
+
+  const Example = () => {
+    return (
+      <Center>
+        <VStack
+          w="90%"
+          maxW="400"
+          borderWidth="1"
+          space={8}
+          overflow="hidden"
+          rounded="md"
+          _dark={{
+            borderColor: 'coolGray.500',
+          }}
+          _light={{
+            borderColor: 'coolGray.200',
+          }}
+        >
+          <Skeleton h="40" />
+          <Skeleton.Text px="4" />
+          <Skeleton px="4" my="4" rounded="md" startColor="primary.100" />
+        </VStack>
+      </Center>
+    );
+  };
 
   return (
     <>
@@ -369,10 +413,10 @@ function Profile() {
                   >
                     {data[0].STUDENT_BANGLA_NAME}
                   </Text>
-                  <Text color={'muted.200'} fontSize="md" shadow={2}>
+                  <Text color={'muted.200'} fontSize="md">
                     {data[0].SUBJECTS_TITLE}
                   </Text>
-                  <Text color={'muted.200'} fontSize="md" shadow={2}>
+                  <Text color={'muted.200'} fontSize="md">
                     {data[0].hall_title}
                   </Text>
                 </VStack>
@@ -388,11 +432,7 @@ function Profile() {
           />
         </>
       ) : (
-        <View>
-          <Center bg="primary.400" p="20">
-            <Text>Something Went Wrong</Text>
-          </Center>
-        </View>
+        <Example />
       )}
     </>
   );

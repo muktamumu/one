@@ -15,6 +15,8 @@ const Stack = createNativeStackNavigator();
 function App() {
   const [isLoggedIn, setLoggedIn] = useState();
   const [data, setData] = useState();
+  const [result, setResult] = useState();
+  const [final, setFinal] = useState();
 
   const theme = extendTheme({
     colors: {
@@ -33,6 +35,9 @@ function App() {
   const checkLoginStatus = async () => {
     const d = await AsyncStorage.getItem('data');
     if (d) {
+      setData(JSON.parse(await AsyncStorage.getItem('data')));
+      setResult(JSON.parse(await AsyncStorage.getItem('result')));
+      setFinal(JSON.parse(await AsyncStorage.getItem('final')));
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
@@ -64,6 +69,8 @@ function App() {
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
+                    data={data}
+                    result={result}
                   />
                 )}
               </Stack.Screen>

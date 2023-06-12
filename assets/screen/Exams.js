@@ -27,14 +27,12 @@ const Exams = ({ navigation, setLoggedIn, props }) => {
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Header />
-        <Text style={styles.header} color={colorOne}>
-          EXAMINATIONS
-        </Text>
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Header />
+      <Text style={styles.header} color={colorOne}>
+        EXAMINATIONS
+      </Text>
+    </View>
   );
 };
 
