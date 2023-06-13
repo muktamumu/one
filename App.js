@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './assets/screen/LoginScreen';
 import Dashboard from './assets/screen/Dashboard';
 import Profile from './assets/screen/Profile';
-import Exams from './assets/screen/Exams';
+import ExamScreen from './assets/screen/ExamScreen';
 import { colorOne, colorTwo } from './Global';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,9 +14,7 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState();
-  const [data, setData] = useState();
-  const [result, setResult] = useState();
-  const [final, setFinal] = useState();
+  const [reg, setReg] = useState();
 
   const theme = extendTheme({
     colors: {
@@ -33,12 +31,10 @@ function App() {
   });
 
   const checkLoginStatus = async () => {
-    const d = await AsyncStorage.getItem('data');
+    const d = await AsyncStorage.getItem('reg');
     if (d) {
-      setData(JSON.parse(await AsyncStorage.getItem('data')));
-      setResult(JSON.parse(await AsyncStorage.getItem('result')));
-      setFinal(JSON.parse(await AsyncStorage.getItem('final')));
       setLoggedIn(true);
+      setReg(d);
     } else {
       setLoggedIn(false);
     }
@@ -69,17 +65,16 @@ function App() {
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
-                    data={data}
-                    result={result}
                   />
                 )}
               </Stack.Screen>
-              <Stack.Screen name="Exams" options={{ headerShown: false }}>
+              <Stack.Screen name="ExamScreen" options={{ headerShown: false }}>
                 {(props) => (
-                  <Exams
+                  <ExamScreen
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
+                    setReg={setReg}
                   />
                 )}
               </Stack.Screen>

@@ -33,7 +33,7 @@ const Dashboard = ({ navigation, setLoggedIn, props }) => {
 
             <TouchableOpacity
               style={styles.eachButton}
-              onPress={() => navigation.navigate('Exams')}
+              onPress={() => navigation.navigate('ExamScreen')}
             >
               <Image
                 source={require('../image/icon/fromFill.png')}

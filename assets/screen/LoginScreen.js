@@ -48,7 +48,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     setipAddress(netInfoState.details.ipAddress);
   };
 
-  const [reg, setReg] = useState('2019013365');
+  const [reg, setReg] = useState('2017417693');
   const [pass, setPass] = useState('0');
   const [sName, setsName] = useState();
   function login() {
