@@ -146,7 +146,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         })
         .catch((error) => {
           console.log('error ' + error);
-          showLeftAlert('error', 'Request Error.');
+          showLeftAlert('error', 'Request Error. '+ error);
         });
     } catch (error) {
       console.log('Catch The Error');

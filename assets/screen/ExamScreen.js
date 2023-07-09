@@ -70,7 +70,7 @@ const ExamScreen = ({ navigation, setLoggedIn, props }) => {
       </Heading>
       {allExam ? (
         allExam.map((exam) => (
-          <Box>
+          <Box key={exam.id}>
             <HStack
               p={4}
               m={2}
