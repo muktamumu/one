@@ -31,7 +31,7 @@ import {
 import AlertList from '../components/CustomAlert';
 import CustomAlert from '../components/CustomAlert';
 
-const ExamScreen = ({ navigation, setLoggedIn, props }) => {
+const ResultScreen = ({ navigation, setLoggedIn, props }) => {
   useEffect(() => {
     checkForData();
   }, []);
@@ -47,10 +47,13 @@ const ExamScreen = ({ navigation, setLoggedIn, props }) => {
         reg: reg,
       };
       axios
-        .get(serverURL + 'getFomFillupData', { params: toSend })
+        .get(serverURL + 'getAllResult', { params: toSend })
         .then((response) => {
-          setAllExam(response.data.result);
-          //console.log(response.data.result);
+          if (response.status === 200) {
+            setAllExam(response.data.result);
+           // console.log(response.data.result);
+          } 
+         
         })
         .catch((error) => {
           console.error(error);
@@ -65,9 +68,9 @@ const ExamScreen = ({ navigation, setLoggedIn, props }) => {
       <AppHeader />
       <ScrollView>
         {allExam ? (
-          allExam.map((exam) => (
+          allExam.map((exam, index) => (
             <>
-                <CustomAlert key={exam.id} data={exam} />
+                <CustomAlert index={index} data={exam} title={exam.exam_title} />
             </>
           ))
         ) : (
@@ -114,4 +117,4 @@ const ExamScreen = ({ navigation, setLoggedIn, props }) => {
 
 const styles = {};
 
-export default ExamScreen;
+export default ResultScreen;

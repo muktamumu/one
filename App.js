@@ -5,6 +5,7 @@ import LoginScreen from './assets/screen/LoginScreen';
 import Dashboard from './assets/screen/Dashboard';
 import Profile from './assets/screen/Profile';
 import ExamScreen from './assets/screen/ExamScreen';
+import ResultScreen from './assets/screen/ResultScreen';
 import { colorOne, colorTwo } from './Global';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -71,6 +72,16 @@ function App() {
               <Stack.Screen name="ExamScreen" options={{ headerShown: false }}>
                 {(props) => (
                   <ExamScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="ResultScreen" options={{ headerShown: false }}>
+                {(props) => (
+                  <ResultScreen
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}

@@ -51,13 +51,19 @@ const Dashboard = ({ navigation, setLoggedIn, props }) => {
           <View style={styles.row}>
             <TouchableOpacity
               style={styles.eachButton}
-              onPress={() => props.navigation.navigate('result')}
+              onPress={() => navigation.navigate('ResultScreen')}
             >
               <Image
                 source={require('../image/icon/result.png')}
                 style={styles.btnImg}
               />
-              <Text style={styles.btnText}>Result </Text>
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.btnText}
+              >
+                Result
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
