@@ -28,8 +28,9 @@ import {
   colorThree,
   serverURL,
 } from '../../Global';
-import AlertList from '../components/CustomAlert';
-import CustomAlert from '../components/CustomAlert';
+import AlertList from '../components/ResultPage/ResultList';
+import ResultList from '../components/ResultPage/ResultList';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const ResultScreen = ({ navigation, setLoggedIn, props }) => {
   useEffect(() => {
@@ -39,6 +40,7 @@ const ResultScreen = ({ navigation, setLoggedIn, props }) => {
   const [reg, setReg] = useState();
   const stuReg = async () => (setReg(await AsyncStorage.getItem('reg')));
   const [allExam, setAllExam] = useState();
+  const [noResult, setNoResut] = useState();
 
   async function checkForData() {
    const reg = await AsyncStorage.getItem('reg');
@@ -49,11 +51,17 @@ const ResultScreen = ({ navigation, setLoggedIn, props }) => {
       axios
         .get(serverURL + 'getAllResult', { params: toSend })
         .then((response) => {
-          if (response.status === 200) {
+          if (response.data.status === 200) {
             setAllExam(response.data.result);
-           // console.log(response.data.result);
-          } 
-         
+          } else if (response.data.status === 201) {
+            setNoResut(response.data.message);
+          } else if (response.data.status === 500) {
+            Toast.error(response.data.message);
+          } else if (response.data.status === 501) {
+            setLoggedIn(false)
+          } else {
+            Toast.error('Something Went Wrong (RP63)')
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -67,48 +75,72 @@ const ResultScreen = ({ navigation, setLoggedIn, props }) => {
     <View>
       <AppHeader />
       <ScrollView>
+        {noResult && (
+          <Box
+            flex={1}
+            padding={5}
+            alignItems="center"
+            justifyContent="center"
+            mt={'80%'}
+          >
+            <Text fontSize={24} opacity={0.5} style={{ textAlign: 'center' }}>
+              {noResult}
+            </Text>
+          </Box>
+        )}
         {allExam ? (
           allExam.map((exam, index) => (
             <>
-                <CustomAlert index={index} data={exam} title={exam.exam_title} />
+              <ResultList
+                key={index}
+                setLoggedIn={setLoggedIn}
+                index={index}
+                data={exam}
+                title={exam.exam_title}
+              />
             </>
           ))
-        ) : (
-          <Center w="100%">
-            <HStack
-              w="90%"
-              maxW="400"
-              borderWidth="1"
-              space={8}
-              rounded="md"
-              _dark={{
-                borderColor: 'coolGray.500',
-              }}
-              _light={{
-                borderColor: 'coolGray.200',
-              }}
-              p="4"
+        ) : !noResult ? (
+          <VStack>
+            <Box
+              key={1}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
             >
-              <Skeleton
-                flex="1"
-                h="50"
-                rounded="md"
-                startColor="coolGray.100"
-              />
-              <VStack flex="3" space="4">
-                <Skeleton startColor="amber.300" />
-                <HStack space="2" alignItems="center">
-                  <Skeleton size="5" rounded="full" />
-                  <Skeleton
-                    h="3"
-                    flex="1"
-                    rounded="full"
-                    startColor="indigo.300"
-                  />
-                </HStack>
-              </VStack>
-            </HStack>
-          </Center>
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              bg="white"
+              key={2}
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              key={3}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+          </VStack>
+        ) : (
+          ''
         )}
       </ScrollView>
     </View>

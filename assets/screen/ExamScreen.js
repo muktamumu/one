@@ -28,8 +28,8 @@ import {
   colorThree,
   serverURL,
 } from '../../Global';
-import AlertList from '../components/CustomAlert';
-import CustomAlert from '../components/CustomAlert';
+import AlertList from '../components/ResultPage/ResultList';
+import CustomAlert from '../components/ResultPage/ResultList';
 
 const ExamScreen = ({ navigation, setLoggedIn, props }) => {
   useEffect(() => {
