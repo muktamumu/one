@@ -10,23 +10,41 @@ import {
 } from '../../Global';
 import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
+import { Box, Button, Heading } from 'native-base';
 
 const statusBarHeight = Constants.statusBarHeight;
 
-const AppHeader = () => {
+const AppHeader = ({title}) => {
   return (
     <View
       style={{
         paddingTop: statusBarHeight,
         backgroundColor: colorTwo,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         paddingHorizontal: 10,
         paddingVertical: 10,
       }}
     >
       <StatusBar hidden={false} />
+
+      {title && (
+        <>
+          <Heading
+            color={'white'}
+            padding={0}
+            margin={0}
+            backgroundColor={'white'}
+          >
+            {title}
+          </Heading>
+          <Heading color={'white'} padding={0} margin={0}>
+            |
+          </Heading>
+        </>
+      )}
+
       <Image source={require('../image/DU_APP_Logo.png')} style={styles.logo} />
     </View>
   );

@@ -10,6 +10,7 @@ import { colorOne, colorTwo } from './Global';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoticeScreen from './assets/screen/NoticeScreen';
+import MarksheetScreen from './assets/screen/MarksheetScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,9 +80,25 @@ function App() {
                   />
                 )}
               </Stack.Screen>
-              <Stack.Screen name="ResultScreen" options={{ headerShown: false }}>
+              <Stack.Screen
+                name="ResultScreen"
+                options={{ headerShown: false }}
+              >
                 {(props) => (
                   <ResultScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen
+                name="MarksheetScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <MarksheetScreen
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}

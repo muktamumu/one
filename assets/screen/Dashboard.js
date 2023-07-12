@@ -19,6 +19,8 @@ const Dashboard = ({ navigation, setLoggedIn, props }) => {
       </View>
       <View>
         <View style={styles.buttonBoxFull}>
+          {/* FIRST ROW : PROFILE | EXAM */}
+
           <View style={styles.row}>
             <TouchableOpacity
               style={styles.eachButton}
@@ -48,6 +50,9 @@ const Dashboard = ({ navigation, setLoggedIn, props }) => {
               </Text>
             </TouchableOpacity>
           </View>
+
+          {/* SECOND ROW : RESULT | MARKSHEET */}
+
           <View style={styles.row}>
             <TouchableOpacity
               style={styles.eachButton}
@@ -68,63 +73,24 @@ const Dashboard = ({ navigation, setLoggedIn, props }) => {
 
             <TouchableOpacity
               style={styles.eachButton}
-              onPress={() => props.navigation.navigate('Hall')}
-            >
-              <Image
-                source={require('../image/icon/hall3.png')}
-                style={styles.btnImg}
-              />
-              <Text style={styles.btnText}>Hall Info</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => props.navigation.navigate('result')}
+              onPress={() => navigation.navigate('MarksheetScreen')}
             >
               <Image
                 source={require('../image/icon/result.png')}
                 style={styles.btnImg}
               />
-              <Text style={styles.btnText}>Result </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => props.navigation.navigate('Hall')}
-            >
-              <Image
-                source={require('../image/icon/hall3.png')}
-                style={styles.btnImg}
-              />
-              <Text style={styles.btnText}>Hall Info</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => props.navigation.navigate('result')}
-            >
-              <Image
-                source={require('../image/icon/result.png')}
-                style={styles.btnImg}
-              />
-              <Text style={styles.btnText}>Result </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => props.navigation.navigate('dept')}
-            >
-              <Image
-                source={require('../image/icon/dept3.png')}
-                style={styles.btnImg}
-              />
-              <Text style={styles.btnText}>Dept.Info </Text>
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.btnText}
+              >
+                Marksheet
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
+
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Button
           title="Logout"

@@ -7,6 +7,7 @@ import { ImageBackground, StyleSheet } from 'react-native';
 import { Dimensions, Pressable } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Box, Text, Center, Image, Skeleton } from 'native-base';
+import ProfileCard from '../components/ProfilePage/ProfileCard';
 
 function Profile(navigation, setLoggedIn, result) {
   const [photo, setPhoto] = useState(
@@ -384,45 +385,16 @@ function Profile(navigation, setLoggedIn, result) {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader title="Profile" />
       {data ? (
         <>
-          <ImageBackground source={require('../image/App-Card-Bg.png')}>
-            <View
-              borderRadius="lg"
-              shadow={2}
-              width="100%"
-              alignItems="center"
-              p={4}
-              bg="rgba(0, 0, 0, 0.5)"
-            >
-              <HStack>
-                <Image
-                  size="md"
-                  alt="Julkarnine Rokey"
-                  source={{ uri: photo }}
-                  my={2}
-                  rounded={5}
-                />
-                <VStack ml={5}>
-                  <Text
-                    color={'muted.50'}
-                    fontSize="xl"
-                    shadow={2}
-                    fontWeight="bold"
-                  >
-                    {data[0].STUDENT_BANGLA_NAME}
-                  </Text>
-                  <Text color={'muted.200'} fontSize="md">
-                    {data[0].SUBJECTS_TITLE}
-                  </Text>
-                  <Text color={'muted.200'} fontSize="md">
-                    {data[0].hall_title}
-                  </Text>
-                </VStack>
-              </HStack>
-            </View>
-          </ImageBackground>
+          <ProfileCard
+            photo={photo}
+            name={data[0].STUDENT_BANGLA_NAME}
+            dept={data[0].SUBJECTS_TITLE}
+            hall={data[0].hall_title}
+          />
+          
           <TabView
             navigationState={{ index, routes }}
             renderScene={renderScene}

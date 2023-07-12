@@ -62,12 +62,12 @@ const ExamScreen = ({ navigation, setLoggedIn, props }) => {
 
   return (
     <View>
-      <AppHeader />
+      <AppHeader title="Form Fill-up"/>
       <ScrollView>
         {allExam ? (
           allExam.map((exam) => (
             <>
-                <CustomAlert key={exam.id} data={exam} />
+                <CustomAlert key={exam.id} data={exam} title={exam.EXAM_NAME} />
             </>
           ))
         ) : (
