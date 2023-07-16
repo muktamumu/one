@@ -88,6 +88,44 @@ const Dashboard = ({ navigation, setLoggedIn, props }) => {
               </Text>
             </TouchableOpacity>
           </View>
+
+          {/* THIRD ROW :  CERTIFICATE | NOTICE */}
+
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => navigation.navigate('CertificateScreen')}
+            >
+              <Image
+                source={require('../image/icon/result.png')}
+                style={styles.btnImg}
+              />
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.btnText}
+              >
+                Certificate
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => navigation.navigate('NoticeScreen')}
+            >
+              <Image
+                source={require('../image/icon/result.png')}
+                style={styles.btnImg}
+              />
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.btnText}
+              >
+                Notices
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 

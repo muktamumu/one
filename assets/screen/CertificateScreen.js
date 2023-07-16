@@ -9,17 +9,14 @@ import {
   ScrollView,
 } from 'native-base';
 import AppHeader from '../components/AppHeader';
-import {
-  serverURL,
-} from '../../Global';
-import Toast  from 'react-native-toast-message';
+import { serverURL} from '../../Global';
+import Toast from 'react-native-toast-message';
 import MarksheetList from '../components/MarksheetPage/MarksheetList';
 
-const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
-
-    useEffect(() => {
-        checkForData();
-    }, []);
+const CertificateScreen = ({ navigation, setLoggedIn, props }) => {
+  useEffect(() => {
+    checkForData();
+  }, []);
 
   const [reg, setReg] = useState();
   const stuReg = async () => setReg(await AsyncStorage.getItem('reg'));
@@ -33,7 +30,7 @@ const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
         reg: reg,
       };
       axios
-        .get(serverURL + 'getAllMarksheetInfo', { params: toSend })
+        .get(serverURL + 'getAllCertificateInfo', { params: toSend })
         .then((response) => {
           if (response.data.status === 200) {
             setAllExam(response.data.result);
@@ -57,7 +54,7 @@ const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
 
   return (
     <View>
-      <AppHeader title="Marksheet"/>
+      <AppHeader title="Certificate" />
       <ScrollView>
         {noResult && (
           <Box
@@ -133,4 +130,4 @@ const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
 
 const styles = {};
 
-export default MarksheetScreen;
+export default CertificateScreen;

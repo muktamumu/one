@@ -25,12 +25,13 @@ import {
   VStack,
   CloseIcon,
   useToast,
+  Divider,
 } from 'native-base';
 
 const osVersion =
   Constants.platform?.android?.versionCode ||
   Constants.platform?.ios?.systemVersion;
-const deviceName = Constants.deviceName;
+const deviceName = Constants.deviceName + ' - ' + Constants.deviceModel;
 const statusBarHeight = Constants.statusBarHeight;
 const sessionId = Constants.sessionId;
 const lang = Localization.locale;
@@ -48,7 +49,8 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     setipAddress(netInfoState.details.ipAddress);
   };
 
-  const [reg, setReg] = useState('2017417693');
+  //const [reg, setReg] = useState('2017417693');
+  const [reg, setReg] = useState();
   const [pass, setPass] = useState('0');
   const [sName, setsName] = useState();
   function login() {
@@ -245,7 +247,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../image/LoginBG.jpg')}
+        source={require('../image/Cblur.png')}
         style={styles.backgroundImage}
       />
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
@@ -256,11 +258,12 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
               style={styles.logoImage}
             />
           </View>
-
+<Divider/>
           {!netStatus && <NoInternet />}
           <TextInput
             style={styles.input}
             keyboardType="numeric"
+            placeholder="Registration Number"
             placeholderTextColor="#999"
             onChangeText={setReg}
             value={reg}
@@ -308,21 +311,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: colorOne,
     padding: 20,
     height: 330,
     width: 250,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    
   },
   input: {
     height: 40,

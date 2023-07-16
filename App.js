@@ -11,6 +11,7 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoticeScreen from './assets/screen/NoticeScreen';
 import MarksheetScreen from './assets/screen/MarksheetScreen';
+import CertificateScreen from './assets/screen/CertificateScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -99,6 +100,33 @@ function App() {
               >
                 {(props) => (
                   <MarksheetScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen
+                name="CertificateScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <CertificateScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+
+              <Stack.Screen
+                name="NoticeScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <NoticeScreen
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}

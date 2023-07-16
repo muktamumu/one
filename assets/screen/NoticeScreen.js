@@ -1,115 +1,128 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Dimensions,
-  StatusBar,
-  TouchableOpacity,
-  Animated,
-  Pressable,
-} from 'react-native';
-import { TabView, SceneMap } from 'react-native-tab-view';
-import { NativeBaseProvider, Box, Text, Center } from 'native-base';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text } from 'react-native';
+import axios from 'axios';
+import { VStack, Box, Skeleton, ScrollView } from 'native-base';
 import AppHeader from '../components/AppHeader';
-import ProfileCard from '../components/ProfileCard';
+import { serverURL } from '../../Global';
+import Toast from 'react-native-toast-message';
+import MarksheetList from '../components/MarksheetPage/MarksheetList';
 
-const FirstRoute = () => (
-  <Center flex={1} my="4">
-    This is Tab 1
-  </Center>
-);
+const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
+  useEffect(() => {
+    checkForData();
+  }, []);
 
-const SecondRoute = () => (
-  <Center flex={1} my="4">
-    This is Tab 2
-  </Center>
-);
+  const [reg, setReg] = useState();
+  const stuReg = async () => setReg(await AsyncStorage.getItem('reg'));
+  const [allExam, setAllExam] = useState();
+  const [noResult, setNoResut] = useState();
 
-const ThirdRoute = () => (
-  <Center flex={1} my="4">
-    This is Tab 3
-  </Center>
-);
-
-const FourthRoute = () => (
-  <Center flex={1} my="4">
-    This is Tab 4{' '}
-  </Center>
-);
-
-const initialLayout = {
-  width: Dimensions.get('window').width,
-};
-
-const renderScene = SceneMap({
-  first: FirstRoute,
-  second: SecondRoute,
-  third: ThirdRoute,
-  fourth: FourthRoute,
-});
-
-const NoticeScreen = () => {
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'first', title: 'Tab 1' },
-    { key: 'second', title: 'Tab 2' },
-    { key: 'third', title: 'Tab 3' },
-    { key: 'fourth', title: 'Tab 4' },
-  ]);
-
-  const renderTabBar = (props) => {
-    const inputRange = props.navigationState.routes.map((x, i) => i);
-
-    return (
-      <Box flexDirection="row">
-        {props.navigationState.routes.map((route, i) => {
-          const opacity = props.position.interpolate({
-            inputRange,
-            outputRange: inputRange.map((inputIndex) =>
-              inputIndex === i ? 1 : 0.5
-            ),
-          });
-          const color = index === i ? '#000' : '#e5e5e5';
-          const borderColor = index === i ? 'cyan.500' : 'coolGray.200';
-
-          return (
-            <Box
-              borderBottomWidth="3"
-              borderColor={borderColor}
-              flex={1}
-              alignItems="center"
-              p="3"
-              cursor="pointer"
-              key={`tab-${i}`}
-            >
-              <Pressable
-                onPress={() => {
-                  console.log(i);
-                  setIndex(i);
-                }}
-              >
-                <Animated.Text style={{ color }}>{route.title}</Animated.Text>
-              </Pressable>
-            </Box>
-          );
-        })}
-      </Box>
-    );
-  };
+  async function checkForData() {
+    const reg = await AsyncStorage.getItem('reg');
+    if (reg) {
+      const toSend = {
+        reg: reg,
+      };
+      axios
+        .get(serverURL + 'getAllNotices', { params: toSend })
+        .then((response) => {
+          if (response.data.status === 200) {
+            setAllExam(response.data.result);
+          } else if (response.data.status === 201) {
+            setNoResut(response.data.message);
+          } else if (response.data.status === 500) {
+            Toast.error(response.data.message);
+          } else if (response.data.status === 501) {
+            setLoggedIn(false);
+          } else {
+            Toast.error('Something Went Wrong (MP63)');
+          }
+        })
+        .catch((error) => {
+          console.error('Something Went Wrong (MP67).');
+        });
+    } else {
+      setReg(await AsyncStorage.getItem('reg'));
+    }
+  }
 
   return (
-    <>
-      <AppHeader />
-      <ProfileCard />
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={setIndex}
-        initialLayout={initialLayout}
-        style={{ marginTop: StatusBar.currentHeight }}
-      />
-    </>
+    <View>
+      <AppHeader title="Notices" />
+      <ScrollView>
+        {noResult && (
+          <Box
+            flex={1}
+            padding={5}
+            alignItems="center"
+            justifyContent="center"
+            mt={'80%'}
+          >
+            <Text fontSize={24} opacity={0.5} style={{ textAlign: 'center' }}>
+              {noResult}
+            </Text>
+          </Box>
+        )}
+        {allExam ? (
+          allExam.map((exam, index) => (
+            <>
+              <MarksheetList
+                key={index}
+                setLoggedIn={setLoggedIn}
+                index={index}
+                data={exam}
+                title={exam.exam_title}
+              />
+            </>
+          ))
+        ) : !noResult ? (
+          <VStack>
+            <Box
+              key={1}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              bg="white"
+              key={2}
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              key={3}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+          </VStack>
+        ) : (
+          ''
+        )}
+      </ScrollView>
+    </View>
   );
 };
+
+const styles = {};
 
 export default NoticeScreen;
