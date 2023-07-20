@@ -27,14 +27,16 @@ import {
   useToast,
   Divider,
 } from 'native-base';
+import * as Device from 'expo-device';
 
 const osVersion =
   Constants.platform?.android?.versionCode ||
   Constants.platform?.ios?.systemVersion;
-const deviceName = Constants.deviceName + ' - ' + Constants.deviceModel;
+const deviceName = Constants.deviceName + ' - ' + Constants.deviceModel + '';
 const statusBarHeight = Constants.statusBarHeight;
 const sessionId = Constants.sessionId;
 const lang = Localization.locale;
+
 
 const LoginScreen = ({ navigation, setLoggedIn, props }) => {
   const [netStatus, setNetStatus] = useState(false);
@@ -49,13 +51,12 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     setipAddress(netInfoState.details.ipAddress);
   };
 
-  //const [reg, setReg] = useState('2017417693');
-  const [reg, setReg] = useState();
-  const [pass, setPass] = useState('0');
+  const [reg, setReg] = useState('2017417693');
+  const [pass, setPass] = useState('asdf@123');
   const [sName, setsName] = useState();
   function login() {
     if (netStatus) {
-      if (reg.length == 10 && pass.length > 6) {
+      if (reg.length == 10 && pass.length > 5) {
         checkForLogin(
           reg,
           pass,
@@ -65,7 +66,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
           lang,
           statusBarHeight,
           sessionId,
-          ipAddress
+          ipAddress,
         );
       } else {
         insertLoginFailed(
@@ -77,15 +78,13 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
           lang,
           statusBarHeight,
           sessionId,
-          ipAddress
+          ipAddress,
         );
         showLeftAlert('error', 'Invalid Credentials.');
       }
     } else {
       showLeftAlert('error', 'No Internet!');
     }
-
-    // props.navigation.navigate('Dashboard');
   }
 
   const handleLogin = async (res) => {
@@ -134,6 +133,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         statusBarHeight: statusBarHeight,
         sessionId: sessionId,
         ipAddress: ipAddress,
+        device: JSON.stringify(Device),
       };
       axios
         .get(serverURL + 'checkForLogin', { params: data })
@@ -165,11 +165,10 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     lang,
     statusBarHeight,
     sessionId,
-    ipAddress
+    ipAddress,
   ) {
     try {
       setLoading(1);
-
       const data = {
         reg: reg,
         pass: pass,
@@ -180,6 +179,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         statusBarHeight: statusBarHeight,
         sessionId: sessionId,
         ipAddress: ipAddress,
+        device: JSON.stringify(Device),
       };
       axios
         .get(serverURL + 'insertLoginFailed', { params: data })
@@ -207,14 +207,13 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
       render: () => {
         return (
           <Center>
-            <Alert status={status} colorScheme={status} variant="left-accent">
-              <VStack space={2} flexShrink={1} w="100%">
-                <HStack
-                  flexShrink={1}
-                  space={2}
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
+            <Alert
+              status={status}
+              colorScheme={status}
+              variant="left-accent"
+            >
+              <VStack>
+                <HStack alignItems="center" justifyContent="space-between">
                   <HStack flexShrink={1} space={2} alignItems="center">
                     <Alert.Icon />
                     <Text
@@ -247,7 +246,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../image/Cblur.png')}
+        source={require('../image/2212227897.jpg')}
         style={styles.backgroundImage}
       />
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
@@ -258,7 +257,6 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
               style={styles.logoImage}
             />
           </View>
-<Divider/>
           {!netStatus && <NoInternet />}
           <TextInput
             style={styles.input}
@@ -267,6 +265,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
             placeholderTextColor="#999"
             onChangeText={setReg}
             value={reg}
+         
           />
           <TextInput
             style={styles.input}
@@ -274,6 +273,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
             placeholderTextColor="#999"
             secureTextEntry
             onChangeText={setPass}
+            
           />
 
           <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
@@ -297,6 +297,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
     opacity: 0.7, // adjust the opacity if needed
+    width: '100%',
   },
   logoContainer: {
     alignItems: 'center',
@@ -316,7 +317,6 @@ const styles = StyleSheet.create({
     padding: 20,
     height: 330,
     width: 250,
-    
   },
   input: {
     height: 40,
