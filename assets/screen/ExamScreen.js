@@ -20,7 +20,6 @@ import {
   ScrollView,
 } from 'native-base';
 import AppHeader from '../components/AppHeader';
-import AccordionView from '../components/AccordionView';
 import {
   bgColor,
   colorFour,
@@ -28,7 +27,6 @@ import {
   colorThree,
   serverURL,
 } from '../../Global';
-import AlertList from '../components/ResultPage/ResultList';
 import CustomAlert from '../components/ResultPage/ResultList';
 
 const ExamScreen = ({ navigation, setLoggedIn, props }) => {

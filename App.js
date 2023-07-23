@@ -17,7 +17,7 @@ import SignupScreen from './assets/screen/SignupScreen';
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState();
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const [reg, setReg] = useState();
 
   const theme = extendTheme({
@@ -37,7 +37,7 @@ function App() {
   const checkLoginStatus = async () => {
     const d = await AsyncStorage.getItem('reg');
     if (d) {
-      setLoggedIn(true);
+      setLoggedIn(false);
       setReg(d);
     } else {
       setLoggedIn(false);
@@ -49,122 +49,122 @@ function App() {
   }, []);
 
   return (
-		<NativeBaseProvider theme={theme}>
-			<NavigationContainer>
-				<Stack.Navigator>
-					{isLoggedIn ? (
-						<>
-							<Stack.Screen name="Dashboard" options={{ headerShown: false }}>
-								{(props) => (
-									<Dashboard
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-									/>
-								)}
-							</Stack.Screen>
-							<Stack.Screen name="Profile" options={{ headerShown: false }}>
-								{(props) => (
-									<Profile
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-									/>
-								)}
-							</Stack.Screen>
-							<Stack.Screen name="ExamScreen" options={{ headerShown: false }}>
-								{(props) => (
-									<ExamScreen
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-										setReg={setReg}
-									/>
-								)}
-							</Stack.Screen>
-							<Stack.Screen
-								name="ResultScreen"
-								options={{ headerShown: false }}
-							>
-								{(props) => (
-									<ResultScreen
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-										setReg={setReg}
-									/>
-								)}
-							</Stack.Screen>
-							<Stack.Screen
-								name="MarksheetScreen"
-								options={{ headerShown: false }}
-							>
-								{(props) => (
-									<MarksheetScreen
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-										setReg={setReg}
-									/>
-								)}
-							</Stack.Screen>
-							<Stack.Screen
-								name="CertificateScreen"
-								options={{ headerShown: false }}
-							>
-								{(props) => (
-									<CertificateScreen
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-										setReg={setReg}
-									/>
-								)}
-							</Stack.Screen>
+    <NativeBaseProvider theme={theme}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {isLoggedIn ? (
+            <>
+              <Stack.Screen name="Dashboard" options={{ headerShown: false }}>
+                {(props) => (
+                  <Dashboard
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="Profile" options={{ headerShown: false }}>
+                {(props) => (
+                  <Profile
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="ExamScreen" options={{ headerShown: false }}>
+                {(props) => (
+                  <ExamScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen
+                name="ResultScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <ResultScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen
+                name="MarksheetScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <MarksheetScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen
+                name="CertificateScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <CertificateScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
 
-							<Stack.Screen
-								name="NoticeScreen"
-								options={{ headerShown: false }}
-							>
-								{(props) => (
-									<NoticeScreen
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-										setReg={setReg}
-									/>
-								)}
-							</Stack.Screen>
-						</>
-					) : (
-						<>
-							<Stack.Screen name="LoginScreen" options={{ headerShown: false }}>
-								{(props) => (
-									<LoginScreen
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-									/>
-								)}
-							</Stack.Screen>
-							<Stack.Screen
-								name="SignupScreen"
-								options={{ headerShown: false }}
-							>
-								{(props) => (
-									<SignupScreen
-										{...props}
-										navigation={props.navigation}
-										setLoggedIn={setLoggedIn}
-									/>
-								)}
-							</Stack.Screen>
-						</>
-					)}
-				</Stack.Navigator>
-			</NavigationContainer>
-		</NativeBaseProvider>
-	);
+              <Stack.Screen
+                name="NoticeScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <NoticeScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="LoginScreen" options={{ headerShown: false }}>
+                {(props) => (
+                  <LoginScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                  />
+                )}
+              </Stack.Screen>
+              <Stack.Screen
+                name="SignupScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <SignupScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                  />
+                )}
+              </Stack.Screen>
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NativeBaseProvider>
+  );
 }
 
 export default App;
