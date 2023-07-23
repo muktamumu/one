@@ -12,7 +12,7 @@ import * as Localization from 'expo-localization';
 import NetInfo from '@react-native-community/netinfo';
 import NoInternet from '../components/NoInternet';
 import Toast from 'react-native-toast-message';
-import { colorOne, colorTwo, serverURL } from '../../Global';
+import { colorOne, colorTwo, rootURL, serverURL } from '../../Global';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -52,7 +52,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
   };
 
   const [reg, setReg] = useState('2017417693');
-  const [pass, setPass] = useState('asdf@123');
+  const [pass, setPass] = useState("597230ask");
   const [sName, setsName] = useState();
   function login() {
     if (netStatus) {
@@ -101,9 +101,6 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
 
       setLoggedIn(true);
 
-      // console.log(res.final);
-
-      // ...
     } catch (error) {
       // Handle login error
       console.error(error);
@@ -139,21 +136,76 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         .get(serverURL + 'checkForLogin', { params: data })
         .then((response) => {
           if (response.data.status === 300) {
-            setLoading(0);
-            showLeftAlert(response.data.type, response.data.message);
+            check214();
           } else if (response.data.status === 200) {
             setLoading(0);
             handleLogin(response.data);
+          }else{
+            console.log(response.data)
           }
         })
         .catch((error) => {
+          setLoading(0);
           console.log('error ' + error);
-          showLeftAlert('error', 'Request Error. '+ error);
+          showLeftAlert('error', 'Request Error. ');
         });
     } catch (error) {
+      setLoading(0);
       console.log('Catch The Error');
-      showLeftAlert('error', 'Something Went Wrong! ' + error);
+      showLeftAlert('error', 'Something Went Wrong! ' );
     }
+  }
+
+  function check214(){
+    try {
+			setLoading(1);
+			const data = {
+				regNo: reg,
+				password: pass,
+			};
+			axios
+				.get(rootURL + "API214/Signin214", {
+					params: data,
+				})
+				.then((response) => {
+          if(response.data){
+            const arr = response.data.trim();
+            const obj = arr.split(":");
+            if(obj[0] === 'FOUND'){
+              setLoading(0);
+              const datatoSignup = {
+								ticket: obj[1],
+								reg: reg,
+								pass: pass,
+								netInfo: netInfo,
+								deviceName: deviceName,
+								osVersion: osVersion,
+								lang: lang,
+								statusBarHeight: statusBarHeight,
+								sessionId: sessionId,
+								ipAddress: ipAddress,
+								device: JSON.stringify(Device),
+							};
+              navigation.navigate("SignupScreen", datatoSignup);
+            }else{
+              setLoading(0);
+              showLeftAlert("error", "Registration & Password Mismatch Not Found");
+            }
+          }else{
+            setLoading(0);
+            showLeftAlert("error", "No Response From Server.");
+          }
+				})
+				.catch((error) => {
+					setLoading(0);
+					console.log("error " + error);
+					showLeftAlert("error", "Request Error in 214. ");
+				});
+		} catch (error) {
+			setLoading(0);
+			console.log("Catch The Error");
+			showLeftAlert("error", "Something Went Wrong! ");
+		}
   }
 
   function insertLoginFailed(
@@ -206,7 +258,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     toast.show({
       render: () => {
         return (
-          <Center>
+          <Center maxW={'90%'} margin={'auto'} minW={'90%'}>
             <Alert
               status={status}
               colorScheme={status}
@@ -244,48 +296,47 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require('../image/2212227897.jpg')}
-        style={styles.backgroundImage}
-      />
-      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-        <View style={styles.card}>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('../image/DU_APP_LogoBlue.png')}
-              style={styles.logoImage}
-            />
-          </View>
-          {!netStatus && <NoInternet />}
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholder="Registration Number"
-            placeholderTextColor="#999"
-            onChangeText={setReg}
-            value={reg}
-         
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#999"
-            secureTextEntry
-            onChangeText={setPass}
-            
-          />
+		<View style={styles.container}>
+			<Image
+				source={require("../image/2212227897.jpg")}
+				style={styles.backgroundImage}
+			/>
+			<KeyboardAwareScrollView contentContainerStyle={styles.container}>
+				<View style={styles.card}>
+					<View style={styles.logoContainer}>
+						<Image
+							source={require("../image/DU_APP_LogoBlue.png")}
+							style={styles.logoImage}
+						/>
+					</View>
+					{!netStatus && <NoInternet />}
+					<TextInput
+						style={styles.input}
+						keyboardType="numeric"
+						placeholder="Registration Number"
+						placeholderTextColor="#999"
+						onChangeText={setReg}
+						value={reg}
+					/>
+					<TextInput
+						style={styles.input}
+						placeholder="Password"
+						placeholderTextColor="#999"
+						secureTextEntry
+						onChangeText={setPass}
+						defaultValue="597230ask"
+					/>
 
-          <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
-            <Text style={styles.loginButtonText}>
-              {isLoading ? <LoadingSpinner /> : 'Login'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
-      <Toast />
-    </View>
-  );
+					<TouchableOpacity style={styles.loginButton} onPress={() => login()}>
+						<Text style={styles.loginButtonText}>
+							{isLoading ? <LoadingSpinner /> : "Login"}
+						</Text>
+					</TouchableOpacity>
+				</View>
+			</KeyboardAwareScrollView>
+			<Toast />
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
