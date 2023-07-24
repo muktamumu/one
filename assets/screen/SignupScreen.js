@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, ScrollView } from 'react-native';
 import axios from 'axios';
-import { Box, Center, HStack, Skeleton, VStack } from 'native-base';
+import { Box, Center, HStack, KeyboardAvoidingView, Skeleton, VStack } from 'native-base';
 import AppHeader from '../components/AppHeader';
 import { rootURL, serverURL } from '../../Global';
 import ShowAlert from '../components/ShowAlert';
 import SignupForm from '../components/Signup/SignupForm';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const SignupScreen = ({ navigation, setLoggedIn, route }) => {
   const [showAlert1, setShowAlert] = useState(false);
@@ -17,7 +18,13 @@ const SignupScreen = ({ navigation, setLoggedIn, route }) => {
     setalertText(text);
     setalertType(type);
     setShowAlert(true);
-	};
+  };
+  
+    const handleShowAlert2 = ( text) => {
+      setalertText(text);
+      setalertType('error');
+      setShowAlert(true);
+    };
 	
   const handleCloseAlert = () => {
     setShowAlert(false);
@@ -81,9 +88,17 @@ const SignupScreen = ({ navigation, setLoggedIn, route }) => {
     <View>
       <AppHeader title="Signup" />
 
-		  <ScrollView>{isLoading ? <LoadingView /> : <SignupForm data={profileData} route = {route.params} />}</ScrollView>
+      {isLoading ? (
+        <LoadingView />
+      ) : (
+        <SignupForm
+          data={profileData}
+          route={route.params}
+          alertT={handleShowAlert2}
+        />
+      )}
       {showAlert1 && (
-        <ShowAlert
+        <ShowAlert style={{marginBottom:20}}
           status={alertType}
           Tx={alertText}
           onClose={handleCloseAlert}

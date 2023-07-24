@@ -11,76 +11,21 @@ import {
 import { Text, HStack, VStack } from 'native-base';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import { serverURL } from '../../../Global';
+import { colorThree, serverURL } from '../../../Global';
+import { Spinner } from 'native-base';
+import * as FileSystem from 'expo-file-system';
+import * as ImageManipulator from 'expo-image-manipulator';
 
-const ProfileCard = ({ photo, name, dept, hall, id = null }) => {
+const ProfileCard = ({
+  photo,
+  name,
+  dept,
+  hall,
+  id = null,
+  onPhotoReceived,
+}) => {
   const [photoN, setPhoto] = useState();
   const [loading, setLoading] = useState(false);
-
-  async function handlePhotoUpload() {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      return;
-    }
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    if (!result.cancelled && result.assets.length > 0) {
-      setPhoto(result.assets[0]);
-      uploadPhoto(result.assets[0].uri);
-    }
-  }
-
-const uploadPhoto = async (uri) => {
-  setLoading(true);
-  try {
-    // Convert the image to Blob
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    // Create a FormData object to send the file and additional parameters
-    const formData = new FormData();
-    formData.append('photo', blob, id + '.jpg');
-    formData.append('directory', dept); // Don't use 'removeSpacesAndSpecialCharacters'
-    formData.append('name', id);
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', serverURL + 'uploadProfilePhoto');
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        const data = JSON.parse(xhr.responseText);
-        console.log('Upload response:', data);
-      } else {
-        console.log('Error uploading photo:', xhr.responseText);
-      }
-      setLoading(false);
-    };
-    xhr.onerror = (error) => {
-      console.log('Error uploading photo:', error);
-      setLoading(false);
-    };
-    xhr.send(formData);
-  } catch (error) {
-    setLoading(false);
-    console.log('Error uploading photo:', error);
-  }
-};
-
-
-  function removeSpacesAndSpecialCharacters(inputString) {
-    // Use a regular expression to match all spaces and special characters
-    // The regex /\s|\W/g will match any character that is not a letter or a digit, including spaces
-    const regex = /\s|\W/g;
-
-    // Use the replace method to remove all matched characters with an empty string
-    // The g flag will cause the replace operation to be performed on all occurrences of the matched pattern
-    const resultString = inputString.replace(regex, '');
-
-    return resultString;
-  }
 
   const resizeImage = async (uri, maxSize) => {
     const image = await FileSystem.readAsStringAsync(uri, {
@@ -105,8 +50,68 @@ const uploadPhoto = async (uri) => {
     return { uri: resizedImage.uri };
   };
 
-  const isUpload =
-    photoN === 'https://v2.result.du.ac.bd/assets/student.png' ? 1 : 0;
+  async function handlePhotoUpload() {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      return;
+    }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true, // higher res on iOS
+      aspect: [2, 2],
+      quality: 1,
+    });
+
+    if (result.assets[0].cancelled) {
+      return;
+    }
+
+    let resizedImage = await resizeImage(result.assets[0].uri, 5500 * 1024); // Resize the image to approximately 200KB
+
+    let localUri = resizedImage.uri;
+
+    // let localUri = result.assets[0].uri;
+    let filename = localUri.split('/').pop();
+
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+
+    let formData = new FormData();
+    formData.append('photo', { uri: localUri, name: filename, type });
+    formData.append('directory', removeSpacesAndSpecialCharacters(dept)); // Replace 'dept' with the correct department name
+    formData.append('name', id); // Replace 'id' with the correct user ID
+
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        serverURL + 'uploadProfilePhoto',
+        formData,
+        {
+          headers: {
+            'content-type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (response.data.status === 'success') {
+        onPhotoReceived(response.data.file_url);
+        setPhoto(response.data.file_url);
+        setLoading(false);
+      } else {
+      }
+    } catch (error) {}
+  }
+
+  function removeSpacesAndSpecialCharacters(inputString) {
+    // Use a regular expression to match all spaces and special characters
+    // The regex /\s|\W/g will match any character that is not a letter or a digit, including spaces
+    const regex = /\s|\W/g;
+
+    // Use the replace method to remove all matched characters with an empty string
+    // The g flag will cause the replace operation to be performed on all occurrences of the matched pattern
+    const resultString = inputString.replace(regex, '');
+
+    return resultString;
+  }
 
   return (
     <ImageBackground
@@ -120,7 +125,7 @@ const uploadPhoto = async (uri) => {
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.5,
           alignItems: 'center',
-          padding: 36,
+          padding: '8.4%',
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           maxWidth: '80%',
           marginLeft: '10%',
@@ -129,16 +134,24 @@ const uploadPhoto = async (uri) => {
         <HStack>
           {id ? (
             <TouchableOpacity onPress={handlePhotoUpload}>
-              <Image
-                style={{ width: 80, height: 80, borderRadius: 5 }}
-                source={{ uri: photo }}
-                my={2}
-              />
+              {loading ? (
+                <Spinner
+                  color={'blue'}
+                  size={'lg'}
+                  style={{ width: 80, height: 80, borderRadius: 5 }}
+                />
+              ) : (
+                <Image
+                  style={{ width: 80, height: 80, borderRadius: 38, borderWidth:1, borderColor:'white' }}
+                  source={{ uri: photoN ? photoN : photo }}
+                  my={2}
+                />
+              )}
             </TouchableOpacity>
           ) : (
             <Image
               style={{ width: 80, height: 80, borderRadius: 5 }}
-              source={{ uri: photo }}
+              source={{ uri: photoN ? photoN : photo }}
               my={2}
             />
           )}

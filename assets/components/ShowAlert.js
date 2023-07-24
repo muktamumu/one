@@ -3,11 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Center, VStack, HStack, IconButton, Box } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 
-const ShowAlert = ({ status, Tx, onClose }) => {
+const ShowAlert = ({ status, Tx, onClose, style }) => {
   const alertColor = getStatusColor(status);
 
   return (
-    <View style={styles.alertWrapper}>
+    <View style={[styles.alertWrapper, style]}>
       <Center width={'90%'} alignSelf={'center'}>
         <Box
           style={[
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '80%', // Position the alert at the bottom
     left: 0,
-    bottom:5,
     right: 0,
     zIndex: 999,
   },

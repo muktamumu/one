@@ -24,6 +24,7 @@
     "expo": "~48.0.15",
     "expo-device": "~5.2.1",
     "expo-file-system": "~15.2.2",
+    "expo-image-manipulator": "^11.3.0",
     "expo-image-picker": "^14.3.1",
     "expo-localization": "^14.1.1",
     "expo-status-bar": "~1.4.4",

@@ -28,6 +28,7 @@ import {
   Divider,
 } from 'native-base';
 import * as Device from 'expo-device';
+import ShowAlert from '../components/ShowAlert';
 
 const osVersion =
   Constants.platform?.android?.versionCode ||
@@ -50,6 +51,20 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     setnetInfo(JSON.stringify(netInfoState));
     setipAddress(netInfoState.details.ipAddress);
   };
+
+  const [showAlert1, setShowAlert] = useState(false);
+  const [alertText, setalertText] = useState('');
+  const [alertType, setalertType] = useState('');
+
+  const handleShowAlert = (type, text) => {
+    setalertText(text);
+    setalertType(type);
+    setShowAlert(true);
+  };
+
+    const handleCloseAlert = () => {
+      setShowAlert(false);
+    };
 
   const [reg, setReg] = useState('2017417693');
   const [pass, setPass] = useState("597230ask");
@@ -80,10 +95,10 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
           sessionId,
           ipAddress,
         );
-        showLeftAlert('error', 'Invalid Credentials.');
+        handleShowAlert('error', 'Invalid Credentials.');
       }
     } else {
-      showLeftAlert('error', 'No Internet!');
+      handleShowAlert('error', 'No Internet!');
     }
   }
 
@@ -147,12 +162,12 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         .catch((error) => {
           setLoading(0);
           console.log('error ' + error);
-          showLeftAlert('error', 'Request Error. ');
+          handleShowAlert('error', 'Request Error. ');
         });
     } catch (error) {
       setLoading(0);
       console.log('Catch The Error');
-      showLeftAlert('error', 'Something Went Wrong! ' );
+      handleShowAlert('error', 'Something Went Wrong! ' );
     }
   }
 
@@ -189,22 +204,22 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
               navigation.navigate("SignupScreen", datatoSignup);
             }else{
               setLoading(0);
-              showLeftAlert("error", "Registration & Password Mismatch Not Found");
+              handleShowAlert("error", "Registration & Password Mismatch OR Not Found");
             }
           }else{
             setLoading(0);
-            showLeftAlert("error", "No Response From Server.");
+            handleShowAlert("error", "No Response From Server.");
           }
 				})
 				.catch((error) => {
 					setLoading(0);
 					console.log("error " + error);
-					showLeftAlert("error", "Request Error in 214. ");
+					handleShowAlert("error", "Request Error in 214. ");
 				});
 		} catch (error) {
 			setLoading(0);
 			console.log("Catch The Error");
-			showLeftAlert("error", "Something Went Wrong! ");
+			handleShowAlert("error", "Something Went Wrong! ");
 		}
   }
 
@@ -253,90 +268,56 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     }
   });
 
-  const toast = useToast();
-  const showLeftAlert = (status, text) => {
-    toast.show({
-      render: () => {
-        return (
-          <Center maxW={'90%'} margin={'auto'} minW={'90%'}>
-            <Alert
-              status={status}
-              colorScheme={status}
-              variant="left-accent"
-            >
-              <VStack>
-                <HStack alignItems="center" justifyContent="space-between">
-                  <HStack flexShrink={1} space={2} alignItems="center">
-                    <Alert.Icon />
-                    <Text
-                      fontSize="md"
-                      fontWeight="medium"
-                      color="coolGray.800"
-                    >
-                      {text}
-                    </Text>
-                  </HStack>
-                  <IconButton
-                    variant="unstyled"
-                    _focus={{
-                      borderWidth: 0,
-                    }}
-                    icon={<CloseIcon size="3" />}
-                    _icon={{
-                      color: 'coolGray.600',
-                    }}
-                  />
-                </HStack>
-              </VStack>
-            </Alert>
-          </Center>
-        );
-      },
-    });
-  };
 
   return (
-		<View style={styles.container}>
-			<Image
-				source={require("../image/2212227897.jpg")}
-				style={styles.backgroundImage}
-			/>
-			<KeyboardAwareScrollView contentContainerStyle={styles.container}>
-				<View style={styles.card}>
-					<View style={styles.logoContainer}>
-						<Image
-							source={require("../image/DU_APP_LogoBlue.png")}
-							style={styles.logoImage}
-						/>
-					</View>
-					{!netStatus && <NoInternet />}
-					<TextInput
-						style={styles.input}
-						keyboardType="numeric"
-						placeholder="Registration Number"
-						placeholderTextColor="#999"
-						onChangeText={setReg}
-						value={reg}
-					/>
-					<TextInput
-						style={styles.input}
-						placeholder="Password"
-						placeholderTextColor="#999"
-						secureTextEntry
-						onChangeText={setPass}
-						defaultValue="597230ask"
-					/>
+    <View style={styles.container}>
+      <Image
+        source={require('../image/2212227897.jpg')}
+        style={styles.backgroundImage}
+      />
+      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('../image/DU_APP_LogoBlue.png')}
+              style={styles.logoImage}
+            />
+          </View>
+          {!netStatus && <NoInternet />}
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            placeholder="Registration Number"
+            placeholderTextColor="#999"
+            onChangeText={setReg}
+            value={reg}
+            maxLength={11}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#999"
+            secureTextEntry
+            onChangeText={setPass}
+            defaultValue="597230ask"
+          />
 
-					<TouchableOpacity style={styles.loginButton} onPress={() => login()}>
-						<Text style={styles.loginButtonText}>
-							{isLoading ? <LoadingSpinner /> : "Login"}
-						</Text>
-					</TouchableOpacity>
-				</View>
-			</KeyboardAwareScrollView>
-			<Toast />
-		</View>
-	);
+          <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
+            <Text style={styles.loginButtonText}>
+              {isLoading ? <LoadingSpinner /> : 'Login'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAwareScrollView>
+      {showAlert1 && (
+        <ShowAlert
+          status={alertType}
+          Tx={alertText}
+          onClose={handleCloseAlert}
+        />
+      )}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
