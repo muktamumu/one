@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, ScrollView } from 'react-native';
 import axios from 'axios';
-import { Box, Center, HStack, KeyboardAvoidingView, Skeleton, VStack } from 'native-base';
+import { Box, Center, HStack, Heading, KeyboardAvoidingView, Skeleton, VStack } from 'native-base';
 import AppHeader from '../components/AppHeader';
 import { rootURL, serverURL } from '../../Global';
 import ShowAlert from '../components/ShowAlert';
 import SignupForm from '../components/Signup/SignupForm';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const SignupScreen = ({ navigation, setLoggedIn, route }) => {
+const SignupScreen = ({ navigation, setLoggedIn, route, setUserData }) => {
   const [showAlert1, setShowAlert] = useState(false);
   const [alertText, setalertText] = useState('');
   const [alertType, setalertType] = useState('');
@@ -19,25 +19,27 @@ const SignupScreen = ({ navigation, setLoggedIn, route }) => {
     setalertType(type);
     setShowAlert(true);
   };
-  
-    const handleShowAlert2 = ( text) => {
-      setalertText(text);
-      setalertType('error');
-      setShowAlert(true);
-    };
-	
+
+  const handleShowAlert2 = (text) => {
+    setalertText(text);
+    setalertType('error');
+    setShowAlert(true);
+  };
+
   const handleCloseAlert = () => {
     setShowAlert(false);
   };
 
   const [isLoading, setLoading] = useState(1);
   const [profileData, setProfileData] = useState();
-  
-  async function getProfileData() {
+
+ 
+
+  async function getProfileData(api) {
     try {
       setLoading(1);
       const data = {
-        ticket: route.params.ticket,
+        'ticket': route.params.ticket,
       };
       axios
         .get(rootURL + 'API214/getInfo', {
@@ -45,7 +47,7 @@ const SignupScreen = ({ navigation, setLoggedIn, route }) => {
         })
         .then((response) => {
           if (response.data) {
-			setProfileData(response.data); 
+            setProfileData(response.data);
             setLoading(0);
           } else {
             setLoading(1);
@@ -56,8 +58,8 @@ const SignupScreen = ({ navigation, setLoggedIn, route }) => {
             navigation.navigate('LoginScreen');
           }
         })
-		  .catch((error) => {
-			console.log(error)
+        .catch((error) => {
+          console.log(error);
           setLoading(1);
           handleShowAlert(
             'error',
@@ -65,8 +67,8 @@ const SignupScreen = ({ navigation, setLoggedIn, route }) => {
           );
           navigation.navigate('LoginScreen');
         });
-	} catch (error) {
-		console.log(error);
+    } catch (error) {
+      console.log(error);
       setLoading(1);
       handleShowAlert(
         'error',
@@ -77,11 +79,11 @@ const SignupScreen = ({ navigation, setLoggedIn, route }) => {
   }
 
   useEffect(() => {
-	  if (route.params) {
-		getProfileData();
-	  } else {
-		  navigation.navigate('LoginScreen');
-	}
+    if (route.params) {
+      getProfileData(route.params.api);
+    } else {
+      navigation.navigate('LoginScreen');
+    }
   }, []);
 
   return (
@@ -94,11 +96,14 @@ const SignupScreen = ({ navigation, setLoggedIn, route }) => {
         <SignupForm
           data={profileData}
           route={route.params}
+          login={setLoggedIn}
           alertT={handleShowAlert2}
+          setUserData={setUserData}
         />
       )}
       {showAlert1 && (
-        <ShowAlert style={{marginBottom:20}}
+        <ShowAlert
+          style={{ marginBottom: 20 }}
           status={alertType}
           Tx={alertText}
           onClose={handleCloseAlert}

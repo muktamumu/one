@@ -38,8 +38,7 @@ const statusBarHeight = Constants.statusBarHeight;
 const sessionId = Constants.sessionId;
 const lang = Localization.locale;
 
-
-const LoginScreen = ({ navigation, setLoggedIn, props }) => {
+const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
   const [netStatus, setNetStatus] = useState(false);
   const [netInfo, setnetInfo] = useState();
   const [ipAddress, setipAddress] = useState();
@@ -62,12 +61,12 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     setShowAlert(true);
   };
 
-    const handleCloseAlert = () => {
-      setShowAlert(false);
-    };
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
 
-  const [reg, setReg] = useState('2017417693');
-  const [pass, setPass] = useState("597230ask");
+  const [reg, setReg] = useState('2015614614');
+  const [pass, setPass] = useState('asdf@123');
   const [sName, setsName] = useState();
   function login() {
     if (netStatus) {
@@ -81,7 +80,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
           lang,
           statusBarHeight,
           sessionId,
-          ipAddress,
+          ipAddress
         );
       } else {
         insertLoginFailed(
@@ -93,7 +92,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
           lang,
           statusBarHeight,
           sessionId,
-          ipAddress,
+          ipAddress
         );
         handleShowAlert('error', 'Invalid Credentials.');
       }
@@ -106,18 +105,23 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     try {
       await AsyncStorage.setItem('reg', reg);
       await AsyncStorage.setItem('token', JSON.stringify(res.token));
-      await AsyncStorage.setItem('data', JSON.stringify(res.data));
-      await AsyncStorage.setItem('result', JSON.stringify(res.result));
       await AsyncStorage.setItem('photo', res.photo);
-      await AsyncStorage.setItem('name', JSON.stringify(res.name));
-      await AsyncStorage.setItem('hall', JSON.stringify(res.hall));
-      await AsyncStorage.setItem('session', JSON.stringify(res.session));
-      await AsyncStorage.setItem('final', JSON.stringify(res.final));
+      await AsyncStorage.setItem('name', res.name);
+      await AsyncStorage.setItem('hall', res.hall);
+      await AsyncStorage.setItem('dept', res.dept);
+
+      setUserData([
+        reg,
+       res.token,
+        res.photo,
+        res.name,
+        res.hall,
+        res.dept,
+      ]);
 
       setLoggedIn(true);
-
     } catch (error) {
-      // Handle login error
+      handleShowAlert('error', 'Login Error. ');
       console.error(error);
     }
   };
@@ -151,12 +155,15 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
         .get(serverURL + 'checkForLogin', { params: data })
         .then((response) => {
           if (response.data.status === 300) {
-            check214();
+            check214(response.data.api);
           } else if (response.data.status === 200) {
             setLoading(0);
             handleLogin(response.data);
-          }else{
-            console.log(response.data)
+          } else if (response.data.status === 303) {
+            setLoading(0);
+            handleShowAlert('error', response.data.message);
+          } else {
+            console.log(response.data);
           }
         })
         .catch((error) => {
@@ -167,60 +174,58 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     } catch (error) {
       setLoading(0);
       console.log('Catch The Error');
-      handleShowAlert('error', 'Something Went Wrong! ' );
+      handleShowAlert('error', 'Something Went Wrong! ');
     }
   }
 
-  function check214(){
+  function check214(api) {
     try {
-			setLoading(1);
-			const data = {
-				regNo: reg,
-				password: pass,
-			};
-			axios
-				.get(rootURL + "API214/Signin214", {
-					params: data,
-				})
-				.then((response) => {
-          if(response.data){
+      setLoading(1);
+      const data = {
+        regNo: reg,
+        password: pass,
+      };
+      axios
+        .get(rootURL + 'API214/Signin214', {
+          params: data,
+        })
+        .then((response) => {
+          if (response.data) {
             const arr = response.data.trim();
-            const obj = arr.split(":");
-            if(obj[0] === 'FOUND'){
+            const obj = arr.split(':');
+            if (obj[0] === 'FOUND') {
               setLoading(0);
               const datatoSignup = {
-								ticket: obj[1],
-								reg: reg,
-								pass: pass,
-								netInfo: netInfo,
-								deviceName: deviceName,
-								osVersion: osVersion,
-								lang: lang,
-								statusBarHeight: statusBarHeight,
-								sessionId: sessionId,
-								ipAddress: ipAddress,
-								device: JSON.stringify(Device),
-							};
-              navigation.navigate("SignupScreen", datatoSignup);
-            }else{
+                ticket: obj[1],
+                reg: reg,
+                pass: pass,
+
+                setLoggedIn,
+                setUserData,api
+              };
+              navigation.navigate('SignupScreen', datatoSignup);
+            } else {
               setLoading(0);
-              handleShowAlert("error", "Registration & Password Mismatch OR Not Found");
+              handleShowAlert(
+                'error',
+                'Registration & Password Mismatch OR Not Found'
+              );
             }
-          }else{
+          } else {
             setLoading(0);
-            handleShowAlert("error", "No Response From Server.");
+            handleShowAlert('error', 'No Response From Server.');
           }
-				})
-				.catch((error) => {
-					setLoading(0);
-					console.log("error " + error);
-					handleShowAlert("error", "Request Error in 214. ");
-				});
-		} catch (error) {
-			setLoading(0);
-			console.log("Catch The Error");
-			handleShowAlert("error", "Something Went Wrong! ");
-		}
+        })
+        .catch((error) => {
+          setLoading(0);
+          console.log('error ' + error);
+          handleShowAlert('error', 'Request Error in 214. ');
+        });
+    } catch (error) {
+      setLoading(0);
+      console.log('Catch The Error');
+      handleShowAlert('error', 'Something Went Wrong! ');
+    }
   }
 
   function insertLoginFailed(
@@ -232,7 +237,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     lang,
     statusBarHeight,
     sessionId,
-    ipAddress,
+    ipAddress
   ) {
     try {
       setLoading(1);
@@ -268,7 +273,6 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
     }
   });
 
-
   return (
     <View style={styles.container}>
       <Image
@@ -299,7 +303,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props }) => {
             placeholderTextColor="#999"
             secureTextEntry
             onChangeText={setPass}
-            defaultValue="597230ask"
+            defaultValue="asdf@123"
           />
 
           <TouchableOpacity style={styles.loginButton} onPress={() => login()}>

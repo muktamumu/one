@@ -17,7 +17,9 @@ import SignupScreen from './assets/screen/SignupScreen';
 const Stack = createNativeStackNavigator();
 
 function App() {
+  
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState([]);
   const [reg, setReg] = useState();
 
   const theme = extendTheme({
@@ -31,22 +33,14 @@ function App() {
           borderRadius: 'md', // Customize button border radius
         },
       },
+      style: {
+        global: {
+          color: 'red',
+        },
+      },
     },
   });
 
-  const checkLoginStatus = async () => {
-    const d = await AsyncStorage.getItem('reg');
-    if (d) {
-      setLoggedIn(false);
-      setReg(d);
-    } else {
-      setLoggedIn(false);
-    }
-  };
-
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
 
   return (
     <NativeBaseProvider theme={theme}>
@@ -59,6 +53,7 @@ function App() {
                   <Dashboard
                     {...props}
                     navigation={props.navigation}
+                    setUserData={userData}
                     setLoggedIn={setLoggedIn}
                   />
                 )}
@@ -68,6 +63,7 @@ function App() {
                   <Profile
                     {...props}
                     navigation={props.navigation}
+                    setUserData={setUserData}
                     setLoggedIn={setLoggedIn}
                   />
                 )}
@@ -78,6 +74,7 @@ function App() {
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
+                    setUserData={setUserData}
                     setReg={setReg}
                   />
                 )}
@@ -92,6 +89,7 @@ function App() {
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
                     setReg={setReg}
+                    setUserData={setUserData}
                   />
                 )}
               </Stack.Screen>
@@ -104,6 +102,7 @@ function App() {
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
+                    setUserData={setUserData}
                     setReg={setReg}
                   />
                 )}
@@ -118,6 +117,7 @@ function App() {
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
                     setReg={setReg}
+                    setUserData={setUserData}
                   />
                 )}
               </Stack.Screen>
@@ -131,6 +131,7 @@ function App() {
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
+                    setUserData={setUserData}
                     setReg={setReg}
                   />
                 )}
@@ -143,6 +144,7 @@ function App() {
                   <LoginScreen
                     {...props}
                     navigation={props.navigation}
+                    setUserData={setUserData}
                     setLoggedIn={setLoggedIn}
                   />
                 )}
@@ -155,6 +157,7 @@ function App() {
                   <SignupScreen
                     {...props}
                     navigation={props.navigation}
+                    setUserData={setUserData}
                     setLoggedIn={setLoggedIn}
                   />
                 )}

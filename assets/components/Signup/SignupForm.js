@@ -13,28 +13,69 @@ import {
   Icon,
   Badge,
   Divider,
+  Spinner,
 } from 'native-base';
-import ImagePicker from 'react-native-image-picker';
 import ProfileCard from '../ProfilePage/ProfileCard';
-import { colorTwo, serverURL } from '../../../Global';
+import { colorTwo, colorOne, serverURL } from '../../../Global';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+import * as Localization from 'expo-localization';
+import * as Device from 'expo-device';
+import NetInfo from '@react-native-community/netinfo';
 
+const SignupForm = ({ data, route, alertT, login, setUserData }) => {
+  // LOGIN SUCCESS DATA
+  const reg = route.reg;
+  const pass = route.pass;
 
-const SignupForm = ({ data, route, alertT }) => {
+  const osVersion =
+    Constants.platform?.android?.versionCode ||
+    Constants.platform?.ios?.systemVersion;
+  const deviceName = Constants.deviceName + ' - ' + Constants.deviceModel + '';
+  const statusBarHeight = Constants.statusBarHeight;
+  const sessionId = Constants.sessionId;
+  const lang = Localization.locale;
+
+  const [netInfo, setnetInfo] = useState();
+  const [ipAddress, setipAddress] = useState();
+
+  const checkNetworkConnectivity = async () => {
+    const netInfoState = await NetInfo.fetch();
+    setnetInfo(JSON.stringify(netInfoState));
+    setipAddress(netInfoState.details.ipAddress);
+  };
+
+  const device = JSON.stringify(Device);
+
+  // CREATE USER DATA
+  const ticket = route.ticket;
+
+  const deptName = data['student-profile']['aca-body'];
+  const hallName = data['student-profile']['hall-name'];
+  const hallId = data['student-profile']['hall'];
+  const deptId = data['student-profile']['acBody'];
+  const lastEnroll = data['student-profile']['last-enroll'];
+
+  const classRoll = lastEnroll['enroll-info']['class-roll'];
+  const year = lastEnroll['enroll-info']['curriculum-year'];
+  const semester = lastEnroll['enroll-info']['semester'];
+  const session = lastEnroll['enroll-info']['session'];
 
   useEffect(() => {
     getAddress();
-  }, []);
+    checkNetworkConnectivity();
+  }, [divisionList, thanaList, districtList, unionList]);
 
   const [divisionList, setDivisionList] = useState([]);
   const [thanaList, setthanaList] = useState([]);
   const [filterthanaList, setfilterthanaList] = useState([]);
-    const [filterthanaListP, setfilterthanaListP] = useState([]);
+  const [filterthanaListP, setfilterthanaListP] = useState([]);
   const [districtList, setdistrictList] = useState([]);
-    const [districtListP, setdistrictListP] = useState([]);
+  const [districtListP, setdistrictListP] = useState([]);
   const [filteredDistrictList, setFilteredDistrictList] = useState([]);
-    const [filteredDistrictListP, setFilteredDistrictListP] = useState([]);
+  const [filteredDistrictListP, setFilteredDistrictListP] = useState([]);
   const [unionList, setunionlist] = useState([]);
   const [filterunionList, setfilterunionlist] = useState([]);
 
@@ -56,7 +97,7 @@ const SignupForm = ({ data, route, alertT }) => {
     }
   }
 
-  function selectDiv(id,setter) {
+  function selectDiv(id, setter) {
     setter(id);
 
     const filteredDistricts = districtList.filter(
@@ -65,19 +106,19 @@ const SignupForm = ({ data, route, alertT }) => {
     setFilteredDistrictList(filteredDistricts);
   }
 
-    function selectDis(id, setter) {
-      setter(id);
+  function selectDis(id, setter) {
+    setter(id);
 
-      const filteredDistricts = thanaList.filter(
-        (district) => district.district_id === id
-      );
-      setfilterthanaList(filteredDistricts);
+    const filteredDistricts = thanaList.filter(
+      (district) => district.district_id === id
+    );
+    setfilterthanaList(filteredDistricts);
   }
-  
-      function selectTha(id, setter) {
-        setter(id);
+
+  function selectTha(id, setter) {
+    setter(id);
   }
-  
+
   function selectDivP(id, setter) {
     setter(id);
 
@@ -98,10 +139,10 @@ const SignupForm = ({ data, route, alertT }) => {
 
   function selectThaP(id, setter) {
     setter(id);
-      const filteredDistricts = unionList.filter(
-        (district) => district.upazilla_id === id
-      );
-      setfilterunionlist(filteredDistricts);
+    const filteredDistricts = unionList.filter(
+      (district) => district.upazilla_id === id
+    );
+    setfilterunionlist(filteredDistricts);
   }
 
   const [currentStep, setCurrentStep] = useState(1); // Step 1: Student Info, Step 2: Address Info
@@ -113,6 +154,7 @@ const SignupForm = ({ data, route, alertT }) => {
   const [studentNamebn, setStudentNamebn] = useState(
     data['student-profile'].name_bn
   );
+
   const [fatherName, setFatherName] = useState('');
   const [motherName, setMotherName] = useState('');
   const [religion, setReligion] = useState('');
@@ -142,11 +184,17 @@ const SignupForm = ({ data, route, alertT }) => {
   const validateStep1 = () => {
     const errors = {};
 
+    if (!fatherName) {
+      errors.religion = 'Please enter Your Father Name!';
+    }
+    if (!motherName) {
+      errors.religion = 'Please enter your Mother Name!';
+    }
     if (!religion) {
       errors.religion = 'Please tell us your Religion!';
     }
     if (!dateOfBirth) {
-      errors.dateOfBirth = 'Don’t forget to tell us your Birth Date!';
+      errors.dateOfBirth = 'Don not forget to tell us your Birth Date!';
     }
     if (!bloodGroup) {
       errors.bloodGroup = 'We need your blood group to know you better!';
@@ -179,32 +227,23 @@ const SignupForm = ({ data, route, alertT }) => {
   const validateStep2 = () => {
     const errors = {};
     if (!presentAddress) {
-      errors.presentAddress = 'Present address is required';
+      errors.presentAddress = 'Please Enter Present address.';
     }
-    if (!presentThana) {
-      errors.presentThana = 'Present Thana is required';
-    }
-    if (!presentDistrict) {
-      errors.presentDistrict = 'Present District is required';
-    }
-    if (!presentDivision) {
-      errors.presentDivision = 'Present Division is required';
-    }
-    if (!permanentAddress) {
-      errors.permanentAddress = 'Permanent address is required';
-    }
+
     if (!permanentThana) {
-      errors.permanentThana = 'Permanent Thana is required';
+      errors.permanentThana = 'Please Select Permanent Thana';
     }
     if (!permanentDistrict) {
-      errors.permanentDistrict = 'Permanent District is required';
+      errors.permanentDistrict = 'Please Select Permanent District';
     }
     if (!permanentDivision) {
-      errors.permanentDivision = 'Permanent Division is required';
+      errors.permanentDivision = 'Please Select Permanent Division';
     }
 
     return errors;
   };
+
+  const [loading, setLoading] = useState(false);
 
   const handleSignup = () => {
     if (currentStep === 1) {
@@ -222,34 +261,92 @@ const SignupForm = ({ data, route, alertT }) => {
       }
       // Prepare the data to be sent to the API
       const formData = {
+        reg,
+        pass,
+        netInfo,
+        deviceName,
+        osVersion,
+        lang,
+        statusBarHeight,
+        sessionId,
+        ipAddress,
+        device,
+        ticket,
         studentName,
         studentNamebn,
         fatherName,
         motherName,
-        religion,
+        phone,
+        email,
         dateOfBirth,
         bloodGroup,
         profilePhoto,
-        phone,
-        email,
+        religion,
         presentAddress,
-        presentThana,
-        presentDistrict,
-        presentDivision,
+        presentUnion,
         permanentAddress,
         permanentThana,
         permanentDistrict,
         permanentDivision,
+        hallName,
+        deptName,
+        session,
+        classRoll,
+        year,
+        semester,
+        receivedPhoto,
+        deptId,
+        hallId,
       };
 
-      // Call the function to send data to the API
-      sendFormDataToAPI(formData);
+      try {
+        setLoading(true);
+        axios
+          .get(serverURL + 'signup', { params: formData })
+          .then((response) => {
+            if (response.data.status === 200) {
+              handleLogin(response.data);
+            } else {
+              alertT('Something Went Wrong.');
+            }
+          })
+          .catch((error) => {
+            console.log('response error: ' + error);
+          });
+      } catch (error) {
+        console.log('catch error: ' + error);
+      }
+    }
+  };
+
+  const handleLogin = async (res) => {
+    try {
+      await AsyncStorage.setItem('reg', reg);
+      await AsyncStorage.setItem('token', JSON.stringify(res.token));
+      await AsyncStorage.setItem('photo', receivedPhoto);
+      await AsyncStorage.setItem('name', studentName);
+      await AsyncStorage.setItem('hall', hallName);
+      await AsyncStorage.setItem('dept', deptName);
+
+      setUserData([
+        reg,
+        res.token,
+        receivedPhoto,
+        studentName,
+        hallName,
+        deptName,
+      ]);
+      login(true);
+      
+    } catch (error) {
+      alertT('Login Error. ');
+      console.error(error);
     }
   };
 
   return (
     <KeyboardAwareScrollView>
-      <View>
+      <View style={{ marginBottom: 20 }}>
         {/* Profile Photo Upload */}
         <Box alignItems="center">
           <ProfileCard
@@ -269,46 +366,27 @@ const SignupForm = ({ data, route, alertT }) => {
             <Box style={styles.container}>
               <VStack space={4}>
                 <Badge colorScheme={'info'}>
-                  <Heading size={'sm'}>
+                  <Heading size={'sm'} textAlign={'center'}>
                     You need to save some essential information in Britto.
                   </Heading>
                 </Badge>
                 {/* Student Name */}
-                {!receivedPhoto && (
-                  <Badge colorScheme="info" alignSelf="center">
-                    {receivedPhoto}
-                  </Badge>
-                )}
-
-                <FormControl isInvalid={'studentName' in errors}>
-                  <FormControl.Label>Student Name (English)</FormControl.Label>
+                <FormControl isInvalid={'father' in errors}>
+                  <FormControl.Label>Father's Name</FormControl.Label>
                   <Input
-                    value={studentName}
-                    onChangeText={setStudentName}
-                    placeholder="Enter student name"
-                    isReadOnly
+                    style={styles.input}
+                    value={fatherName}
+                    onChangeText={setFatherName}
+                    placeholder="Enter Your Father's Name"
                   />
-                  {'studentName' in errors && (
-                    <FormControl.ErrorMessage>
-                      {errors.studentName}
-                    </FormControl.ErrorMessage>
-                  )}
                 </FormControl>
-
-                {/* Student Name in Bangla */}
-                <FormControl isInvalid={'studentNamebn' in errors}>
-                  <FormControl.Label>Student Name (Bangla)</FormControl.Label>
+                <FormControl isInvalid={'father' in errors}>
+                  <FormControl.Label>Mother's Name</FormControl.Label>
                   <Input
-                    value={studentNamebn}
-                    onChangeText={setStudentNamebn}
-                    isReadOnly
-                    placeholder="Enter student name in Bangla"
+                    value={motherName}
+                    onChangeText={setMotherName}
+                    placeholder="Enter Your Mother's Name"
                   />
-                  {'studentNamebn' in errors && (
-                    <FormControl.ErrorMessage>
-                      {errors.studentNamebn}
-                    </FormControl.ErrorMessage>
-                  )}
                 </FormControl>
                 {/* Phone */}
                 <FormControl isInvalid={'phone' in errors}>
@@ -318,7 +396,7 @@ const SignupForm = ({ data, route, alertT }) => {
                     onChangeText={setPhone}
                     keyboardType="phone-pad"
                     maxLength={11}
-                    placeholder="Enter Your Running Phone Number"
+                    placeholder="Enter Your Phone Number"
                   />
                   {'phone' in errors && (
                     <FormControl.ErrorMessage>
@@ -428,79 +506,6 @@ const SignupForm = ({ data, route, alertT }) => {
                 <Badge colorScheme={'info'}>
                   <Heading size={'sm'}>Present Address</Heading>
                 </Badge>
-                <FormControl isInvalid={'presentDivision' in errors}>
-                  <FormControl.Label>Present Division</FormControl.Label>
-                  <Select
-                    selectedValue={presentDivision}
-                    minWidth={200}
-                    accessibilityLabel="Select Present Division"
-                    placeholder="Select Present Division"
-                    onValueChange={(v) => selectDiv(v, setPresentDivision)}
-                    readOnly={true} // Prevent the keyboard from opening
-                  >
-                    {divisionList.map((division) => (
-                      <Select.Item
-                        key={division.id}
-                        label={division.name}
-                        value={division.id}
-                      />
-                    ))}
-                  </Select>
-
-                  {'presentDivision' in errors && (
-                    <FormControl.ErrorMessage>
-                      {errors.presentDivision}
-                    </FormControl.ErrorMessage>
-                  )}
-                </FormControl>
-                {/* Select Present District */}
-                <FormControl isInvalid={'presentDistrict' in errors}>
-                  <FormControl.Label>Present District</FormControl.Label>
-                  <Select
-                    selectedValue={presentDistrict}
-                    minWidth={200}
-                    accessibilityLabel="Select Present District"
-                    placeholder="Select Present District"
-                    readOnly={true} // Prevent the keyboard from opening
-                    onValueChange={(v) => selectDis(v, setPresentDistrict)}
-                  >
-                    {filteredDistrictList.map((district) => (
-                      <Select.Item
-                        key={district.id}
-                        label={district.name}
-                        value={district.id}
-                      />
-                    ))}
-                    <Select.Item label="Please Select Division First" />
-                  </Select>
-                </FormControl>
-
-                {/* Select Present Thana */}
-                <FormControl isInvalid={'presentThana' in errors}>
-                  <FormControl.Label>Present Thana</FormControl.Label>
-                  <Select
-                    selectedValue={presentThana}
-                    minWidth={200}
-                    accessibilityLabel="Select Present Thana"
-                    readOnly={true} // Prevent the keyboard from opening
-                    placeholder="Select Present Thana"
-                    onValueChange={(v) => selectTha(v, setPresentThana)}
-                  >
-                    {filterthanaList.map((thana) => (
-                      <Select.Item
-                        key={thana.id}
-                        label={thana.name}
-                        value={thana.id}
-                      />
-                    ))}
-                    <Select.Item label="Please Select District First" />
-                  </Select>
-                  {'presentThana' in errors && (
-                    <FormControl.ErrorMessage>
-                      {errors.presentThana}
-                    </FormControl.ErrorMessage>
-                  )}
-                </FormControl>
 
                 {/* Present Address */}
                 <FormControl isInvalid={'presentAddress' in errors}>
@@ -510,11 +515,6 @@ const SignupForm = ({ data, route, alertT }) => {
                     onChangeText={setPresentAddress}
                     placeholder="Hall Room No, House No, Road No ..."
                   />
-                  {'presentAddress' in errors && (
-                    <FormControl.ErrorMessage>
-                      {errors.presentAddress}
-                    </FormControl.ErrorMessage>
-                  )}
                 </FormControl>
                 <Divider />
                 <Badge colorScheme={'info'}>
@@ -644,9 +644,10 @@ const SignupForm = ({ data, route, alertT }) => {
 
                 <Button
                   onPress={handleSignup}
-                  disabled={Object.keys(errors).length > 0}
+                  disabled={loading}
+                  colorScheme={'blue'}
                 >
-                  Sign Up
+                  {loading ? <Spinner /> : 'Go To Dashboard'}
                 </Button>
               </VStack>
             </Box>
@@ -662,12 +663,18 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: '18%',
     padding: 16,
+    color: colorTwo,
   },
   profilePhoto: {
     width: 150,
     height: 150,
     borderRadius: 75,
     marginBottom: 10,
+  },
+  input: {
+    borderColor: colorOne,
+    borderWidth: 1,
+    borderRadius: 5,
   },
 });
 

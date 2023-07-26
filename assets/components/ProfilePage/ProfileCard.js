@@ -142,7 +142,13 @@ const ProfileCard = ({
                 />
               ) : (
                 <Image
-                  style={{ width: 80, height: 80, borderRadius: 38, borderWidth:1, borderColor:'white' }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 38,
+                    borderWidth: 1,
+                    borderColor: 'white',
+                  }}
                   source={{ uri: photoN ? photoN : photo }}
                   my={2}
                 />
@@ -150,7 +156,14 @@ const ProfileCard = ({
             </TouchableOpacity>
           ) : (
             <Image
-              style={{ width: 80, height: 80, borderRadius: 5 }}
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 5,
+                borderRadius: 38,
+                borderWidth: 1,
+                borderColor: 'white',
+              }}
               source={{ uri: photoN ? photoN : photo }}
               my={2}
             />

@@ -10,13 +10,25 @@ import {
 import Card from '../components/ProfileCard';
 import { bgColor } from '../../Global';
 import Header from '../components/AppHeader';
+import { Box, ScrollView } from 'native-base';
+import ProfileCard from '../components/ProfilePage/ProfileCard';
+import AppHeader from '../components/AppHeader';
 
-const Dashboard = ({ navigation, setLoggedIn, props }) => {
+const Dashboard = ({ navigation, setLoggedIn, props, setUserData }) => {
   return (
-    <View>
-      <View>
-        <Card />
-      </View>
+    <ScrollView>
+      <AppHeader title={"Dashboard"} />
+      <Box alignItems="center">
+        <ProfileCard
+          photo={setUserData[2]}
+          name={setUserData[3]}
+          dept={setUserData[5]}
+          hall={setUserData[4]}
+          id={null}
+          onPhotoReceived={null}
+        />
+      </Box>
+
       <View>
         <View style={styles.buttonBoxFull}>
           {/* FIRST ROW : PROFILE | EXAM */}
@@ -137,7 +149,7 @@ const Dashboard = ({ navigation, setLoggedIn, props }) => {
           }}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
