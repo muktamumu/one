@@ -446,8 +446,8 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                   <Select
                     selectedValue={bloodGroup}
                     minWidth={200}
-                    accessibilityLabel="Select Religion"
-                    placeholder="Select Religion"
+                    accessibilityLabel="Select Blood Group"
+                    placeholder="Select Blood Group"
                     readOnly={true} // Prevent the keyboard from opening
                     onValueChange={setBloodGroup}
                   >
@@ -480,7 +480,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                     onValueChange={setReligion}
                   >
                     <Select.Item label="Islam" value="1" />
-                    <Select.Item label="Hinduism" value="1" />
+                    <Select.Item label="Hinduism" value="2" />
                     <Select.Item label="Buddhism" value="3" />
                     <Select.Item label="Christianity" value="4" />
                     <Select.Item label="Other" value="0" />
@@ -564,6 +564,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                         key={district.id}
                         label={district.name}
                         value={district.id}
+                        readOnly={true} // Prevent the keyboard from opening
                       />
                     ))}
                     <Select.Item label="Please Select Division First" />
@@ -589,6 +590,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                       <Select.Item
                         key={thana.id}
                         label={thana.name}
+                    readOnly={true} // Prevent the keyboard from opening
                         value={thana.id}
                       />
                     ))}
@@ -597,33 +599,6 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                   {'permanentThana' in errors && (
                     <FormControl.ErrorMessage>
                       {errors.permanentThana}
-                    </FormControl.ErrorMessage>
-                  )}
-                </FormControl>
-
-                {/* Select Present Union */}
-                <FormControl isInvalid={'presentThana' in errors}>
-                  <FormControl.Label>Permanent Union</FormControl.Label>
-                  <Select
-                    selectedValue={presentUnion}
-                    readOnly={true} // Prevent the keyboard from opening
-                    minWidth={200}
-                    accessibilityLabel="Select Present Union"
-                    placeholder="Select Present Union"
-                    onValueChange={setPresentUnion}
-                  >
-                    {filterunionList.map((thana) => (
-                      <Select.Item
-                        key={thana.id}
-                        label={thana.name}
-                        value={thana.id}
-                      />
-                    ))}
-                    <Select.Item label="Please Select District First" />
-                  </Select>
-                  {'presentThana' in errors && (
-                    <FormControl.ErrorMessage>
-                      {errors.presentThana}
                     </FormControl.ErrorMessage>
                   )}
                 </FormControl>
