@@ -88,7 +88,7 @@ const SignupScreen = ({ navigation, setLoggedIn, route, setUserData }) => {
 
   return (
     <View>
-      <AppHeader title="Signup" />
+      <AppHeader title="Welcome" />
 
       {isLoading ? (
         <LoadingView />

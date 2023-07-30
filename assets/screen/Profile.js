@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Heading, HStack, VStack, View } from 'native-base';
-import { colorOne, colorTwo } from '../../Global';
+import { Heading, HStack, VStack, View, ScrollView } from 'native-base';
+import { colorOne, colorTwo, serverURL } from '../../Global';
 import AppHeader from '../components/AppHeader';
 import { ImageBackground, StyleSheet } from 'react-native';
 import { Dimensions, Pressable } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Box, Text, Center, Image, Skeleton } from 'native-base';
 import ProfileCard from '../components/ProfilePage/ProfileCard';
+import axios from 'axios';
 
 function Profile(navigation, setLoggedIn, result) {
   const [photo, setPhoto] = useState(
@@ -28,7 +29,22 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].ADMITTED_STUDENT_NAME}
+              {data[0].name_en}
+            </Text>
+          </VStack>
+        </HStack>
+        <HStack>
+          <VStack w={'40%'}>
+            <Text fontWeight="bold" style={styles.title}>
+              Student's Name (Bn)
+            </Text>
+          </VStack>
+          <VStack w={'10%'}>
+            <Text style={styles.colon}>:</Text>
+          </VStack>
+          <VStack w={'50%'}>
+            <Text fontWeight="bold" style={styles.value}>
+              {data[0].name_bn}
             </Text>
           </VStack>
         </HStack>
@@ -43,7 +59,7 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].ADMITTED_STUDENT_FATHERS_N}
+              {data[0].father_name}
             </Text>
           </VStack>
         </HStack>
@@ -58,7 +74,7 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].ADMITTED_STUDENT_MOTHERS_N}
+              {data[0].mother_name}
             </Text>
           </VStack>
         </HStack>
@@ -73,7 +89,7 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].ADMITTED_STUDENT_CONTACT_NO}
+              {data[0].phone}
             </Text>
           </VStack>
         </HStack>
@@ -88,7 +104,7 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].ADMITTED_STUDENT_EMAIL}
+              {data[0].email}
             </Text>
           </VStack>
         </HStack>
@@ -103,7 +119,7 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].ADMITTED_STUDENT_DOB}
+              {data[0].dob}
             </Text>
           </VStack>
         </HStack>
@@ -133,7 +149,7 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].RELIGION}
+              {data[0].dhormo}
             </Text>
           </VStack>
         </HStack>
@@ -148,22 +164,11 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].ADMITTED_STUDENT_GENDER}
-            </Text>
-          </VStack>
-        </HStack>
-        <HStack>
-          <VStack w={'40%'}>
-            <Text fontWeight="bold" style={styles.title}>
-              Parent's Income
-            </Text>
-          </VStack>
-          <VStack w={'10%'}>
-            <Text style={styles.colon}>:</Text>
-          </VStack>
-          <VStack w={'50%'}>
-            <Text fontWeight="bold" style={styles.value}>
-              {data[0].parents_income}
+              {data[0].gender === 1
+                ? 'Male'
+                : data[0].gender === 2
+                ? 'Female'
+                : 'Other'}
             </Text>
           </VStack>
         </HStack>
@@ -178,15 +183,7 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].present_house_no +
-                ',' +
-                data[0].present_post_office +
-                ',' +
-                data[0].present_upa_zilla +
-                ',' +
-                data[0].present_district +
-                ',' +
-                data[0].present_post_code}
+              {data[0].present_add}
             </Text>
           </VStack>
         </HStack>
@@ -201,15 +198,7 @@ function Profile(navigation, setLoggedIn, result) {
           </VStack>
           <VStack w={'50%'}>
             <Text fontWeight="bold" style={styles.value}>
-              {data[0].house_no +
-                ',' +
-                data[0].post_office +
-                ',' +
-                data[0].upa_zilla +
-                ',' +
-                data[0].district +
-                ',' +
-                data[0].post_code}
+              {data[0].present_add}
             </Text>
           </VStack>
         </HStack>
@@ -345,20 +334,46 @@ function Profile(navigation, setLoggedIn, result) {
   const [data, setData] = useState();
   const [final, setFinal] = useState();
 
+  const [reg, setReg] = useState();
+
   const checkLoginStatus = async () => {
-    setData(JSON.parse(await AsyncStorage.getItem('data')));
+        const r = await AsyncStorage.getItem('reg');
+        getProfileData(r);
+   // setData(JSON.parse(await AsyncStorage.getItem('data')));
     const ph = await AsyncStorage.getItem('photo');
+
     setPhoto(ph);
     if (!ph) {
       return false;
     }
+    getProfileData(r);
   };
+
+  async function getProfileData(reg) {
+    try {
+      const data = {
+        reg: reg,
+      };
+      axios
+        .get(serverURL + 'getProfileData', { params: data })
+        .then((response) => {
+          console.log(response.data);
+          setData(response.data['data']);
+        })
+        .catch((error) => {
+          console.log('Catch One : ' + error);
+        });
+    } catch (error) {
+    console.log('Catch Error : ' + error);
+
+    }
+  }
 
   useEffect(() => {
     checkLoginStatus();
   }, []);
 
-  const Example = () => {
+  const LoadingAnimation = () => {
     return (
       <Center>
         <VStack
@@ -390,11 +405,11 @@ function Profile(navigation, setLoggedIn, result) {
         <>
           <ProfileCard
             photo={photo}
-            name={data[0].STUDENT_BANGLA_NAME}
-            dept={data[0].SUBJECTS_TITLE}
-            hall={data[0].hall_title}
+            name={data[0].name_en}
+            dept={data[0].dept_name}
+            hall={data[0].hall_name}
           />
-          
+
           <TabView
             navigationState={{ index, routes }}
             renderScene={renderScene}
@@ -404,7 +419,7 @@ function Profile(navigation, setLoggedIn, result) {
           />
         </>
       ) : (
-        <Example />
+        <LoadingAnimation />
       )}
     </>
   );
