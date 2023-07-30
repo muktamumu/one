@@ -388,8 +388,6 @@ function Profile(navigation, setLoggedIn, result) {
 					} else {
 						handleShowAlert("error", response.data["message"]|| "Something Went Wrong!");
 					}
-
-          console.log(response.data["status"])
 				})
 				.catch((error) => {
           console.log(error)

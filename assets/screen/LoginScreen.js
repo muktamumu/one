@@ -65,8 +65,8 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
     setShowAlert(false);
   };
 
-  const [reg, setReg] = useState('2015614614');
-  const [pass, setPass] = useState('asdf@123');
+  const [reg, setReg] = useState("2017417693");
+  const [pass, setPass] = useState("597230ask");
   const [sName, setsName] = useState();
   function login() {
     if (netStatus) {
@@ -274,54 +274,54 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
   });
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require('../image/2212227897.jpg')}
-        style={styles.backgroundImage}
-      />
-      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-        <View style={styles.card}>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('../image/DU_APP_LogoBlue.png')}
-              style={styles.logoImage}
-            />
-          </View>
-          {!netStatus && <NoInternet />}
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholder="Registration Number"
-            placeholderTextColor="#999"
-            onChangeText={setReg}
-            value={reg}
-            maxLength={11}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#999"
-            secureTextEntry
-            onChangeText={setPass}
-            defaultValue="asdf@123"
-          />
+		<View style={styles.container}>
+			<Image
+				source={require("../image/2212227897.jpg")}
+				style={styles.backgroundImage}
+			/>
+			<KeyboardAwareScrollView contentContainerStyle={styles.container}>
+				<View style={styles.card}>
+					<View style={styles.logoContainer}>
+						<Image
+							source={require("../image/DU_APP_LogoBlue.png")}
+							style={styles.logoImage}
+						/>
+					</View>
+					{!netStatus && <NoInternet />}
+					<TextInput
+						style={styles.input}
+						keyboardType="numeric"
+						placeholder="Registration Number"
+						placeholderTextColor="#999"
+						onChangeText={setReg}
+						value={reg}
+						maxLength={11}
+					/>
+					<TextInput
+						style={styles.input}
+						placeholder="Password"
+						placeholderTextColor="#999"
+						secureTextEntry
+						onChangeText={setPass}
+						defaultValue={pass}
+					/>
 
-          <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
-            <Text style={styles.loginButtonText}>
-              {isLoading ? <LoadingSpinner /> : 'Login'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
-      {showAlert1 && (
-        <ShowAlert
-          status={alertType}
-          Tx={alertText}
-          onClose={handleCloseAlert}
-        />
-      )}
-    </View>
-  );
+					<TouchableOpacity style={styles.loginButton} onPress={() => login()}>
+						<Text style={styles.loginButtonText}>
+							{isLoading ? <LoadingSpinner /> : "Login"}
+						</Text>
+					</TouchableOpacity>
+				</View>
+			</KeyboardAwareScrollView>
+			{showAlert1 && (
+				<ShowAlert
+					status={alertType}
+					Tx={alertText}
+					onClose={handleCloseAlert}
+				/>
+			)}
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
