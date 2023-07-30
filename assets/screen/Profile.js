@@ -380,16 +380,23 @@ function Profile(navigation, setLoggedIn, result) {
 						setData(response.data["data"]);
 						setAddress(response.data["address"]);
 					} else if (response.data["status"] === 501) {
-						setLoggedIn(false);
+						console.log(response.data);
+            handleShowAlert(
+							"error",
+							response.data["message"] || "Something Went Wrong!!!"
+						);
 					} else {
-						handleShowAlert("error", "Something Went Wrong! ");
+						handleShowAlert("error", response.data["message"]|| "Something Went Wrong!");
 					}
+
+          console.log(response.data["status"])
 				})
 				.catch((error) => {
-					console.log("Catch One : " + error);
+          console.log(error)
+					handleShowAlert("error", "Something Went Wrong! ");
 				});
 		} catch (error) {
-			console.log("Catch Error : " + error);
+			handleShowAlert("error", "Something Went Wrong! ");
 		}
 	}
 
