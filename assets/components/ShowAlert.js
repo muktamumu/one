@@ -81,6 +81,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     marginLeft: 8,
+    marginRight: 8,
+    maxWidth:"80%"
   },
 });
 

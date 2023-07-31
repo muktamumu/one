@@ -17,7 +17,7 @@ import AppHeader from '../components/AppHeader';
 const Dashboard = ({ navigation, setLoggedIn, props, setUserData }) => {
   return (
     <ScrollView>
-      <AppHeader title={"Dashboard"} />
+      <AppHeader title={'Dashboard'} />
       <Box alignItems="center">
         <ProfileCard
           photo={setUserData[2]}
@@ -135,6 +135,44 @@ const Dashboard = ({ navigation, setLoggedIn, props, setUserData }) => {
                 style={styles.btnText}
               >
                 Notices
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* FOURTH ROW :  DEPT | HALL */}
+
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => navigation.navigate('DepartmentScreen')}
+            >
+              <Image
+                source={require('../image/icon/result.png')}
+                style={styles.btnImg}
+              />
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.btnText}
+              >
+                Department
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.eachButton}
+              onPress={() => navigation.navigate('NoticeScreen')}
+            >
+              <Image
+                source={require('../image/icon/result.png')}
+                style={styles.btnImg}
+              />
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.btnText}
+              >
+                Hall
               </Text>
             </TouchableOpacity>
           </View>
