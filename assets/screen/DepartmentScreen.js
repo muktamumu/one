@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Heading, HStack, VStack, View, ScrollView, Badge, Divider, Spacer } from 'native-base';
-import { bgColor, colorOne, colorTwo, serverURL } from '../../Global';
+import {
+  Heading,
+  VStack,
+  ScrollView,
+  Spacer,
+} from 'native-base';
+import { colorOne, colorTwo, serverURL } from '../../Global';
 import AppHeader from '../components/AppHeader';
-import { ImageBackground, StyleSheet } from 'react-native';
+import {  StyleSheet } from 'react-native';
 import { Dimensions, Pressable } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import { Box, Text, Center, Image, Skeleton } from 'native-base';
+import {
+  Box,
+  Center,
+  Skeleton,
+  Text,
+} from 'native-base';
 import ProfileCard from '../components/ProfilePage/ProfileCard';
 import axios from 'axios';
 import ShowAlert from '../components/ShowAlert';
-import { WebView } from 'react-native';
+import UserListItem from '../components/UserListItem';
 
 function DepartmentScreen(navigation, setLoggedIn, props) {
   const [showAlert1, setShowAlert] = useState(false);
@@ -30,7 +40,6 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
   const [photo, setPhoto] = useState(
     'https://v2.result.du.ac.bd/assets/student.png'
   );
-
 
   const FirstRoute = () => (
     <Center m="4">
@@ -52,70 +61,46 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
 
   const SecondRoute = () => (
     <Center m="4">
-      <VStack>
-        <HStack>
-          <VStack w={'40%'}>
-            <Text fontWeight="bold" style={styles.title}>
-              Registration
-            </Text>
-          </VStack>
-          <VStack w={'10%'}>
-            <Text style={styles.colon}>:</Text>
-          </VStack>
-          <VStack w={'50%'}>
-            <Text fontWeight="bold" style={styles.value}>
-              {data[0].reg_num}
-            </Text>
-          </VStack>
-        </HStack>
-        <HStack>
-          <VStack w={'40%'}>
-            <Text fontWeight="bold" style={styles.title}>
-              Session
-            </Text>
-          </VStack>
-          <VStack w={'10%'}>
-            <Text style={styles.colon}>:</Text>
-          </VStack>
-          <VStack w={'50%'}>
-            <Text fontWeight="bold" style={styles.value}>
-              {session}
-            </Text>
-          </VStack>
-        </HStack>
-        <HStack>
-          <VStack w={'40%'}>
-            <Text fontWeight="bold" style={styles.title}>
-              Department
-            </Text>
-          </VStack>
-          <VStack w={'10%'}>
-            <Text style={styles.colon}>:</Text>
-          </VStack>
-          <VStack w={'50%'}>
-            <Text fontWeight="bold" style={styles.value}>
-              {data[0].dept_name}
-            </Text>
-          </VStack>
-        </HStack>
-        <HStack>
-          <VStack w={'40%'}>
-            <Text fontWeight="bold" style={styles.title}>
-              Hall
-            </Text>
-          </VStack>
-          <VStack w={'10%'}>
-            <Text style={styles.colon}>:</Text>
-          </VStack>
-          <VStack w={'50%'}>
-            <Text fontWeight="bold" style={styles.value}>
-              {data[0].hall_name}
-            </Text>
-          </VStack>
-        </HStack>
-      </VStack>
+      <ScrollView minW={'100%'}>
+        {teacher.length > 0 ? (
+          teacher.map((t) => <UserListItem t={t} />)
+        ) : (
+            <Center>
+            <Text>No Teacher Found on the Server</Text>
+          </Center>
+        )}
+      </ScrollView>
     </Center>
   );
+
+  const ThirdRoute = () => (
+    <Center m="4">
+      <ScrollView minW={'100%'}>
+        {staff.length > 0 ? (
+          staff.map((t) => <UserListItem t={t} />)
+        ) : (
+          <Center>
+            <Text>No Staff Found on the Server</Text>
+          </Center>
+        )}
+      </ScrollView>
+    </Center>
+  );
+
+    const FiveRoute = () => (
+      <Center m="4">
+        <ScrollView minW={'100%'}>
+          {student.length > 0 ? (
+            student.map((t) => <UserListItem t={t} />)
+          ) : (
+            <Center>
+              <Text>No Staff Found on the Server</Text>
+            </Center>
+          )}
+        </ScrollView>
+      </Center>
+    );
+
 
   const [index, setIndex] = useState(0);
   function getTabData(i) {
@@ -129,11 +114,13 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
   const renderScene = SceneMap({
     first: FirstRoute,
     third: SecondRoute,
-    four: SecondRoute,
+    four: ThirdRoute,
+    second: FiveRoute,
   });
 
   const [routes] = useState([
     { key: 'first', title: 'Info' },
+    { key: 'second', title: 'Student' },
     { key: 'third', title: 'Teacher' },
     { key: 'four', title: 'Staff' },
   ]);
@@ -199,7 +186,11 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
     getDeptData(r);
   };
 
-    const [chobi, setChobi] = useState();
+  const [chobi, setChobi] = useState();
+  const [teacher, setteacher] = useState();
+  const [staff, setstaff] = useState();
+  const [student, setstudent] = useState();
+
   async function getDeptData(reg) {
     try {
       const data = {
@@ -207,13 +198,18 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
       };
       axios
         .get(serverURL + 'getDeptData', { params: data })
-          .then((response) => {
-              if (response.data['status'] === 200) {
-              setChobi(response.data['chobi']);
-              setData(response.data['data']);
+        .then((response) => {
+          if (response.data['status'] === 200) {
+            const emp = response.data['staff'];
+            if (emp.length > 0) {
+              setteacher(emp.filter((x) => x.EmpType === 'T'));
+              setstaff(emp.filter((x) => x.EmpType === 'O'));
+            }
+            setChobi(response.data['chobi']);
+            setData(response.data['data']);
+            setstudent(response.data['student']);
             setAddress(response.data['address']);
           } else if (response.data['status'] === 501) {
-            console.log(response.data);
             handleShowAlert(
               'error',
               response.data['message'] || 'Something Went Wrong!!!'
@@ -263,17 +259,17 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
     );
   };
 
-    function getYear(data) {
-        const arr = data.split('-');
-        return arr[2] + '-' + arr[1] + '-' + arr[0];
-    }
+  function getYear(data) {
+    const arr = data.split('-');
+    return arr[2] + '-' + arr[1] + '-' + arr[0];
+  }
   return (
     <>
       <AppHeader title="Department" />
       {data ? (
         <>
           <ProfileCard
-            photo={chobi}
+            photo={'null'}
             name={data[0].name}
             dept={'Established: ' + getYear(data[0].estyr)}
             hall={null}

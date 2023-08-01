@@ -155,18 +155,25 @@ const ProfileCard = ({
               )}
             </TouchableOpacity>
           ) : (
-            <Image
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 5,
-                borderRadius: 38,
-                borderWidth: 1,
-                borderColor: 'white',
-              }}
-              source={{ uri: photoN ? photoN : photo }}
-              my={2}
-            />
+            <>
+              {photo !== 'null' && (
+                <Image
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 5,
+                    borderRadius: 38,
+                    borderWidth: 1,
+                    borderColor: 'white',
+                    display: 'flex', // To ensure that the image takes up space even if hidden
+                    opacity: 1, // To ensure that the image is fully visible when not hidden
+                    // If you want to hide the image completely, you can use display: 'none' and opacity: 0
+                    marginVertical: 2,
+                  }}
+                  source={{ uri: photoN ? photoN : photo }}
+                />
+              )}
+            </>
           )}
 
           <VStack ml={5}>

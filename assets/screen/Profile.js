@@ -179,9 +179,9 @@ function Profile(navigation, setLoggedIn, result) {
 					</VStack>
 					<VStack w={"50%"}>
 						<Text fontWeight="bold" style={styles.value}>
-							{data[0].gender === 1
+							{data[0].gender === "1"
 								? "Male"
-								: data[0].gender === 2
+								: data[0].gender === "2"
 								? "Female"
 								: "Other"}
 						</Text>

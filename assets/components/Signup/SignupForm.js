@@ -165,6 +165,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({});
   const [receivedPhoto, setReceivedPhoto] = useState(null);
+  const [gender, setGender] = useState();
 
   const handleReceivedPhoto = (photo) => {
     setReceivedPhoto(photo);
@@ -297,6 +298,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
         receivedPhoto,
         deptId,
         hallId,
+        gender,
       };
 
       try {
@@ -380,7 +382,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                   />
                 </FormControl>
                 <FormControl isInvalid={'father' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Mother's Name</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Mother's Name
+                  </FormControl.Label>
                   <Input
                     value={motherName}
                     onChangeText={setMotherName}
@@ -389,7 +393,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                 </FormControl>
                 {/* Phone */}
                 <FormControl isInvalid={'phone' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Phone Number</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Phone Number
+                  </FormControl.Label>
                   <Input
                     value={phone}
                     onChangeText={setPhone}
@@ -405,7 +411,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                 </FormControl>
                 {/* Email */}
                 <FormControl isInvalid={'email' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Email Address</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Email Address
+                  </FormControl.Label>
                   <Input
                     value={email}
                     onChangeText={setEmail}
@@ -420,7 +428,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
 
                 {/* Date of Birth */}
                 <FormControl isInvalid={'dateOfBirth' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Date of Birth</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Date of Birth
+                  </FormControl.Label>
                   {/* Use a DatePicker component for easy date selection */}
                   <Input
                     value={dateOfBirth}
@@ -441,7 +451,33 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
 
                 {/* Blood Group */}
                 <FormControl isInvalid={'bloodGroup' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Blood Group</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Gender
+                  </FormControl.Label>
+                  <Select
+                    selectedValue={bloodGroup}
+                    minWidth={200}
+                    accessibilityLabel="Select Gender"
+                    placeholder="Select Gender"
+                    readOnly={true} // Prevent the keyboard from opening
+                    onValueChange={setGender}
+                  >
+                    <Select.Item label="Male" value="1" />
+                    <Select.Item label="Female" value="2" />
+                    <Select.Item label="Others" value="3" />
+                  </Select>
+                  {'bloodGroup' in errors && (
+                    <FormControl.ErrorMessage>
+                      {errors.bloodGroup}
+                    </FormControl.ErrorMessage>
+                  )}
+                </FormControl>
+
+                {/* Blood Group */}
+                <FormControl isInvalid={'bloodGroup' in errors}>
+                  <FormControl.Label style={styles.redLabel}>
+                    Blood Group
+                  </FormControl.Label>
                   <Select
                     selectedValue={bloodGroup}
                     minWidth={200}
@@ -469,7 +505,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
 
                 {/* Religion */}
                 <FormControl isInvalid={'religion' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Religion</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Religion
+                  </FormControl.Label>
                   <Select
                     selectedValue={religion}
                     minWidth={200}
@@ -508,7 +546,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
 
                 {/* Present Address */}
                 <FormControl isInvalid={'presentAddress' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Present Address</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Present Address
+                  </FormControl.Label>
                   <Input
                     value={presentAddress}
                     onChangeText={setPresentAddress}
@@ -524,7 +564,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
 
                 {/* Select Permanent Division */}
                 <FormControl isInvalid={'permanentDivision' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Permanent Division</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Permanent Division
+                  </FormControl.Label>
                   <Select
                     selectedValue={permanentDivision}
                     minWidth={200}
@@ -549,7 +591,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                 </FormControl>
                 {/* Select Permanent District */}
                 <FormControl isInvalid={'permanentDistrict' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Permanent District</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Permanent District
+                  </FormControl.Label>
                   <Select
                     selectedValue={permanentDistrict}
                     minWidth={200}
@@ -577,7 +621,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
 
                 {/* Select Permanent Thana */}
                 <FormControl isInvalid={'permanentThana' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Permanent Thana</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Permanent Thana
+                  </FormControl.Label>
                   <Select
                     selectedValue={permanentThana}
                     minWidth={200}
@@ -603,7 +649,9 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                 </FormControl>
 
                 <FormControl isInvalid={'permanentAddress' in errors}>
-                  <FormControl.Label style={styles.redLabel}>Street Address</FormControl.Label>
+                  <FormControl.Label style={styles.redLabel}>
+                    Street Address
+                  </FormControl.Label>
                   <Input
                     value={permanentAddress}
                     onChangeText={setPermanentAddress}
