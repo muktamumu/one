@@ -131,7 +131,7 @@ const ProfileCard = ({
           marginLeft: '10%',
         }}
       >
-        <HStack>
+        <HStack textAlign={'center'}>
           {id ? (
             <TouchableOpacity onPress={handlePhotoUpload}>
               {loading ? (
@@ -176,34 +176,65 @@ const ProfileCard = ({
             </>
           )}
 
-          <VStack ml={5}>
-            <Text
-              color={'muted.50'}
-              fontSize="xl"
-              shadow={2}
-              fontWeight="bold"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {name}
-            </Text>
-            <Text
-              color={'muted.200'}
-              fontSize="md"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {dept}
-            </Text>
-            <Text
-              color={'muted.200'}
-              fontSize="md"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {hall}
-            </Text>
-          </VStack>
+          {photo === 'null' ? (
+            <VStack alignItems={'center'} >
+              <Text
+                color={'muted.50'}
+                fontSize="xl"
+                shadow={2}
+                fontWeight="bold"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {name}
+              </Text>
+              <Text
+                color={'muted.200'}
+                fontSize="md"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {dept}
+              </Text>
+              <Text
+                color={'muted.200'}
+                fontSize="md"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {hall}
+              </Text>
+            </VStack>
+          ) : (
+            <VStack ml={5}>
+              <Text
+                color={'muted.50'}
+                fontSize="xl"
+                shadow={2}
+                fontWeight="bold"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {name}
+              </Text>
+              <Text
+                color={'muted.200'}
+                fontSize="md"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {dept}
+              </Text>
+              <Text
+                color={'muted.200'}
+                fontSize="md"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {hall}
+              </Text>
+            </VStack>
+          )}
         </HStack>
       </View>
     </ImageBackground>

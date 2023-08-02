@@ -161,7 +161,7 @@ const Dashboard = ({ navigation, setLoggedIn, props, setUserData }) => {
 
             <TouchableOpacity
               style={styles.eachButton}
-              onPress={() => navigation.navigate('NoticeScreen')}
+              onPress={() => navigation.navigate('HallScreen')}
             >
               <Image
                 source={require('../image/icon/result.png')}

@@ -14,6 +14,7 @@ import MarksheetScreen from './assets/screen/MarksheetScreen';
 import CertificateScreen from './assets/screen/CertificateScreen';
 import SignupScreen from './assets/screen/SignupScreen';
 import DepartmentScreen from './assets/screen/DepartmentScreen';
+import HallScreen from './assets/screen/HallScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -143,6 +144,18 @@ function App() {
               >
                 {(props) => (
                   <DepartmentScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setUserData={setUserData}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+
+              <Stack.Screen name="HallScreen" options={{ headerShown: false }}>
+                {(props) => (
+                  <HallScreen
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
