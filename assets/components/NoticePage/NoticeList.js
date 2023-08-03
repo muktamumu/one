@@ -25,7 +25,7 @@ import {
 } from '../../../Global';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-function MarksheetList({ setLoggedIn, index, data, title, icon }) {
+function NoticeList({ setLoggedIn, index, data, title, icon }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [loadingCourse, setLoadingCourse] = useState(false);
   const [message, setmessage] = useState(false);
@@ -43,7 +43,7 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
         .then((response) => {
           if (response.data.status === 200) {
             setCourses(response.data.result);
-            setmessage(response.data.message)
+            setmessage(response.data.message);
             setLoadingCourse(false);
           } else if (response.data.status === 201) {
             setLoadingCourse(false);
@@ -89,7 +89,11 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
               justifyContent="space-between"
             >
               <HStack space={2} flexShrink={1} alignItems="center">
-                <Ionicons name={icon ? icon : 'checkmark-circle'} size={24} color={colorTwo} />
+                <Ionicons
+                  name={icon ? icon : 'checkmark-circle'}
+                  size={24}
+                  color={colorTwo}
+                />
                 <Text
                   fontSize="md"
                   fontWeight="medium"
@@ -98,7 +102,7 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
                     color: 'coolGray.800',
                   }}
                   onPress={() =>
-                    toggleExpansion(data.reg_num, data.exam_roll, data.exam_id)
+                    toggleExpansion(data.desc, data.exam_roll, data.exam_id)
                   }
                 >
                   {title}
@@ -168,4 +172,4 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
   );
 }
 
-export default MarksheetList;
+export default NoticeList;

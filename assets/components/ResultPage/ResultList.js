@@ -104,7 +104,7 @@ function ResultList({setLoggedIn, index, data, title }) {
       paddingY={1}
       key={index}
     >
-      <Center w="96%">
+      <Center w="96%" key={index}>
         <Alert w="100%" bg={'white'} color={colorFour} key={index}>
           <VStack space={2} flexShrink={1} w="100%">
             <HStack
@@ -147,8 +147,8 @@ function ResultList({setLoggedIn, index, data, title }) {
               />
             </HStack>
             {isExpanded && (
-              <Box>
-                <HStack margin={'auto'} w="100%">
+              <Box key={index}>
+                <HStack margin={'auto'} w="100%" key={index}>
                   <Text
                     fontSize="sm"
                     mr={2}
@@ -243,8 +243,8 @@ function ResultList({setLoggedIn, index, data, title }) {
                 <Divider my={2} />
 
                 <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                  <Box>
-                    <HStack>
+                  <Box key={index}>
+                    <HStack key={index}>
                       <Box
                         w={50}
                         bg="gray.100"
@@ -400,8 +400,7 @@ function ResultList({setLoggedIn, index, data, title }) {
                     color={colorTwo}
                     textAlign={'left'}
                   >
-                    Supplementary Result Publication Date:{' '}
-                    {data.sup_date}
+                    Supplementary Result Publication Date: {data.sup_date}
                   </Text>
                 )}
               </Box>

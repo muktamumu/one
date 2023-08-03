@@ -60,50 +60,50 @@ const ExamScreen = ({ navigation, setLoggedIn, props }) => {
 
   return (
     <View>
-      <AppHeader title="Form Fill-up"/>
+      <AppHeader title="Form Fill-up" />
       <ScrollView>
         {allExam ? (
           allExam.map((exam) => (
             <>
-                <CustomAlert key={exam.id} data={exam} title={exam.EXAM_NAME} />
+              <CustomAlert key={exam.id} data={exam} title={exam.EXAM_NAME} />
             </>
           ))
         ) : (
-          <Center w="100%">
-            <HStack
-              w="90%"
-              maxW="400"
-              borderWidth="1"
-              space={8}
-              rounded="md"
-              _dark={{
-                borderColor: 'coolGray.500',
-              }}
-              _light={{
-                borderColor: 'coolGray.200',
-              }}
-              p="4"
+          <VStack>
+            <Box
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
             >
-              <Skeleton
-                flex="1"
-                h="50"
-                rounded="md"
-                startColor="coolGray.100"
-              />
-              <VStack flex="3" space="4">
-                <Skeleton startColor="amber.300" />
-                <HStack space="2" alignItems="center">
-                  <Skeleton size="5" rounded="full" />
-                  <Skeleton
-                    h="3"
-                    flex="1"
-                    rounded="full"
-                    startColor="indigo.300"
-                  />
-                </HStack>
-              </VStack>
-            </HStack>
-          </Center>
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+          </VStack>
         )}
       </ScrollView>
     </View>

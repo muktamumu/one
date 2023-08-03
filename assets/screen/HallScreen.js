@@ -31,9 +31,7 @@ function HallScreen(navigation, setLoggedIn, props) {
     <Center m="4">
       <ScrollView>
         <VStack>
-          <Text>
-            History of the Department : {'\n'}
-            {'\n'}
+          <Text textAlign={'justify'}>
             {data[0].history.replace(/<[^>]+>/g, '')}{' '}
           </Text>
         </VStack>
@@ -52,7 +50,7 @@ function HallScreen(navigation, setLoggedIn, props) {
           teacher.map((t) => <UserListItem t={t} />)
         ) : (
           <Center>
-            <Text>No Teacher Found on the Server</Text>
+            <Text textAlign={'justify'}>No Teacher Found on the Server</Text>
           </Center>
         )}
       </ScrollView>
@@ -175,12 +173,11 @@ function HallScreen(navigation, setLoggedIn, props) {
               setstaff(emp.filter((x) => x.EmpType === 'O'));
             }
             setData(response.data['data']);
-              setstudent(response.data['student']);
-              console.log(response.data['data']);
+            setstudent(response.data['student']);
           } else if (response.data['status'] === 501) {
             handleShowAlert(
               'error',
-              response.data['message'] || 'Something Went Wrong!!!'
+              response.data['message'] || 'Something Went Wrong!'
             );
           } else {
             handleShowAlert(
@@ -191,10 +188,10 @@ function HallScreen(navigation, setLoggedIn, props) {
         })
         .catch((error) => {
           console.log(error);
-          handleShowAlert('error', 'Something Went Wrong! ');
+          handleShowAlert('error', 'Something Went Wrong!');
         });
     } catch (error) {
-      handleShowAlert('error', 'Something Went Wrong! ');
+      handleShowAlert('error', 'Something Went Wrong!');
     }
   }
 
@@ -206,8 +203,7 @@ function HallScreen(navigation, setLoggedIn, props) {
     return (
       <Center>
         <VStack
-          w="90%"
-          maxW="400"
+          w="98%"
           borderWidth="1"
           space={8}
           overflow="hidden"

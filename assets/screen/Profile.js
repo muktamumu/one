@@ -406,8 +406,7 @@ function Profile(navigation, setLoggedIn, result) {
 		return (
 			<Center>
 				<VStack
-					w="90%"
-					maxW="400"
+					w="98%"
 					borderWidth="1"
 					space={8}
 					overflow="hidden"

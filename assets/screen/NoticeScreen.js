@@ -7,6 +7,7 @@ import AppHeader from '../components/AppHeader';
 import { serverURL } from '../../Global';
 import Toast from 'react-native-toast-message';
 import MarksheetList from '../components/MarksheetPage/MarksheetList';
+import NoticeList from '../components/NoticePage/NoticeList';
 
 const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
   useEffect(() => {
@@ -16,6 +17,7 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
   const [reg, setReg] = useState();
   const stuReg = async () => setReg(await AsyncStorage.getItem('reg'));
   const [allExam, setAllExam] = useState();
+  const [type, setType] = useState();
   const [noResult, setNoResut] = useState();
 
   async function checkForData() {
@@ -29,6 +31,7 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
         .then((response) => {
           if (response.data.status === 200) {
             setAllExam(response.data.result);
+            setType(response.data.type);
           } else if (response.data.status === 201) {
             setNoResut(response.data.message);
           } else if (response.data.status === 500) {
@@ -36,11 +39,11 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
           } else if (response.data.status === 501) {
             setLoggedIn(false);
           } else {
-            Toast.error('Something Went Wrong (MP63)');
+            Toast.error('Something Went Wrong (NP41)');
           }
         })
         .catch((error) => {
-          console.error('Something Went Wrong (MP67).');
+          console.error('Something Went Wrong (NP45).');
         });
     } else {
       setReg(await AsyncStorage.getItem('reg'));
@@ -67,12 +70,13 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
         {allExam ? (
           allExam.map((exam, index) => (
             <>
-              <MarksheetList
+              <NoticeList
                 key={index}
                 setLoggedIn={setLoggedIn}
                 index={index}
                 data={exam}
-                title={exam.exam_title}
+                title={exam.text}
+                icon="notifications-circle"
               />
             </>
           ))

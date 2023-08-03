@@ -45,7 +45,7 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
     <Center m="4">
       <ScrollView>
         <VStack>
-          <Text>
+          <Text textAlign={'justify'}>
             History of the Department : {'\n'}
             {'\n'}
             {data[0].history.replace(/<[^>]+>/g, '')}{' '}
@@ -53,7 +53,9 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
         </VStack>
         <Spacer m={2} />
         <VStack>
-          <Text>{data[0].mission_vision.replace(/<[^>]+>/g, '')} </Text>
+          <Text textAlign={'justify'}>
+            {data[0].mission_vision.replace(/<[^>]+>/g, '')}{' '}
+          </Text>
         </VStack>
       </ScrollView>
     </Center>
@@ -238,8 +240,7 @@ function DepartmentScreen(navigation, setLoggedIn, props) {
     return (
       <Center>
         <VStack
-          w="90%"
-          maxW="400"
+          w="98%"
           borderWidth="1"
           space={8}
           overflow="hidden"

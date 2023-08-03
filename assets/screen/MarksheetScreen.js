@@ -57,7 +57,7 @@ const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
 
   return (
     <View>
-      <AppHeader title="Marksheet"/>
+      <AppHeader title="Marksheet" />
       <ScrollView>
         {noResult && (
           <Box
@@ -81,6 +81,7 @@ const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
                 index={index}
                 data={exam}
                 title={exam.exam_title}
+                icon="checkmark-circle"
               />
             </>
           ))
