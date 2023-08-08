@@ -107,7 +107,67 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
               <Skeleton height={12} />
             </Box>
             <Box
+              key={9}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              key={103}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
               key={3}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              key={11}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              key={12}
+              bg="white"
+              p={2}
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="gray.300"
+              mx={2}
+              mb={2}
+            >
+              <Skeleton height={12} />
+            </Box>
+            <Box
+              key={13}
               bg="white"
               p={2}
               borderRadius={8}

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
-  ScrollView,
   Stack,
   Text,
   Alert,
@@ -11,57 +10,36 @@ import {
   Center,
   IconButton,
   Box,
-  Heading,
-  Skeleton,
   Badge,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import {
-  colorFour,
   colorOne,
-  colorThree,
   colorTwo,
   serverURL,
 } from '../../../Global';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { getTimeAge } from '../../../utils/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function NoticeList({ setLoggedIn, index, data, title, icon }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [loadingCourse, setLoadingCourse] = useState(false);
-  const [message, setmessage] = useState(false);
 
-  const toggleExpansion = async (reg, roll, examID) => {
-    setLoadingCourse(true);
-    if ((reg, roll, examID)) {
+  const toggleExpansion = async (desc, id) => {
+    if ((desc, id)) {
+      const reg = await AsyncStorage.getItem('reg');
+      const token = await AsyncStorage.getItem('token');
+
+      setCourses(desc);
       const toSend = {
         reg: reg,
-        roll: roll,
-        exam_id: examID,
+        token: token,
+        noticeId: id,
       };
       axios
-        .get(serverURL + 'getMarksheetDetails', { params: toSend })
-        .then((response) => {
-          if (response.data.status === 200) {
-            setCourses(response.data.result);
-            setmessage(response.data.message);
-            setLoadingCourse(false);
-          } else if (response.data.status === 201) {
-            setLoadingCourse(false);
-            setmessage(response.data.message);
-          } else if (response.data.status === 500) {
-            setmessage(response.data.message);
-            setCourses('No Information Found.');
-            Toast.error(response.data.message);
-          } else if (response.data.status === 501) {
-            setLoadingCourse(false);
-            setLoggedIn(false);
-          } else {
-            Toast.error(response.data.message);
-          }
-        })
-        .catch((error) => {
-          Toast.error('Something Went Wrong (ML63).');
-        });
+        .get(serverURL + 'addToNoticeViewHistory', { params: toSend })
+        .then((response) => {})
+        .catch((error) => {});
     } else {
       Toast.error('Something Went Wrong (ML66).');
     }
@@ -80,30 +58,30 @@ function NoticeList({ setLoggedIn, index, data, title, icon }) {
       key={index}
     >
       <Center w="96%" key={index}>
-        <Alert w="100%" bg={'white'} color={colorFour} key={index}>
+        <Alert w="100%" bg={'white'} color={colorOne} key={index}>
           <VStack space={2} flexShrink={1} w="100%" key={index}>
             <HStack
               flexShrink={1}
               space={2}
               alignItems="center"
               justifyContent="space-between"
+              key={index}
             >
               <HStack space={2} flexShrink={1} alignItems="center">
                 <Ionicons
                   name={icon ? icon : 'checkmark-circle'}
                   size={24}
-                  color={colorTwo}
+                  color={colorOne}
                 />
+
                 <Text
                   fontSize="md"
                   fontWeight="medium"
-                  color={colorTwo}
+                  color={colorOne}
                   _dark={{
                     color: 'coolGray.800',
                   }}
-                  onPress={() =>
-                    toggleExpansion(data.desc, data.exam_roll, data.exam_id)
-                  }
+                  onPress={() => toggleExpansion(data.description, data.id)}
                 >
                   {title}
                 </Text>
@@ -120,51 +98,46 @@ function NoticeList({ setLoggedIn, index, data, title, icon }) {
                   size: 18,
                   color: 'coolGray.600',
                 }}
-                onPress={() =>
-                  toggleExpansion(data.reg_num, data.exam_roll, data.exam_id)
-                }
+                onPress={() => toggleExpansion(data.description, data.id)}
               />
             </HStack>
             {isExpanded && (
-              <Box>
+              <Box marginX={'8%'}>
                 {courses && (
-                  <HStack margin={'auto'} w="100%">
-                    <Text
-                      fontSize="sm"
-                      mr={2}
-                      color={colorTwo}
-                      w={'40%'}
-                      textAlign={'right'}
-                    >
-                      {courses}{' '}
-                    </Text>
-                    <Text w={'10%'} textAlign={'center'}>
-                      |
-                    </Text>
-                    <Text
-                      fontSize="sm"
-                      mr={2}
-                      color={colorTwo}
-                      w={'40%'}
-                      textAlign={'left'}
-                    >
-                      {'  Memo: ' + data.result_memo}
+                  <HStack margin={'auto'} w="100%" key={index}>
+                    <Text fontSize="sm" color={colorTwo}>
+                      {courses}
                     </Text>
                   </HStack>
                 )}
 
                 <Divider my={2} />
-                {message && (
-                  <Badge
-                    colorScheme="info"
-                    alignSelf="center"
-                    variant={'subtle'}
-                  >
-                    {message}
-                  </Badge>
-                )}
               </Box>
             )}
+            <HStack justifyContent="flex-end" marginX={'8%'}>
+              <Badge
+                colorScheme={data.color || 'primary'}
+                mr={2}
+                leftIcon={
+                  <Ionicons
+                    name={'bookmark'}
+                    size={10}
+                    color={data.color || 'primary'}
+                  />
+                }
+              >
+                {data.name}
+              </Badge>
+
+              <Badge
+                colorScheme={'primary'}
+                leftIcon={
+                  <Ionicons name={'time'} size={10} color={'primary'} />
+                }
+              >
+                {getTimeAge(data.dateTime)}
+              </Badge>
+            </HStack>
           </VStack>
         </Alert>
       </Center>

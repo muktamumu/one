@@ -11,6 +11,8 @@ export const colorOne = '#2F1B72';
 export const colorTwo = '#1B1C50';
 export const colorThree = '#3F1B72';
 export const colorFour = '#1B4F72';
+export const colorFive = '#565676';
+
 
 export const serverURL = "https://v2.result.du.ac.bd/app/";
 export const rootURL = "https://v2.result.du.ac.bd/";

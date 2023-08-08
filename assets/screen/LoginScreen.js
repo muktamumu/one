@@ -37,8 +37,15 @@ const deviceName = Constants.deviceName + ' - ' + Constants.deviceModel + '';
 const statusBarHeight = Constants.statusBarHeight;
 const sessionId = Constants.sessionId;
 const lang = Localization.locale;
+const appVersion = Constants.manifest.version;
+
+
 
 const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
+
+  const [location, setLocation] = useState(null);
+
+
   const [netStatus, setNetStatus] = useState(false);
   const [netInfo, setnetInfo] = useState();
   const [ipAddress, setipAddress] = useState();
@@ -151,6 +158,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
         sessionId: sessionId,
         ipAddress: ipAddress,
         device: JSON.stringify(Device),
+        version: appVersion,
       };
       axios
         .get(serverURL + 'checkForLogin', { params: data })
@@ -292,7 +300,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
           <TextInput
             style={styles.input}
             keyboardType="numeric"
-            placeholder="Registration Number"
+            placeholder={'Registration Number'}
             placeholderTextColor="#999"
             onChangeText={setReg}
             value={reg}
@@ -306,7 +314,6 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
             onChangeText={setPass}
             defaultValue={pass}
           />
-
           <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
             <Text style={styles.loginButtonText}>
               {isLoading ? <LoadingSpinner /> : 'Login'}
