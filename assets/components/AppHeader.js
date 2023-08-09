@@ -45,7 +45,7 @@ const AppHeader = ({title}) => {
         </>
       )}
 
-      <Image source={require('../image/DU_APP_Logo.png')} style={styles.logo} />
+      <Image source={require('../image/Britto.png')} style={styles.logo} />
     </View>
   );
 };

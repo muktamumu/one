@@ -292,7 +292,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
         <View style={styles.card}>
           <View style={styles.logoContainer}>
             <Image
-              source={require('../image/DU_APP_LogoBlue.png')}
+              source={require('../image/Britto.png')}
               style={styles.logoImage}
             />
           </View>
