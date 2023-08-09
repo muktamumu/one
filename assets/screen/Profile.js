@@ -51,7 +51,7 @@ function Profile(navigation, setLoggedIn, result) {
 				<HStack>
 					<VStack w={"40%"}>
 						<Text fontWeight="bold" style={styles.title}>
-							Student's Name (Bn)
+							Student's Name (Bangla)
 						</Text>
 					</VStack>
 					<VStack w={"10%"}>

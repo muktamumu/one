@@ -17,16 +17,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LoadingSpinner from '../components/LoadingSpinner';
-import {
-  Alert,
-  Center,
-  HStack,
-  IconButton,
-  VStack,
-  CloseIcon,
-  useToast,
-  Divider,
-} from 'native-base';
+
 import * as Device from 'expo-device';
 import ShowAlert from '../components/ShowAlert';
 
@@ -37,13 +28,9 @@ const deviceName = Constants.deviceName + ' - ' + Constants.deviceModel + '';
 const statusBarHeight = Constants.statusBarHeight;
 const sessionId = Constants.sessionId;
 const lang = Localization.locale;
-const appVersion = Constants.manifest.version;
-
-
+const appVersion = Constants.expoConfig.version || 1;
 
 const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
-
-  const [location, setLocation] = useState(null);
 
 
   const [netStatus, setNetStatus] = useState(false);
@@ -54,9 +41,6 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
   const checkNetworkConnectivity = async () => {
     const netInfoState = await NetInfo.fetch();
     setNetStatus(netInfoState.isConnected);
-    setnetInfo(JSON.stringify(netInfoState));
-    setipAddress(netInfoState.details.ipAddress);
-
   };
 
   const [showAlert1, setShowAlert] = useState(false);
@@ -314,6 +298,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
             onChangeText={setPass}
             defaultValue={pass}
           />
+
           <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
             <Text style={styles.loginButtonText}>
               {isLoading ? <LoadingSpinner /> : 'Login'}

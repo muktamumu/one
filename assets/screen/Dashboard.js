@@ -13,8 +13,20 @@ import Header from '../components/AppHeader';
 import { Box, ScrollView } from 'native-base';
 import ProfileCard from '../components/ProfilePage/ProfileCard';
 import AppHeader from '../components/AppHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Dashboard = ({ navigation, setLoggedIn, props, setUserData }) => {
+
+  const logOut = async () => {
+    try {
+      await AsyncStorage.clear();
+      setLoggedIn(false)
+    } catch (error) {
+      console.error('Error clearing AsyncStorage data:', error);
+    }
+  };
+
+
   return (
     <ScrollView>
       <AppHeader title={'Dashboard'} />
@@ -183,7 +195,7 @@ const Dashboard = ({ navigation, setLoggedIn, props, setUserData }) => {
         <Button
           title="Logout"
           onPress={() => {
-            setLoggedIn(false);
+            logOut();
           }}
         />
       </View>
@@ -202,7 +214,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     overflow: 'visible',
     color: 'black',
-    fontWeight: 600,
   },
   eachButton: {
     flexDirection: 'row',

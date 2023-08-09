@@ -15,6 +15,11 @@ import CertificateScreen from './assets/screen/CertificateScreen';
 import SignupScreen from './assets/screen/SignupScreen';
 import DepartmentScreen from './assets/screen/DepartmentScreen';
 import HallScreen from './assets/screen/HallScreen';
+import Constants from 'expo-constants';
+import NetInfo from '@react-native-community/netinfo';
+import NoInternet from './assets/components/NoInternet';
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +28,24 @@ function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState([]);
   const [reg, setReg] = useState();
+  const [netStatus, setNetStatus] = useState(true);
+  const appVersion = Constants.expoConfig.version || 1;
+
+    const checkNetworkConnectivity = async () => {
+      const netInfoState = await NetInfo.fetch();
+      setNetStatus(netInfoState.isConnected);
+      checkLoginStatus();
+  };
+  
+  async function checkLoginStatus() {
+    const r = await AsyncStorage.getItem('reg')
+    if (r) {
+      setReg(r);
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }
 
   const theme = extendTheme({
     colors: {
@@ -44,11 +67,16 @@ function App() {
   });
 
 
+  useEffect(() => {
+    checkNetworkConnectivity();
+  });
+
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator>
-          {isLoggedIn ? (
+          {!netStatus && <NoInternet />}
+          {netStatus && isLoggedIn ? (
             <>
               <Stack.Screen name="Dashboard" options={{ headerShown: false }}>
                 {(props) => (
