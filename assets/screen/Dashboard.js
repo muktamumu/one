@@ -28,7 +28,7 @@ const Dashboard = ({ navigation, setLoggedIn, props, setUserData }) => {
 
 
   return (
-    <ScrollView>
+    <>
       <AppHeader title={'Dashboard'} />
       <Box alignItems="center">
         <ProfileCard
@@ -40,166 +40,205 @@ const Dashboard = ({ navigation, setLoggedIn, props, setUserData }) => {
           onPhotoReceived={null}
         />
       </Box>
+      <ScrollView>
+        <View>
+          <View style={styles.buttonBoxFull}>
+            {/* FIRST ROW : PROFILE | EXAM */}
 
-      <View>
-        <View style={styles.buttonBoxFull}>
-          {/* FIRST ROW : PROFILE | EXAM */}
-
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => navigation.navigate('Profile')}
-            >
-              <Image
-                source={require('../image/icon/proBlue.png')}
-                style={styles.btnImg}
-              />
-              <Text style={styles.btnText}>Profile</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => navigation.navigate('ExamScreen')}
-            >
-              <Image
-                source={require('../image/icon/fromFill.png')}
-                style={styles.btnImg}
-              />
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={styles.btnText}
+            <View style={styles.row}>
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('Profile')}
               >
-                Exam
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Image
+                  source={require('../image/icon/proBlue.png')}
+                  style={styles.btnImg}
+                />
+                <Text style={styles.btnText}>Profile</Text>
+              </TouchableOpacity>
 
-          {/* SECOND ROW : RESULT | MARKSHEET */}
-
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => navigation.navigate('ResultScreen')}
-            >
-              <Image
-                source={require('../image/icon/result.png')}
-                style={styles.btnImg}
-              />
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={styles.btnText}
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('ExamScreen')}
               >
-                Result
-              </Text>
-            </TouchableOpacity>
+                <Image
+                  source={require('../image/icon/fromFill.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Exam
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => navigation.navigate('MarksheetScreen')}
-            >
-              <Image
-                source={require('../image/icon/result.png')}
-                style={styles.btnImg}
-              />
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={styles.btnText}
+            {/* SECOND ROW : RESULT | MARKSHEET */}
+
+            <View style={styles.row}>
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('ResultScreen')}
               >
-                Marksheet
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Image
+                  source={require('../image/icon/result.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Result
+                </Text>
+              </TouchableOpacity>
 
-          {/* THIRD ROW :  CERTIFICATE | NOTICE */}
-
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => navigation.navigate('CertificateScreen')}
-            >
-              <Image
-                source={require('../image/icon/result.png')}
-                style={styles.btnImg}
-              />
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={styles.btnText}
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('MarksheetScreen')}
               >
-                Certificate
-              </Text>
-            </TouchableOpacity>
+                <Image
+                  source={require('../image/icon/result.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Marksheet
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => navigation.navigate('NoticeScreen')}
-            >
-              <Image
-                source={require('../image/icon/result.png')}
-                style={styles.btnImg}
-              />
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={styles.btnText}
+            {/* THIRD ROW :  CERTIFICATE | NOTICE */}
+
+            <View style={styles.row}>
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('CertificateScreen')}
               >
-                Notices
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Image
+                  source={require('../image/icon/result.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Certificate
+                </Text>
+              </TouchableOpacity>
 
-          {/* FOURTH ROW :  DEPT | HALL */}
-
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => navigation.navigate('DepartmentScreen')}
-            >
-              <Image
-                source={require('../image/icon/result.png')}
-                style={styles.btnImg}
-              />
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={styles.btnText}
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('NoticeScreen')}
               >
-                Department
-              </Text>
-            </TouchableOpacity>
+                <Image
+                  source={require('../image/icon/result.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Notices
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity
-              style={styles.eachButton}
-              onPress={() => navigation.navigate('HallScreen')}
-            >
-              <Image
-                source={require('../image/icon/result.png')}
-                style={styles.btnImg}
-              />
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={styles.btnText}
+            {/* FOURTH ROW :  DEPT | HALL */}
+
+            <View style={styles.row}>
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('DepartmentScreen')}
               >
-                Hall
-              </Text>
-            </TouchableOpacity>
+                <Image
+                  source={require('../image/icon/result.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Department
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('HallScreen')}
+              >
+                <Image
+                  source={require('../image/icon/result.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Hall
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* FIVE ROW :  SYLLABUS | - */}
+
+            <View style={styles.row}>
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('SyllabusScreen')}
+              >
+                <Image
+                  source={require('../image/icon/result.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Syllabus
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.eachButton}
+                onPress={() => navigation.navigate('HallScreen')}
+              >
+                <Image
+                  source={require('../image/icon/result.png')}
+                  style={styles.btnImg}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                  style={styles.btnText}
+                >
+                  Hall
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Button
-          title="Logout"
-          onPress={() => {
-            logOut();
-          }}
-        />
-      </View>
-    </ScrollView>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Button
+            title="Logout"
+            onPress={() => {
+              logOut();
+            }}
+          />
+        </View>
+      </ScrollView>
+    </>
   );
 };
 

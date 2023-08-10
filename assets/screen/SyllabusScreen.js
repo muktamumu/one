@@ -6,9 +6,10 @@ import { VStack, Box, Skeleton, ScrollView } from 'native-base';
 import AppHeader from '../components/AppHeader';
 import { serverURL } from '../../Global';
 import Toast from 'react-native-toast-message';
+import MarksheetList from '../components/MarksheetPage/MarksheetList';
 import NoticeList from '../components/NoticePage/NoticeList';
 
-const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
+const SyllabusScreen = ({ navigation, setLoggedIn, props }) => {
   useEffect(() => {
     checkForData();
   }, []);
@@ -51,7 +52,7 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
 
   return (
     <View>
-      <AppHeader title="Notices" />
+      <AppHeader title="Syllabus" />
       <ScrollView>
         {noResult && (
           <Box
@@ -188,4 +189,4 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
 
 const styles = {};
 
-export default NoticeScreen;
+export default SyllabusScreen;

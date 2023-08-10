@@ -18,29 +18,33 @@ import HallScreen from './assets/screen/HallScreen';
 import Constants from 'expo-constants';
 import NetInfo from '@react-native-community/netinfo';
 import NoInternet from './assets/components/NoInternet';
-
-
+import SyllabusScreen from './assets/screen/SyllabusScreen';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
-  
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState([]);
   const [reg, setReg] = useState();
   const [netStatus, setNetStatus] = useState(true);
   const appVersion = Constants.expoConfig.version || 1;
 
-    const checkNetworkConnectivity = async () => {
-      const netInfoState = await NetInfo.fetch();
-      setNetStatus(netInfoState.isConnected);
-      checkLoginStatus();
+  const checkNetworkConnectivity = async () => {
+    const netInfoState = await NetInfo.fetch();
+    setNetStatus(netInfoState.isConnected);
+    checkLoginStatus();
   };
-  
+
   async function checkLoginStatus() {
-    const r = await AsyncStorage.getItem('reg')
+    const r = await AsyncStorage.getItem('reg');
+    const token = await AsyncStorage.getItem('token');
+    const photo = await AsyncStorage.getItem('photo');
+    const name = await AsyncStorage.getItem('name');
+    const hall = await AsyncStorage.getItem('hall');
+    const dept = await AsyncStorage.getItem('dept');
     if (r) {
       setReg(r);
+      setUserData([r, token, photo, name, hall, dept]);
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
@@ -65,7 +69,6 @@ function App() {
       },
     },
   });
-
 
   useEffect(() => {
     checkNetworkConnectivity();
@@ -184,6 +187,21 @@ function App() {
               <Stack.Screen name="HallScreen" options={{ headerShown: false }}>
                 {(props) => (
                   <HallScreen
+                    {...props}
+                    navigation={props.navigation}
+                    setLoggedIn={setLoggedIn}
+                    setUserData={setUserData}
+                    setReg={setReg}
+                  />
+                )}
+              </Stack.Screen>
+
+              <Stack.Screen
+                name="SyllabusScreen"
+                options={{ headerShown: false }}
+              >
+                {(props) => (
+                  <SyllabusScreen
                     {...props}
                     navigation={props.navigation}
                     setLoggedIn={setLoggedIn}
