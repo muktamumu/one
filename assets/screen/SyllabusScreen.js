@@ -6,8 +6,7 @@ import { VStack, Box, Skeleton, ScrollView } from 'native-base';
 import AppHeader from '../components/AppHeader';
 import { serverURL } from '../../Global';
 import Toast from 'react-native-toast-message';
-import MarksheetList from '../components/MarksheetPage/MarksheetList';
-import NoticeList from '../components/NoticePage/NoticeList';
+import SyllabusList from '../components/SyllabusPage/SyllabusList';
 
 const SyllabusScreen = ({ navigation, setLoggedIn, props }) => {
   useEffect(() => {
@@ -27,24 +26,24 @@ const SyllabusScreen = ({ navigation, setLoggedIn, props }) => {
         reg: reg,
       };
       axios
-        .get(serverURL + 'getAllNotices', { params: toSend })
-        .then((response) => {
-          if (response.data.status === 200) {
-            setAllExam(response.data.result);
-            setType(response.data.type);
-          } else if (response.data.status === 201) {
-            setNoResut(response.data.message);
-          } else if (response.data.status === 500) {
-            Toast.error(response.data.message);
-          } else if (response.data.status === 501) {
-            setLoggedIn(false);
-          } else {
-            Toast.error('Something Went Wrong (NP41)');
-          }
-        })
-        .catch((error) => {
-          console.error('Something Went Wrong (NP45).');
-        });
+				.get(serverURL + "getSyllabus", { params: toSend })
+				.then((response) => {
+					if (response.data.status === 200) {
+            console.log(response.data)
+						setAllExam(response.data.syllabus);
+					} else if (response.data.status === 201) {
+						setNoResut(response.data.message);
+					} else if (response.data.status === 500) {
+						Toast.error(response.data.message);
+					} else if (response.data.status === 501) {
+						setLoggedIn(false);
+					} else {
+						Toast.error("Something Went Wrong (NP41)");
+					}
+				})
+				.catch((error) => {
+					console.error("Something Went Wrong (NP45).");
+				});
     } else {
       setReg(await AsyncStorage.getItem('reg'));
     }
@@ -70,13 +69,13 @@ const SyllabusScreen = ({ navigation, setLoggedIn, props }) => {
         {allExam ? (
           allExam.map((exam, index) => (
             <>
-              <NoticeList
+              <SyllabusList
                 key={index}
                 setLoggedIn={setLoggedIn}
                 index={index}
                 data={exam}
-                title={exam.text}
-                icon="notifications-circle"
+                title={exam.title}
+                icon="book"
               />
             </>
           ))

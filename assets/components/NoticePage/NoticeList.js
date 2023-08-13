@@ -49,100 +49,99 @@ function NoticeList({ setLoggedIn, index, data, title, icon }) {
   const [courses, setCourses] = useState();
 
   return (
-    <Stack
-      space={3}
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      paddingY={1}
-      key={index}
-    >
-      <Center w="96%" key={index}>
-        <Alert w="100%" bg={'white'} color={colorOne} key={index}>
-          <VStack space={2} flexShrink={1} w="100%" key={index}>
-            <HStack
-              flexShrink={1}
-              space={2}
-              alignItems="center"
-              justifyContent="space-between"
-              key={index}
-            >
-              <HStack space={2} flexShrink={1} alignItems="center">
-                <Ionicons
-                  name={icon ? icon : 'checkmark-circle'}
-                  size={24}
-                  color={colorOne}
-                />
+		<Stack
+			space={3}
+			flexDirection="column"
+			justifyContent="center"
+			alignItems="center"
+			paddingY={1}
+			key={index}
+		>
+			<Center w="96%" key={index}>
+				<Alert w="100%" bg={"white"} color={colorOne} key={index}>
+					<VStack space={2} flexShrink={1} w="100%" key={index}>
+						<HStack
+							flexShrink={1}
+							space={2}
+							alignItems="center"
+							justifyContent="space-between"
+							key={index}
+						>
+							<HStack space={2} flexShrink={1} alignItems="center">
+								<Ionicons
+									name={icon ? icon : "checkmark-circle"}
+									size={24}
+									color={colorOne}
+								/>
 
-                <Text
-                  fontSize="md"
-                  fontWeight="medium"
-                  color={colorOne}
-                  _dark={{
-                    color: 'coolGray.800',
-                  }}
-                  onPress={() => toggleExpansion(data.description, data.id)}
-                >
-                  {title}
-                </Text>
-              </HStack>
-              <IconButton
-                variant="unstyled"
-                color={colorTwo}
-                _focus={{
-                  borderWidth: 0,
-                }}
-                _icon={{
-                  as: isExpanded ? Ionicons : Ionicons,
-                  name: isExpanded ? 'chevron-up' : 'chevron-down',
-                  size: 18,
-                  color: 'coolGray.600',
-                }}
-                onPress={() => toggleExpansion(data.description, data.id)}
-              />
-            </HStack>
-            {isExpanded && (
-              <Box marginX={'8%'}>
-                {courses && (
-                  <HStack margin={'auto'} w="100%" key={index}>
-                    <Text fontSize="sm" color={colorTwo}>
-                      {courses}
-                    </Text>
-                  </HStack>
-                )}
+								<Text
+									fontSize="md"
+									fontWeight="medium"
+									color={colorOne}
+									_dark={{
+										color: "coolGray.800",
+									}}
+									onPress={() => toggleExpansion(data.description, data.id)}
+								>
+									{title}
+								</Text>
+							</HStack>
+							<IconButton
+								variant="unstyled"
+								color={colorTwo}
+								_focus={{
+									borderWidth: 0,
+								}}
+								_icon={{
+									as: isExpanded ? Ionicons : Ionicons,
+									name: isExpanded ? "chevron-up" : "chevron-down",
+									size: 18,
+									color: "coolGray.600",
+								}}
+								onPress={() => toggleExpansion(data.description, data.id)}
+							/>
+						</HStack>
+						{isExpanded && (
+							<Box marginX={"8%"}>
+								{courses && (
+									<HStack margin={"auto"} w="100%" key={index}>
+										<Text fontSize="sm" color={colorTwo}>
+											{courses}
+										</Text>
+									</HStack>
+								)}
 
-                <Divider my={2} />
-              </Box>
-            )}
-            <HStack justifyContent="flex-end" marginX={'8%'}>
-              <Badge
-                colorScheme={data.color || 'primary'}
-                mr={2}
-                leftIcon={
-                  <Ionicons
-                    name={'bookmark'}
-                    size={10}
-                    color={data.color || 'primary'}
-                  />
-                }
-              >
-                {data.name}
-              </Badge>
+								<Divider my={2} />
+							</Box>
+						)}
+						<HStack justifyContent="flex-end" marginX={"8%"}>
+							<Badge
+								colorScheme={data.color || "primary"}
+								mr={2}
+								leftIcon={
+									<Ionicons
+										name={"bookmark"}
+										size={10}
+									/>
+								}
+							>
+								{data.name}
+							</Badge>
 
-              <Badge
-                colorScheme={'primary'}
-                leftIcon={
-                  <Ionicons name={'time'} size={10} color={'primary'} />
-                }
-              >
-                {getTimeAge(data.dateTime)}
-              </Badge>
-            </HStack>
-          </VStack>
-        </Alert>
-      </Center>
-    </Stack>
-  );
+							<Badge
+								colorScheme={"primary"}
+								leftIcon={
+									<Ionicons name={"time"} size={10} color={"primary"} />
+								}
+							>
+								{getTimeAge(data.dateTime)}
+							</Badge>
+						</HStack>
+					</VStack>
+				</Alert>
+			</Center>
+		</Stack>
+	);
 }
 
 export default NoticeList;

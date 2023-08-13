@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Card from '../components/ProfileCard';
 import { bgColor } from '../../Global';
-import Header from '../components/AppHeader';
 import { Box, ScrollView } from 'native-base';
 import ProfileCard from '../components/ProfilePage/ProfileCard';
 import AppHeader from '../components/AppHeader';

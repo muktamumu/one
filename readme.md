@@ -24,6 +24,11 @@ Welcome to Britto, the official student portal of the University of Dhaka. This 
 
 ### Version 2.0.0 (Upcoming)
 - Planned feature: Integration with Student Support Services providing easy access to counseling centers and career guidance offices.
+1. Interactive Map
+2. Live Chat Solution
+3. Bus Schedule
+4. Sports
+
 
 
 ## Getting Started
