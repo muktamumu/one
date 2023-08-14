@@ -29,7 +29,6 @@ const SyllabusScreen = ({ navigation, setLoggedIn, props }) => {
 				.get(serverURL + "getSyllabus", { params: toSend })
 				.then((response) => {
 					if (response.data.status === 200) {
-            console.log(response.data)
 						setAllExam(response.data.syllabus);
 					} else if (response.data.status === 201) {
 						setNoResut(response.data.message);

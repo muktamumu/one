@@ -16,6 +16,7 @@ export const colorFive = '#565676';
 export const AppLogo = './assets/image/Britto.png';
 
 
-export const serverURL = "https://v2.result.du.ac.bd/app/";
+export const serverURL = "http://192.168.0.113:3000/";
+// export const serverURL = 'https://v2.result.du.ac.bd/app/';
 export const rootURL = "https://v2.result.du.ac.bd/";
 export const photoUrl = 'https://eco.du.ac.bd/sub_339/Rokey.php';

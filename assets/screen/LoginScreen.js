@@ -21,9 +21,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import * as Device from 'expo-device';
 import ShowAlert from '../components/ShowAlert';
 
-const osVersion =
-  Constants.platform?.android?.versionCode ||
-  Constants.platform?.ios?.systemVersion;
+const osVersion = 0;
 const deviceName = Constants.deviceName + ' - ' + Constants.deviceModel + '';
 const statusBarHeight = Constants.statusBarHeight;
 const sessionId = Constants.sessionId;
@@ -40,6 +38,8 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
 
   const checkNetworkConnectivity = async () => {
     const netInfoState = await NetInfo.fetch();
+    setnetInfo(netInfoState);
+    setipAddress(netInfoState.details.ipAddress);
     setNetStatus(netInfoState.isConnected);
   };
 
@@ -93,6 +93,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
     }
   }
 
+
   const handleLogin = async (res) => {
     try {
       await AsyncStorage.setItem('reg', reg);
@@ -134,7 +135,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
       const data = {
         reg: reg,
         pass: pass,
-        netInfo: netInfo,
+        netInfo: JSON.stringify(netInfo),
         deviceName: deviceName,
         osVersion: osVersion,
         lang: lang,
@@ -145,7 +146,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
         version: appVersion,
       };
       axios
-        .get(serverURL + 'checkForLogin', { params: data })
+        .get(serverURL + 'auth/checkForLogin', { params: data })
         .then((response) => {
           if (response.data.status === 300) {
             check214(response.data.api);
@@ -160,9 +161,10 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
           }
         })
         .catch((error) => {
+
           setLoading(0);
-          console.log('error ' + error);
-          handleShowAlert('error', 'Something Went Wrong, Please Try Again Later.');
+          console.log(error);
+        //  handleShowAlert('error', 'Something Went Wrong, Please Try Again Later.');
         });
     } catch (error) {
       setLoading(0);
@@ -237,7 +239,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
       const data = {
         reg: reg,
         pass: pass,
-        netInfo: netInfo,
+        netInfo: JSON.stringify(netInfo),
         deviceName: deviceName,
         osVersion: osVersion,
         lang: lang,
