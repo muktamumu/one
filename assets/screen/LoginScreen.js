@@ -86,15 +86,17 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
           sessionId,
           ipAddress
         );
-        handleShowAlert('error', 'Invalid Credentials.');
+        // Toast.error('Invalid Credentials.');
+       handleShowAlert('error', 'Invalid Credentials.');
       }
     } else {
+       // Toast.error('No Internet!');
       handleShowAlert('error', 'No Internet!');
     }
   }
 
 
-  const handleLogin = async (res) => {
+  const saveLogin = async (res) => {
     try {
       await AsyncStorage.setItem('reg', reg);
       await AsyncStorage.setItem('token', JSON.stringify(res.token));
@@ -114,6 +116,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
 
       setLoggedIn(true);
     } catch (error) {
+       // Toast.error('Login Error.');
       handleShowAlert('error', 'Login Error. ');
       console.error(error);
     }
@@ -152,24 +155,24 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
             check214(response.data.api);
           } else if (response.data.status === 200) {
             setLoading(0);
-            handleLogin(response.data);
+            saveLogin(response.data);
           } else if (response.data.status === 303) {
             setLoading(0);
-            handleShowAlert('error', response.data.message);
+             // Toast.error(response.data.message);
+           handleShowAlert('error', response.data.message);
           } else {
             console.log(response.data);
           }
         })
         .catch((error) => {
-
           setLoading(0);
-          console.log(error);
+           // Toast.error('Something Went Wrong, Please Try Again Later.');
         //  handleShowAlert('error', 'Something Went Wrong, Please Try Again Later.');
         });
     } catch (error) {
       setLoading(0);
-      console.log('Catch The Error');
-      handleShowAlert('error', 'Something Went Wrong! ');
+           // Toast.error('Something Went Wrong, Please Try Again Later.');
+           handleShowAlert('error', 'Something Went Wrong! ');
     }
   }
 
@@ -201,24 +204,23 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
               navigation.navigate('SignupScreen', datatoSignup);
             } else {
               setLoading(0);
-              handleShowAlert(
-                'error',
-                'Registration & Password Mismatch OR Not Found'
-              );
+              // Toast.error('Invalid Credentials.');
+             handleShowAlert('error','Registration & Password Mismatch OR Not Found' );
             }
           } else {
             setLoading(0);
+            // Toast.error('No Response From Server.');
             handleShowAlert('error', 'No Response From Server.');
           }
         })
         .catch((error) => {
           setLoading(0);
-          console.log('error ' + error);
+          // Toast.error('Request Error in 214.');
           handleShowAlert('error', 'Request Error in 214. ');
         });
     } catch (error) {
       setLoading(0);
-      console.log('Catch The Error');
+      // Toast.error('Something Went Wrong!');
       handleShowAlert('error', 'Something Went Wrong! ');
     }
   }
