@@ -11,7 +11,7 @@ import {
 import { Text, HStack, VStack } from 'native-base';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import { colorThree, serverURL } from '../../../Global';
+import { colorThree, nodejs, serverURL } from '../../../Global';
 import { Spinner } from 'native-base';
 import * as FileSystem from 'expo-file-system';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -83,7 +83,7 @@ const ProfileCard = ({
     try {
       setLoading(true);
       const response = await axios.post(
-        serverURL + 'uploadProfilePhoto',
+        nodejs + 'auth/uploadProfilePhoto',
         formData,
         {
           headers: {

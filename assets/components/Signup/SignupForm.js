@@ -16,7 +16,7 @@ import {
   Spinner,
 } from 'native-base';
 import ProfileCard from '../ProfilePage/ProfileCard';
-import { colorTwo, colorOne, serverURL } from '../../../Global';
+import { colorTwo, colorOne, serverURL, nodejs } from '../../../Global';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -82,7 +82,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
   async function getAddress() {
     try {
       axios
-        .get(serverURL + 'getAddress')
+        .get(nodejs + 'auth/getAddress')
         .then((response) => {
           setDivisionList(response.data.divisions);
           setthanaList(response.data.upazilas);
@@ -304,7 +304,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
       try {
         setLoading(true);
         axios
-          .get(serverURL + 'signup', { params: formData })
+          .get(nodejs + 'auth/signup', { params: formData })
           .then((response) => {
             if (response.data.status === 200) {
               handleLogin(response.data);
@@ -455,7 +455,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                     Gender
                   </FormControl.Label>
                   <Select
-                    selectedValue={bloodGroup}
+                    selectedValue={gender}
                     minWidth={200}
                     accessibilityLabel="Select Gender"
                     placeholder="Select Gender"
@@ -466,11 +466,6 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                     <Select.Item label="Female" value="2" />
                     <Select.Item label="Others" value="3" />
                   </Select>
-                  {'bloodGroup' in errors && (
-                    <FormControl.ErrorMessage>
-                      {errors.bloodGroup}
-                    </FormControl.ErrorMessage>
-                  )}
                 </FormControl>
 
                 {/* Blood Group */}
@@ -666,7 +661,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
 
                 <Button
                   onPress={handleSignup}
-                  disabled={loading}
+                 // disabled={loading}
                   colorScheme={'blue'}
                 >
                   {loading ? <Spinner /> : 'Go To Dashboard'}

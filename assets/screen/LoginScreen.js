@@ -12,7 +12,7 @@ import * as Localization from 'expo-localization';
 import NetInfo from '@react-native-community/netinfo';
 import NoInternet from '../components/NoInternet';
 import Toast from 'react-native-toast-message';
-import { colorOne, colorTwo, rootURL, serverURL } from '../../Global';
+import { colorOne, colorTwo, rootURL, serverURL, nodejs } from "../../Global";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -149,26 +149,26 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
         version: appVersion,
       };
       axios
-        .get(serverURL + 'auth/checkForLogin', { params: data })
-        .then((response) => {
-          if (response.data.status === 300) {
-            check214(response.data.api);
-          } else if (response.data.status === 200) {
-            setLoading(0);
-            saveLogin(response.data);
-          } else if (response.data.status === 303) {
-            setLoading(0);
-             // Toast.error(response.data.message);
-           handleShowAlert('error', response.data.message);
-          } else {
-            console.log(response.data);
-          }
-        })
-        .catch((error) => {
-          setLoading(0);
-           // Toast.error('Something Went Wrong, Please Try Again Later.');
-        //  handleShowAlert('error', 'Something Went Wrong, Please Try Again Later.');
-        });
+				.get(nodejs + "auth/checkForLogin", { params: data })
+				.then((response) => {
+					if (response.data.status === 300) {
+						check214(response.data.api);
+					} else if (response.data.status === 200) {
+						setLoading(0);
+						saveLogin(response.data);
+					} else if (response.data.status === 303) {
+						setLoading(0);
+						// Toast.error(response.data.message);
+						handleShowAlert("error", response.data.message);
+					} else {
+						console.log(response.data);
+					}
+				})
+				.catch((error) => {
+					setLoading(0);
+					// Toast.error('Something Went Wrong, Please Try Again Later.');
+					//  handleShowAlert('error', 'Something Went Wrong, Please Try Again Later.');
+				});
     } catch (error) {
       setLoading(0);
            // Toast.error('Something Went Wrong, Please Try Again Later.');
@@ -251,13 +251,13 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
         device: JSON.stringify(Device),
       };
       axios
-        .get(serverURL + 'insertLoginFailed', { params: data })
-        .then((response) => {
-          setLoading(0);
-        })
-        .catch((error) => {
-          setLoading(0);
-        });
+				.get(nodejs + "insertLoginFailed", { params: data })
+				.then((response) => {
+					setLoading(0);
+				})
+				.catch((error) => {
+					setLoading(0);
+				});
     } catch (error) {
       setLoading(0);
     }
