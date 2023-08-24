@@ -251,7 +251,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
         device: JSON.stringify(Device),
       };
       axios
-				.get(nodejs + "insertLoginFailed", { params: data })
+				.get(nodejs + "auth/insertLoginFailed", { params: data })
 				.then((response) => {
 					setLoading(0);
 				})
