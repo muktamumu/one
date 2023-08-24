@@ -306,7 +306,6 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
         axios
           .get(nodejs + 'auth/signup', { params: formData })
           .then((response) => {
-            console.log(response.data)
             if (response.data.status === 200) {
               handleLogin(response.data);
             } else {
