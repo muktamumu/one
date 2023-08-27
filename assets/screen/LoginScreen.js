@@ -225,6 +225,11 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
     }
   }
 
+  function setAlt() {
+    setReg("2015614614");
+    setPass("asdf@123");
+  }
+
   function insertLoginFailed(
     reg,
     pass,
@@ -306,6 +311,11 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
           <TouchableOpacity style={styles.loginButton} onPress={() => login()}>
             <Text style={styles.loginButtonText}>
               {isLoading ? <LoadingSpinner /> : 'Login'}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.loginButton} onPress={() => setAlt()}>
+            <Text style={styles.loginButtonText}>
+             ALT
             </Text>
           </TouchableOpacity>
         </View>

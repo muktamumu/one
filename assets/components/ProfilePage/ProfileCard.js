@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import {
   ImageBackground,
   View,
-  StyleSheet,
-  Button,
   Image,
-  ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
 import { Text, HStack, VStack } from 'native-base';
@@ -177,7 +174,7 @@ const ProfileCard = ({
           )}
 
           {photo === 'null' ? (
-            <VStack alignItems={'center'} >
+            <VStack alignItems={'center'}>
               <Text
                 color={'muted.50'}
                 fontSize="xl"
@@ -235,6 +232,7 @@ const ProfileCard = ({
               </Text>
             </VStack>
           )}
+          
         </HStack>
       </View>
     </ImageBackground>

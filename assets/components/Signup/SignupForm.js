@@ -14,6 +14,7 @@ import {
   Badge,
   Divider,
   Spinner,
+  DatePicker,
 } from 'native-base';
 import ProfileCard from '../ProfilePage/ProfileCard';
 import { colorTwo, colorOne, serverURL, nodejs } from '../../../Global';
@@ -155,10 +156,15 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
     data['student-profile'].name_bn
   );
 
+  // Function to handle date changes
+  const handleDateChange = (newDate) => {
+    setDateOfBirth(newDate);
+  };
+
   const [fatherName, setFatherName] = useState('');
   const [motherName, setMotherName] = useState('');
   const [religion, setReligion] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [bloodGroup, setBloodGroup] = useState('');
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [phone, setPhone] = useState('');
@@ -339,7 +345,6 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
         deptName,
       ]);
       login(true);
-      
     } catch (error) {
       alertT('Login Error. ');
       console.error(error);
@@ -369,7 +374,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
               <VStack space={4}>
                 <Badge colorScheme={'info'}>
                   <Heading size={'sm'} textAlign={'center'}>
-                    You need to save some essential information in Britto.
+                    You need to save some essential information in Britto.{' '}
                   </Heading>
                 </Badge>
                 {/* Student Name */}
@@ -436,6 +441,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
                     value={dateOfBirth}
                     onChangeText={setDateOfBirth}
                     placeholder="YYYY-MM-DD"
+                    type="date"
                     keyboardType={
                       Platform.OS === 'ios'
                         ? 'numbers-and-punctuation'
@@ -661,7 +667,7 @@ const SignupForm = ({ data, route, alertT, login, setUserData }) => {
 
                 <Button
                   onPress={handleSignup}
-                 // disabled={loading}
+                  // disabled={loading}
                   colorScheme={'blue'}
                 >
                   {loading ? <Spinner /> : 'Go To Dashboard'}
