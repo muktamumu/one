@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Heading, HStack, VStack, View, ScrollView } from "native-base";
-import { colorOne, colorTwo, serverURL } from "../../Global";
+import { colorOne, colorTwo, nodejs, serverURL } from "../../Global";
 import AppHeader from "../components/AppHeader";
 import { ImageBackground, StyleSheet } from "react-native";
 import { Dimensions, Pressable } from "react-native";
@@ -179,9 +179,9 @@ function Profile(navigation, setLoggedIn, result) {
 					</VStack>
 					<VStack w={"50%"}>
 						<Text fontWeight="bold" style={styles.value}>
-							{data[0].gender === "1"
+							{data[0].gender === 1
 								? "Male"
-								: data[0].gender === "2"
+								: data[0].gender === 2
 								? "Female"
 								: "Other"}
 						</Text>
@@ -374,11 +374,12 @@ function Profile(navigation, setLoggedIn, result) {
 				reg: reg,
 			};
 			axios
-				.get(serverURL + "getProfileData", { params: data })
+				.get(nodejs + "profile/getProfileData", { params: data })
 				.then((response) => {
 					if (response.data["status"] === 200) {
+						console.log(response.data)
 						setData(response.data["data"]);
-						setAddress(response.data["address"]);
+						setAddress(response.data["permAddress"]);
 					} else if (response.data["status"] === 501) {
 						console.log(response.data);
             handleShowAlert(
