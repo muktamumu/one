@@ -25,6 +25,7 @@ import {
   colorFour,
   colorOne,
   colorThree,
+  nodejs,
   serverURL,
 } from '../../Global';
 import CustomAlert from '../components/ResultPage/ResultList';
@@ -45,14 +46,14 @@ const ExamScreen = ({ navigation, setLoggedIn, props }) => {
         reg: reg,
       };
       axios
-        .get(serverURL + 'getFomFillupData', { params: toSend })
-        .then((response) => {
-          setAllExam(response.data.result);
-          //console.log(response.data.result);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+				.get(nodejs + "formfillup/getAllExam", { params: toSend })
+				.then((response) => {
+					setAllExam(response.data.data);
+					//	console.log(response.data.data);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
     } else {
       setReg(await AsyncStorage.getItem('reg'));
     }
