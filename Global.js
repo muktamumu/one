@@ -17,11 +17,7 @@ export const AppLogo = './assets/image/Britto.png';
 
 
 // export const serverURL = "http://192.168.0.113:3000/";
-<<<<<<< HEAD
-export const nodejs = "http://192.168.0.113:3000/";
-=======
-export const nodejs = "http://192.168.0.103:3000/";
->>>>>>> 4a20c9bdf7b2c332336ae81bac92d5dbe387524a
+export const nodejs = "http://192.168.0.102:3000/";
  export const serverURL = 'https://v2.result.du.ac.bd/app/';
 export const rootURL = "https://v2.result.du.ac.bd/";
 export const photoUrl = 'https://eco.du.ac.bd/sub_339/Rokey.php';

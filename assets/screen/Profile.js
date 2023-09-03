@@ -377,11 +377,11 @@ function Profile(navigation, setLoggedIn, result) {
 				.get(nodejs + "profile/getProfileData", { params: data })
 				.then((response) => {
 					if (response.data["status"] === 200) {
-						console.log(response.data)
+						 console.log(response.data)
 						setData(response.data["data"]);
 						setAddress(response.data["permAddress"]);
 					} else if (response.data["status"] === 501) {
-						console.log(response.data);
+						// console.log(response.data);
             handleShowAlert(
 							"error",
 							response.data["message"] || "Something Went Wrong!!!"
