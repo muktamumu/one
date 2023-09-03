@@ -20,6 +20,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 
 import * as Device from 'expo-device';
 import ShowAlert from '../components/ShowAlert';
+import { showError } from '../../utils/utils';
 
 const osVersion = 0;
 const deviceName = Constants.deviceName + ' - ' + Constants.deviceModel + '';
@@ -43,19 +44,6 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
     setNetStatus(netInfoState.isConnected);
   };
 
-  const [showAlert1, setShowAlert] = useState(false);
-  const [alertText, setalertText] = useState('');
-  const [alertType, setalertType] = useState('');
-
-  const handleShowAlert = (type, text) => {
-    setalertText(text);
-    setalertType(type);
-    setShowAlert(true);
-  };
-
-  const handleCloseAlert = () => {
-    setShowAlert(false);
-  };
 
   const [reg, setReg] = useState("2017417693");
   const [pass, setPass] = useState("597230ask");
@@ -86,12 +74,10 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
           sessionId,
           ipAddress
         );
-        // Toast.error('Invalid Credentials.');
-       handleShowAlert('error', 'Invalid Credentials.');
+       showError('Invalid Credentials.');
       }
     } else {
-       // Toast.error('No Internet!');
-      handleShowAlert('error', 'No Internet!');
+      showError( "No Internet!");
     }
   }
 
@@ -116,9 +102,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
 
       setLoggedIn(true);
     } catch (error) {
-       // Toast.error('Login Error.');
-      handleShowAlert('error', 'Login Error. ');
-      console.error(error);
+       console.error('Login Error.');
     }
   };
 
@@ -158,21 +142,18 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
 						saveLogin(response.data);
 					} else if (response.data.status === 303) {
 						setLoading(0);
-						// Toast.error(response.data.message);
-						handleShowAlert("error", response.data.message);
+						console.error(response.data.message);
 					} else {
 						console.log(response.data);
 					}
 				})
 				.catch((error) => {
 					setLoading(0);
-					// Toast.error('Something Went Wrong, Please Try Again Later.');
-					//  handleShowAlert('error', 'Something Went Wrong, Please Try Again Later.');
+					console.error('Something Went Wrong, Please Try Again Later.');
 				});
     } catch (error) {
       setLoading(0);
-           // Toast.error('Something Went Wrong, Please Try Again Later.');
-           handleShowAlert('error', 'Something Went Wrong! ');
+           console.error('Something Went Wrong, Please Try Again Later.');
     }
   }
 
@@ -204,24 +185,20 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
               navigation.navigate('SignupScreen', datatoSignup);
             } else {
               setLoading(0);
-              // Toast.error('Invalid Credentials.');
-             handleShowAlert('error','Registration & Password Mismatch OR Not Found' );
+              console.error('Invalid Credentials.');
             }
           } else {
             setLoading(0);
-            // Toast.error('No Response From Server.');
-            handleShowAlert('error', 'No Response From Server.');
+            console.error('No Response From Server.');
           }
         })
         .catch((error) => {
           setLoading(0);
-          // Toast.error('Request Error in 214.');
-          handleShowAlert('error', 'Request Error in 214. ');
+          console.error('Request Error in 214.');
         });
     } catch (error) {
       setLoading(0);
-      // Toast.error('Something Went Wrong!');
-      handleShowAlert('error', 'Something Went Wrong! ');
+      console.error('Something Went Wrong!');
     }
   }
 
@@ -320,13 +297,7 @@ const LoginScreen = ({ navigation, setLoggedIn, props, setUserData }) => {
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
-      {showAlert1 && (
-        <ShowAlert
-          status={alertType}
-          Tx={alertText}
-          onClose={handleCloseAlert}
-        />
-      )}
+      
     </View>
   );
 };

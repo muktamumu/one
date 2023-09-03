@@ -1,7 +1,21 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function testFun(data) {
   console.log(data)
 }
+
+export const showError = (data) => {
+  console.error(data);
+}
+
+export   const logOutNow = async () => {
+	try {
+		await AsyncStorage.clear();
+		setLoggedIn(false);
+	} catch (error) {
+		console.error("Error clearing AsyncStorage data:", error);
+	}
+};
 
 
 export const getTimeAge = (postedTime) => {

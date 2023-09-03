@@ -10,26 +10,9 @@ import { Box, Text, Center, Image, Skeleton } from "native-base";
 import ProfileCard from "../components/ProfilePage/ProfileCard";
 import axios from "axios";
 import ShowAlert from "../components/ShowAlert";
+import { logOutNow, showError } from "../../utils/utils";
 
 function Profile(navigation, setLoggedIn, result) {
-	const [showAlert1, setShowAlert] = useState(false);
-	const [alertText, setalertText] = useState("");
-	const [alertType, setalertType] = useState("");
-
-	const handleShowAlert = (type, text) => {
-		setalertText(text);
-		setalertType(type);
-		setShowAlert(true);
-	};
-
-	const handleCloseAlert = () => {
-		setShowAlert(false);
-	};
-
-	const [photo, setPhoto] = useState(
-		"https://v2.result.du.ac.bd/assets/student.png"
-	);
-
 	const FirstRoute = () => (
 		<Center m="4">
 			<VStack>
@@ -377,25 +360,20 @@ function Profile(navigation, setLoggedIn, result) {
 				.get(nodejs + "profile/getProfileData", { params: data })
 				.then((response) => {
 					if (response.data["status"] === 200) {
-						 console.log(response.data)
+						// console.log(response.data)
 						setData(response.data["data"]);
 						setAddress(response.data["permAddress"]);
 					} else if (response.data["status"] === 501) {
-						// console.log(response.data);
-            handleShowAlert(
-							"error",
-							response.data["message"] || "Something Went Wrong!!!"
-						);
+						logOutNow();
 					} else {
-						handleShowAlert("error", response.data["message"]|| "Something Went Wrong!");
+						showError(response.data["message"] || "Something Went Wrong!");
 					}
 				})
 				.catch((error) => {
-          console.log(error)
-					handleShowAlert("error", "Something Went Wrong! ");
+					showError("Something Went Wrong! Please Try Again Later. ");
 				});
 		} catch (error) {
-			handleShowAlert("error", "Something Went Wrong! ");
+			showError("Something Went Wrong! ");
 		}
 	}
 
@@ -449,14 +427,6 @@ function Profile(navigation, setLoggedIn, result) {
 				</>
 			) : (
 				<LoadingAnimation />
-			)}
-
-			{showAlert1 && (
-				<ShowAlert
-					status={alertType}
-					Tx={alertText}
-					onClose={handleCloseAlert}
-				/>
 			)}
 		</>
 	);
