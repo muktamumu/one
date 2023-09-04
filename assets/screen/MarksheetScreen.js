@@ -10,10 +10,12 @@ import {
 } from 'native-base';
 import AppHeader from '../components/AppHeader';
 import {
+  nodejs,
   serverURL,
 } from '../../Global';
 import Toast  from 'react-native-toast-message';
 import MarksheetList from '../components/MarksheetPage/MarksheetList';
+import { logOutNow } from '../../utils/utils';
 
 const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
 
@@ -33,18 +35,20 @@ const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
         reg: reg,
       };
       axios
-        .get(serverURL + 'getAllMarksheetInfo', { params: toSend })
+        .get(nodejs + 'marksheet/getAllMarksheetInfo', { params: toSend })
         .then((response) => {
           if (response.data.status === 200) {
             setAllExam(response.data.result);
           } else if (response.data.status === 201) {
             setNoResut(response.data.message);
           } else if (response.data.status === 500) {
-            Toast.error(response.data.message);
+            console.error(
+              response.data.message || 'Something Went Wrong (MP63)'
+            );
           } else if (response.data.status === 501) {
-            setLoggedIn(false);
+            logOutNow()
           } else {
-            Toast.error('Something Went Wrong (MP63)');
+            console.error('Something Went Wrong (MP63)');
           }
         })
         .catch((error) => {

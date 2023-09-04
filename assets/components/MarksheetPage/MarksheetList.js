@@ -21,6 +21,7 @@ import {
   colorOne,
   colorThree,
   colorTwo,
+  nodejs,
   serverURL,
 } from '../../../Global';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -39,11 +40,11 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
         exam_id: examID,
       };
       axios
-        .get(serverURL + 'getMarksheetDetails', { params: toSend })
+        .get(nodejs + 'marksheet/getMarksheetDetails', { params: toSend })
         .then((response) => {
           if (response.data.status === 200) {
             setCourses(response.data.result);
-            setmessage(response.data.message)
+            setmessage(response.data.message);
             setLoadingCourse(false);
           } else if (response.data.status === 201) {
             setLoadingCourse(false);
