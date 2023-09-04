@@ -33,6 +33,7 @@ function App() {
     const netInfoState = await NetInfo.fetch();
     setNetStatus(netInfoState.isConnected);
     checkLoginStatus();
+
   };
 
   async function checkLoginStatus() {
@@ -72,7 +73,7 @@ function App() {
 
   useEffect(() => {
     checkNetworkConnectivity();
-  });
+  }, [netStatus]);
 
   return (
     <NativeBaseProvider theme={theme}>

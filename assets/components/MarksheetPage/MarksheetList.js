@@ -44,27 +44,27 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
         .then((response) => {
           if (response.data.status === 200) {
             setCourses(response.data.result);
-            setmessage(response.data.message);
+            setmessage(response.data.message || 'Something Went Wrong (ML63).');
             setLoadingCourse(false);
           } else if (response.data.status === 201) {
             setLoadingCourse(false);
-            setmessage(response.data.message);
+            setmessage(response.data.message || 'Something Went Wrong (ML63).');
           } else if (response.data.status === 500) {
             setmessage(response.data.message);
             setCourses('No Information Found.');
-            Toast.error(response.data.message);
+            console.error(response.data.message || 'Something Went Wrong (ML63).');
           } else if (response.data.status === 501) {
             setLoadingCourse(false);
             setLoggedIn(false);
           } else {
-            Toast.error(response.data.message);
+            console.error(response.data.message || 'Something Went Wrong (ML63).');
           }
         })
         .catch((error) => {
-          Toast.error('Something Went Wrong (ML63).');
+          console.error('Something Went Wrong (ML63).');
         });
     } else {
-      Toast.error('Something Went Wrong (ML66).');
+      console.error('Something Went Wrong (ML66).');
     }
     setIsExpanded(!isExpanded);
   };
@@ -89,8 +89,12 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <HStack space={2} flexShrink={1} alignItems="center">
-                <Ionicons name={icon ? icon : 'checkmark-circle'} size={24} color={colorTwo} />
+              <HStack space={2} flexShrink={1} alignItems="center" key={index}>
+                <Ionicons
+                  name={icon ? icon : 'checkmark-circle'}
+                  size={24}
+                  color={colorTwo}
+                />
                 <Text
                   fontSize="md"
                   fontWeight="medium"

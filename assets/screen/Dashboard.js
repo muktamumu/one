@@ -7,7 +7,6 @@ import {
   Text,
   Button,
 } from 'react-native';
-import Card from '../components/ProfileCard';
 import { bgColor } from '../../Global';
 import { Box, ScrollView } from 'native-base';
 import ProfileCard from '../components/ProfilePage/ProfileCard';
