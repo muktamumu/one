@@ -1,22 +1,17 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export function testFun(data) {
-  console.log(data)
-}
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const showError = (data) => {
   console.error(data);
-}
-
-export   const logOutNow = async () => {
-	try {
-		await AsyncStorage.clear();
-		setLoggedIn(false);
-	} catch (error) {
-		console.error("Error clearing AsyncStorage data:", error);
-	}
 };
 
+export const logOutNow = async () => {
+  try {
+    await AsyncStorage.clear();
+   // setLoggedIn(false);
+  } catch (error) {
+    console.error('Error clearing AsyncStorage data:', error);
+  }
+};
 
 export const getTimeAge = (postedTime) => {
   const currentTime = new Date();
@@ -31,7 +26,13 @@ export const getTimeAge = (postedTime) => {
   const days = Math.floor(hours / 24);
 
   if (days >= 7) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    };
     return postedDate.toLocaleDateString('en-US', options);
   } else if (days > 0) {
     return `${days} ${days === 1 ? 'day' : 'days'} ago`;

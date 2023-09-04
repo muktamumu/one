@@ -6,7 +6,8 @@ import { Box, Skeleton, VStack } from 'native-base';
 import AppHeader from '../components/AppHeader';
 import ResultList from '../components/ResultPage/ResultList';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { serverURL } from '../../Global';
+import { nodejs, serverURL } from '../../Global';
+import { logOutNow, showError } from './../../utils/utils';
 
 const ResultScreen = ({ navigation, setLoggedIn }) => {
   const [reg, setReg] = useState(null);
@@ -31,23 +32,23 @@ const ResultScreen = ({ navigation, setLoggedIn }) => {
       };
 
       try {
-        const response = await axios.get(serverURL + 'getAllResult', {
+        const response = await axios.get(nodejs + 'result/getAllResult', {
           params: toSend,
         });
 
         if (response.data.status === 200) {
-          setAllExam(response.data.result);
+          setAllExam(response.data["data"]);
         } else if (response.data.status === 201) {
           setNoResult(response.data.message);
         } else if (response.data.status === 500) {
-          Toast.error(response.data.message);
+          showError(response.data.message || "Something Went Wrong."); 
         } else if (response.data.status === 501) {
-          setLoggedIn(false);
+          logOutNow()
         } else {
-          Toast.error('Something Went Wrong (RP63)');
+          showError(response.data.message || 'Something Went Wrong.'); 
         }
       } catch (error) {
-        console.error('Something Went Wrong (RP67).', error);
+        showError(response.data.message || 'Something Went Wrong.'); 
       }
     } else {
       stuReg();

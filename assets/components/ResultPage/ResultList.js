@@ -15,7 +15,7 @@ import {
   Skeleton,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
-import { colorFour, colorOne, colorThree, colorTwo, serverURL } from '../../../Global';
+import { colorFour, colorOne, colorThree, colorTwo, nodejs, serverURL } from '../../../Global';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 function ResultList({setLoggedIn, index, data, title }) {
@@ -32,7 +32,7 @@ function ResultList({setLoggedIn, index, data, title }) {
         exam_id: examID,
       };
       axios
-        .get(serverURL + 'getCourseForResult', { params: toSend })
+        .get(nodejs + 'result/getCourseForResult', { params: toSend })
         .then((response) => {
           if (response.data.status === 200)
           {
@@ -60,7 +60,7 @@ function ResultList({setLoggedIn, index, data, title }) {
                 grade_point: '',
               },
             ]);
-            Toast.error(response.data.message);
+            console.error(response.data.message);
           } else if (response.data.status === 501) {
             setLoadingCourse(false);
             setCourses([
@@ -74,14 +74,14 @@ function ResultList({setLoggedIn, index, data, title }) {
             ]);
             setLoggedIn(false);
           } else {
-            Toast.error(response.data.message);
+            console.error(response.data.message);
           }
         })
         .catch((error) => {
-          Toast.error('Something Went Wrong (C81).');
+          console.error('Something Went Wrong (C81).');
         });
     } else {
-      Toast.error('Something Went Wrong (C84).');
+      console.error('Something Went Wrong (C84).');
     }
     setIsExpanded(!isExpanded);
   };
