@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'native-base';
 import AppHeader from '../components/AppHeader';
-import { serverURL} from '../../Global';
+import { nodejs, serverURL} from '../../Global';
 import Toast from 'react-native-toast-message';
 import MarksheetList from '../components/MarksheetPage/MarksheetList';
 
@@ -30,7 +30,7 @@ const CertificateScreen = ({ navigation, setLoggedIn, props }) => {
         reg: reg,
       };
       axios
-        .get(serverURL + 'getAllCertificateInfo', { params: toSend })
+        .get(nodejs + 'certificate/getAllCertificateInfo', { params: toSend })
         .then((response) => {
           if (response.data.status === 200) {
             setAllExam(response.data.result);
@@ -74,10 +74,12 @@ const CertificateScreen = ({ navigation, setLoggedIn, props }) => {
             <>
               <MarksheetList
                 key={index}
-                setLoggedIn={setLoggedIn}
                 index={index}
                 data={exam}
-                title={exam.exam_title}
+                title={
+                  exam.degree_type === 1 ? exam.hons_degree : exam.mss_degree
+                }
+                onclick="null"
               />
             </>
           ))

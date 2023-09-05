@@ -81,11 +81,11 @@ const MarksheetScreen = ({ navigation, setLoggedIn, props }) => {
             <>
               <MarksheetList
                 key={index}
-                setLoggedIn={setLoggedIn}
                 index={index}
                 data={exam}
                 title={exam.exam_title}
                 icon="checkmark-circle"
+                onclick="marksheet/getMarksheetDetails"
               />
             </>
           ))

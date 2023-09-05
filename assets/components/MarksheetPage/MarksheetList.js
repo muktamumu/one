@@ -26,7 +26,7 @@ import {
 } from '../../../Global';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-function MarksheetList({ setLoggedIn, index, data, title, icon }) {
+function MarksheetList({ index, data, title, icon, onclick }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [loadingCourse, setLoadingCourse] = useState(false);
   const [message, setmessage] = useState(false);
@@ -40,7 +40,7 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
         exam_id: examID,
       };
       axios
-        .get(nodejs + 'marksheet/getMarksheetDetails', { params: toSend })
+        .get(nodejs + onclick, { params: toSend })
         .then((response) => {
           if (response.data.status === 200) {
             setCourses(response.data.result);
@@ -52,12 +52,16 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
           } else if (response.data.status === 500) {
             setmessage(response.data.message);
             setCourses('No Information Found.');
-            console.error(response.data.message || 'Something Went Wrong (ML63).');
+            console.error(
+              response.data.message || 'Something Went Wrong (ML63).'
+            );
           } else if (response.data.status === 501) {
             setLoadingCourse(false);
             setLoggedIn(false);
           } else {
-            console.error(response.data.message || 'Something Went Wrong (ML63).');
+            console.error(
+              response.data.message || 'Something Went Wrong (ML63).'
+            );
           }
         })
         .catch((error) => {
@@ -103,6 +107,7 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
                     color: 'coolGray.800',
                   }}
                   onPress={() =>
+                    onclick !== 'null' &&
                     toggleExpansion(data.reg_num, data.exam_roll, data.exam_id)
                   }
                 >
@@ -122,6 +127,7 @@ function MarksheetList({ setLoggedIn, index, data, title, icon }) {
                   color: 'coolGray.600',
                 }}
                 onPress={() =>
+                  onclick !== 'null' &&
                   toggleExpansion(data.reg_num, data.exam_roll, data.exam_id)
                 }
               />
