@@ -114,23 +114,25 @@ function MarksheetList({ index, data, title, icon, onclick }) {
                   {title}
                 </Text>
               </HStack>
-              <IconButton
-                variant="unstyled"
-                color={colorTwo}
-                _focus={{
-                  borderWidth: 0,
-                }}
-                _icon={{
-                  as: isExpanded ? Ionicons : Ionicons,
-                  name: isExpanded ? 'chevron-up' : 'chevron-down',
-                  size: 18,
-                  color: 'coolGray.600',
-                }}
-                onPress={() =>
-                  onclick !== 'null' &&
-                  toggleExpansion(data.reg_num, data.exam_roll, data.exam_id)
-                }
-              />
+              {onclick !== 'null' && (
+                <IconButton
+                  variant="unstyled"
+                  color={colorTwo}
+                  _focus={{
+                    borderWidth: 0,
+                  }}
+                  _icon={{
+                    as: isExpanded ? Ionicons : Ionicons,
+                    name: isExpanded ? 'chevron-up' : 'chevron-down',
+                    size: 18,
+                    color: 'coolGray.600',
+                  }}
+                  onPress={() =>
+                    onclick !== 'null' &&
+                    toggleExpansion(data.reg_num, data.exam_roll, data.exam_id)
+                  }
+                />
+              )}
             </HStack>
             {isExpanded && (
               <Box>

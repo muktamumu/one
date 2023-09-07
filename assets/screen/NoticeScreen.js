@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message';
 import NoticeList from '../components/NoticePage/NoticeList';
 
 const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
+  
   useEffect(() => {
     checkForData();
   }, []);
