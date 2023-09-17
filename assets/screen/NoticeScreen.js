@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 import axios from 'axios';
 import { VStack, Box, Skeleton, ScrollView } from 'native-base';
 import AppHeader from '../components/AppHeader';
-import { serverURL } from '../../Global';
+import { nodejs, serverURL } from '../../Global';
 import Toast from 'react-native-toast-message';
 import NoticeList from '../components/NoticePage/NoticeList';
 
@@ -27,8 +27,9 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
         reg: reg,
       };
       axios
-        .get(serverURL + 'getAllNotices', { params: toSend })
+        .get(nodejs + 'notice/getAllNotices', { params: toSend })
         .then((response) => {
+          console.log(response.data)
           if (response.data.status === 200) {
             setAllExam(response.data.result);
             setType(response.data.type);
