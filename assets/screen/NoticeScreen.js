@@ -29,7 +29,6 @@ const NoticeScreen = ({ navigation, setLoggedIn, props }) => {
       axios
         .get(nodejs + 'notice/getAllNotices', { params: toSend })
         .then((response) => {
-          console.log(response.data)
           if (response.data.status === 200) {
             setAllExam(response.data.result);
             setType(response.data.type);
