@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Heading, VStack, ScrollView, Spacer } from 'native-base';
-import { colorOne, colorTwo, serverURL } from '../../Global';
+import { colorOne, colorTwo, nodejs, serverURL } from '../../Global';
 import AppHeader from '../components/AppHeader';
 import { StyleSheet } from 'react-native';
 import { Dimensions, Pressable } from 'react-native';
@@ -13,19 +13,6 @@ import ShowAlert from '../components/ShowAlert';
 import UserListItem from '../components/UserListItem';
 
 function HallScreen(navigation, setLoggedIn, props) {
-  const [showAlert1, setShowAlert] = useState(false);
-  const [alertText, setalertText] = useState('');
-  const [alertType, setalertType] = useState('');
-
-  const handleShowAlert = (type, text) => {
-    setalertText(text);
-    setalertType(type);
-    setShowAlert(true);
-  };
-
-  const handleCloseAlert = () => {
-    setShowAlert(false);
-  };
 
   const FirstRoute = () => (
     <Center m="4">
@@ -164,7 +151,7 @@ function HallScreen(navigation, setLoggedIn, props) {
         reg: reg,
       };
       axios
-        .get(serverURL + 'getHallData', { params: data })
+        .get(nodejs + 'hall/getHallData', { params: data })
         .then((response) => {
           if (response.data['status'] === 200) {
             const emp = response.data['staff'];
@@ -175,23 +162,16 @@ function HallScreen(navigation, setLoggedIn, props) {
             setData(response.data['data']);
             setstudent(response.data['student']);
           } else if (response.data['status'] === 501) {
-            handleShowAlert(
-              'error',
-              response.data['message'] || 'Something Went Wrong!'
-            );
+            console.error(response.data['message'] || 'Something Went Wrong!')
           } else {
-            handleShowAlert(
-              'error',
-              response.data['message'] || 'Something Went Wrong!'
-            );
+           console.error(response.data['message'] || 'Something Went Wrong!')
           }
         })
         .catch((error) => {
-          console.log(error);
-          handleShowAlert('error', 'Something Went Wrong!');
+         console.error(response.data['message'] || 'Something Went Wrong!')
         });
     } catch (error) {
-      handleShowAlert('error', 'Something Went Wrong!');
+      console.error(response.data['message'] || 'Something Went Wrong!')
     }
   }
 
@@ -249,14 +229,6 @@ function HallScreen(navigation, setLoggedIn, props) {
         </>
       ) : (
         <LoadingAnimation />
-      )}
-
-      {showAlert1 && (
-        <ShowAlert
-          status={alertType}
-          Tx={alertText}
-          onClose={handleCloseAlert}
-        />
       )}
     </>
   );
